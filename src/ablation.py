@@ -61,6 +61,35 @@ def _seeded_swap(qid: str) -> bool:
     return int(hashlib.sha256(qid.encode()).hexdigest(), 16) % 2 == 0
 
 
+def score_question(tool_name, q, idx, variant):
+    """Run base + RAG + joint judge for one question. Returns (row, [(LLMResult, is_judge), ...])."""
+    gold = set(q["gold_chunk_ids"])
+    b = base_answer(q["question"])                                   # base: no retrieval
+    rg = rag_answer(q["question"], idx, k=C.TOP_K, method="vector", variant=variant)  # RAG: vector top-k
+    gold_hit = bool(gold & set(rg.retrieved_ids))
+    base_is_a = _seeded_swap(q["id"])
+    a_text, b_text = (b.text, rg.answer) if base_is_a else (rg.answer, b.text)
+    jr = call_claude(JUDGE_PROMPT.format(
+        tool=tool_name, question=q["question"][:3000], reference=q["reference_answer"][:3000],
+        answer_a=a_text[:3000], answer_b=b_text[:3000]), model=C.JUDGE_MODEL)
+    v = parse_json(jr.text)
+    if base_is_a:
+        base_score, rag_score = v.get("a_score"), v.get("b_score")
+        base_correct, rag_correct = v.get("a_correct"), v.get("b_correct")
+        pref = {"A": "base", "B": "rag"}.get(v.get("preferred"), v.get("preferred"))
+    else:
+        base_score, rag_score = v.get("b_score"), v.get("a_score")
+        base_correct, rag_correct = v.get("b_correct"), v.get("a_correct")
+        pref = {"B": "base", "A": "rag"}.get(v.get("preferred"), v.get("preferred"))
+    row = {
+        "id": q["id"], "url": q["url"], "title": q["title"], "gold_hit": gold_hit,
+        "base_score": base_score, "rag_score": rag_score,
+        "base_correct": base_correct, "rag_correct": rag_correct,
+        "preferred": pref, "reason": v.get("reason", ""),
+    }
+    return row, [(b, False), (rg.llm, False), (jr, True)]
+
+
 def bootstrap_ci(diffs, iters=2000, seed=0):
     rng = random.Random(seed)
     n = len(diffs)
@@ -85,45 +114,28 @@ def run(tool: str, limit: int | None = None, judge_cap: int | None = None, varia
     done = [0]
 
     def work(q):
-        gold = set(q["gold_chunk_ids"])
-        b = base_answer(q["question"])                                   # base: no retrieval
-        rg = rag_answer(q["question"], idx, k=C.TOP_K, method="vector", variant=variant)  # RAG: vector top-k
-        gold_hit = bool(gold & set(rg.retrieved_ids))
-        base_is_a = _seeded_swap(q["id"])
-        a_text, b_text = (b.text, rg.answer) if base_is_a else (rg.answer, b.text)
-        jr = call_claude(JUDGE_PROMPT.format(
-            tool=tool_name, question=q["question"][:3000], reference=q["reference_answer"][:3000],
-            answer_a=a_text[:3000], answer_b=b_text[:3000]), model=C.JUDGE_MODEL)
-        v = parse_json(jr.text)
-        # map A/B back to base/rag
-        if base_is_a:
-            base_score, rag_score = v.get("a_score"), v.get("b_score")
-            base_correct, rag_correct = v.get("a_correct"), v.get("b_correct")
-            pref = {"A": "base", "B": "rag"}.get(v.get("preferred"), v.get("preferred"))
-        else:
-            base_score, rag_score = v.get("b_score"), v.get("a_score")
-            base_correct, rag_correct = v.get("b_correct"), v.get("a_correct")
-            pref = {"B": "base", "A": "rag"}.get(v.get("preferred"), v.get("preferred"))
-        row = {
-            "id": q["id"], "url": q["url"], "title": q["title"], "gold_hit": gold_hit,
-            "base_score": base_score, "rag_score": rag_score,
-            "base_correct": base_correct, "rag_correct": rag_correct,
-            "preferred": pref, "reason": v.get("reason", ""),
-        }
+        row, calls = score_question(tool_name, q, idx, variant)
         with lock:
-            usage.record(b, is_judge=False)
-            usage.record(rg.llm, is_judge=False)
-            usage.record(jr, is_judge=True)
+            for c, is_j in calls:
+                usage.record(c, is_judge=is_j)
             done[0] += 1
             ckpt.write(json.dumps(row) + "\n"); ckpt.flush()
-            print(f"  [{done[0]}/{len(qs)}] base={base_score} rag={rag_score} pref={pref} "
-                  f"gold_hit={gold_hit} judge_used={usage.judge_calls}", flush=True)
+            print(f"  [{done[0]}/{len(qs)}] base={row['base_score']} rag={row['rag_score']} "
+                  f"pref={row['preferred']} gold_hit={row['gold_hit']} judge_used={usage.judge_calls}", flush=True)
         return row
 
     with ThreadPoolExecutor(max_workers=WORKERS) as ex:
         rows = list(ex.map(work, qs))
     ckpt.close()
 
+    summary = compute_summary(tool, variant, rows, usage.summary())
+    (C.RESULTS / f"ablation_{tool}{suffix}.json").write_text(
+        json.dumps({"summary": summary, "rows": rows}, indent=2))
+    _print_summary(tool, summary)
+    return summary
+
+
+def compute_summary(tool: str, variant: str, rows: list[dict], usage_summary: dict) -> dict:
     valid = [r for r in rows if isinstance(r["base_score"], (int, float))
              and isinstance(r["rag_score"], (int, float))]
     n = len(valid)
@@ -143,9 +155,10 @@ def run(tool: str, limit: int | None = None, judge_cap: int | None = None, varia
                 "rag_mean": round(sum(r["rag_score"] for r in subset) / len(subset), 1),
             }
 
-    summary = {
+    return {
         "tool": tool, "rag_variant": variant, "answer_model": C.ANSWER_MODEL, "judge_model": C.JUDGE_MODEL,
-        "n": n, "top_k": C.TOP_K, "scoring": "joint single-call, positions randomized",
+        "n": n, "n_invalid": len(rows) - n, "top_k": C.TOP_K,
+        "scoring": "joint single-call, positions randomized",
         "base_mean_score": round(sum(r["base_score"] for r in valid) / n, 1) if n else None,
         "rag_mean_score": round(sum(r["rag_score"] for r in valid) / n, 1) if n else None,
         "mean_lift": round(sum(diffs) / n, 1) if n else None,
@@ -157,19 +170,19 @@ def run(tool: str, limit: int | None = None, judge_cap: int | None = None, varia
         "base_correct_rate": round(sum(1 for r in valid if r["base_correct"]) / n, 3) if n else None,
         "rag_correct_rate": round(sum(1 for r in valid if r["rag_correct"]) / n, 3) if n else None,
         "conditioned_on_retrieval": cond,
-        "usage": usage.summary(),
+        "usage": usage_summary,
     }
-    (C.RESULTS / f"ablation_{tool}{suffix}.json").write_text(json.dumps({"summary": summary, "rows": rows}, indent=2))
 
-    print(f"\n==== CROWN JEWEL: RAG vs base  ({tool}, n={n}) ====")
-    print(f"  base mean : {summary['base_mean_score']}    RAG mean : {summary['rag_mean_score']}")
-    print(f"  mean lift : {summary['mean_lift']}  (95% CI {summary['lift_ci95']})")
-    print(f"  RAG win/tie/loss (>5pt): {wins}/{ties}/{losses}")
-    print(f"  judge preferred: rag={summary['rag_preferred']} base={summary['base_preferred']} tie={summary['tie_preferred']}")
-    print(f"  correct rate: base {summary['base_correct_rate']} -> RAG {summary['rag_correct_rate']}")
-    print(f"  conditioned on retrieval: {cond}")
-    print(f"  usage: {usage.summary()}")
-    return summary
+
+def _print_summary(tool, s):
+    print(f"\n==== CROWN JEWEL: RAG vs base  ({tool}, n={s['n']}, variant={s['rag_variant']}) ====")
+    print(f"  base mean : {s['base_mean_score']}    RAG mean : {s['rag_mean_score']}")
+    print(f"  mean lift : {s['mean_lift']}  (95% CI {s['lift_ci95']})")
+    print(f"  RAG win/tie/loss (>5pt): {s['rag_wins']}/{s['ties']}/{s['rag_losses']}")
+    print(f"  judge preferred: rag={s['rag_preferred']} base={s['base_preferred']} tie={s['tie_preferred']}")
+    print(f"  correct rate: base {s['base_correct_rate']} -> RAG {s['rag_correct_rate']}")
+    print(f"  conditioned on retrieval: {s['conditioned_on_retrieval']}")
+    print(f"  usage: {s['usage']}")
 
 
 if __name__ == "__main__":

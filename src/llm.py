@@ -90,7 +90,7 @@ def call_claude(
     model: str = "claude-opus-4-8",
     system: str = "",
     effort: str | None = None,
-    max_retries: int = 2,
+    max_retries: int = 4,
 ) -> LLMResult:
     """Single headless Claude call. Returns an LLMResult (never raises on model/CLI error)."""
     argv = ["claude", "-p", prompt, "--model", model, "--system-prompt", system]
