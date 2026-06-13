@@ -1,25 +1,30 @@
 """Crown jewel: RAG-vs-base ablation (spec §1).
 
 Same questions answered (a) by the base model alone and (b) by the RAG system. A stronger,
-different judge model scores each answer 0-100 for correctness vs the accepted reference
-answer. Reports base vs RAG mean, win/tie/loss, a recall-conditioned breakdown, and a
-bootstrap CI on the lift. Persists raw per-question results.
+different judge model scores BOTH answers in ONE joint call (positions randomized to control
+order bias) for correctness vs the accepted reference answer — 1 judge call per question.
 
-Judge calls = 2 * N (base + RAG). Stays within the pilot's 500-judge budget.
+Reports base vs RAG mean, win/tie/loss, judge-preferred rate, a recall-conditioned breakdown,
+and a bootstrap CI on the lift. Persists raw per-question results + a checkpoint JSONL.
 
-Usage: python src/ablation.py <owner__name> [limit]
+Usage: python src/ablation.py <owner__name> [--limit N]
 """
+import argparse
+import hashlib
 import json
 import random
 import re
-import sys
+import threading
+from concurrent.futures import ThreadPoolExecutor
 
 import config as C
 from evalkit import load_index, load_eval
 from llm import call_claude, UsageTracker
 from rag import base_answer, rag_answer
 
-JUDGE_PROMPT = """You are grading an answer to a developer's question about the tool "{tool}".
+WORKERS = 5
+
+JUDGE_PROMPT = """You are grading two answers to a developer's question about the tool "{tool}".
 
 QUESTION:
 {question}
@@ -27,12 +32,17 @@ QUESTION:
 REFERENCE ANSWER (accepted answer from the project's maintainers/community — treat as ground truth):
 {reference}
 
-ANSWER TO GRADE:
-{candidate}
+ANSWER A:
+{answer_a}
 
-Score how correct and complete the ANSWER is relative to the REFERENCE. Reply with ONLY a JSON
-object (no markdown fence):
-{{"score": <integer 0-100>, "correct": <true if it would actually solve the user's problem>, "reason": "<one short sentence>"}}
+ANSWER B:
+{answer_b}
+
+Independently score how correct and complete EACH answer is relative to the REFERENCE
+(0 = wrong/non-answer, 100 = fully correct and complete). Judge on substance, not style or length.
+Reply with ONLY a JSON object (no markdown fence):
+{{"a_score": <0-100>, "b_score": <0-100>, "a_correct": <bool>, "b_correct": <bool>,
+  "preferred": "A"|"B"|"tie", "reason": "<one short sentence>"}}
 """
 
 
@@ -46,61 +56,76 @@ def parse_json(text: str) -> dict:
         return {}
 
 
-def judge(tool, question, reference, candidate, usage) -> dict:
-    r = call_claude(JUDGE_PROMPT.format(
-        tool=tool, question=question[:3000], reference=reference[:3000], candidate=candidate[:3000]),
-        model=C.JUDGE_MODEL)
-    usage.record(r, is_judge=True)
-    return parse_json(r.text)
+def _seeded_swap(qid: str) -> bool:
+    """Deterministic per-question position assignment (base=A or base=B)."""
+    return int(hashlib.sha256(qid.encode()).hexdigest(), 16) % 2 == 0
 
 
 def bootstrap_ci(diffs, iters=2000, seed=0):
     rng = random.Random(seed)
     n = len(diffs)
-    means = []
-    for _ in range(iters):
-        s = [diffs[rng.randrange(n)] for _ in range(n)]
-        means.append(sum(s) / n)
-    means.sort()
+    means = sorted(sum(diffs[rng.randrange(n)] for _ in range(n)) / n for _ in range(iters))
     return means[int(0.025 * iters)], means[int(0.975 * iters)]
 
 
-def run(tool: str, limit: int | None = None):
+def run(tool: str, limit: int | None = None, judge_cap: int | None = None):
     idx = load_index(tool)
     ev = load_eval(tool)
     qs = ev["questions"]
+    if judge_cap is not None and len(qs) > judge_cap:
+        print(f"NOTE: capping eval from {len(qs)} to {judge_cap} questions to stay within judge budget.")
+        qs = qs[:judge_cap]
     if limit:
         qs = qs[:limit]
     usage = UsageTracker()
     tool_name = tool.split("__")[1]
+    lock = threading.Lock()
+    ckpt = (C.RESULTS / f"ablation_{tool}.checkpoint.jsonl").open("w")
+    done = [0]
 
-    rows = []
-    for i, q in enumerate(qs):
+    def work(q):
         gold = set(q["gold_chunk_ids"])
-        # base (no retrieval)
-        b = base_answer(q["question"])
-        usage.record(b, is_judge=False)
-        # rag (vector top-k)
-        rg = rag_answer(q["question"], idx, k=C.TOP_K, method="vector")
-        usage.record(rg.llm, is_judge=False)
+        b = base_answer(q["question"])                                   # base: no retrieval
+        rg = rag_answer(q["question"], idx, k=C.TOP_K, method="vector")  # RAG: vector top-k
         gold_hit = bool(gold & set(rg.retrieved_ids))
+        base_is_a = _seeded_swap(q["id"])
+        a_text, b_text = (b.text, rg.answer) if base_is_a else (rg.answer, b.text)
+        jr = call_claude(JUDGE_PROMPT.format(
+            tool=tool_name, question=q["question"][:3000], reference=q["reference_answer"][:3000],
+            answer_a=a_text[:3000], answer_b=b_text[:3000]), model=C.JUDGE_MODEL)
+        v = parse_json(jr.text)
+        # map A/B back to base/rag
+        if base_is_a:
+            base_score, rag_score = v.get("a_score"), v.get("b_score")
+            base_correct, rag_correct = v.get("a_correct"), v.get("b_correct")
+            pref = {"A": "base", "B": "rag"}.get(v.get("preferred"), v.get("preferred"))
+        else:
+            base_score, rag_score = v.get("b_score"), v.get("a_score")
+            base_correct, rag_correct = v.get("b_correct"), v.get("a_correct")
+            pref = {"B": "base", "A": "rag"}.get(v.get("preferred"), v.get("preferred"))
+        row = {
+            "id": q["id"], "url": q["url"], "title": q["title"], "gold_hit": gold_hit,
+            "base_score": base_score, "rag_score": rag_score,
+            "base_correct": base_correct, "rag_correct": rag_correct,
+            "preferred": pref, "reason": v.get("reason", ""),
+        }
+        with lock:
+            usage.record(b, is_judge=False)
+            usage.record(rg.llm, is_judge=False)
+            usage.record(jr, is_judge=True)
+            done[0] += 1
+            ckpt.write(json.dumps(row) + "\n"); ckpt.flush()
+            print(f"  [{done[0]}/{len(qs)}] base={base_score} rag={rag_score} pref={pref} "
+                  f"gold_hit={gold_hit} judge_used={usage.judge_calls}", flush=True)
+        return row
 
-        bj = judge(tool_name, q["question"], q["reference_answer"], b.text, usage)
-        rj = judge(tool_name, q["question"], q["reference_answer"], rg.answer, usage)
-        rows.append({
-            "id": q["id"], "url": q["url"], "title": q["title"],
-            "gold_hit": gold_hit,
-            "base_score": bj.get("score"), "base_correct": bj.get("correct"),
-            "rag_score": rj.get("score"), "rag_correct": rj.get("correct"),
-        })
-        print(f"  [{i+1}/{len(qs)}] base={rows[-1]['base_score']} rag={rows[-1]['rag_score']} "
-              f"gold_hit={gold_hit}  judge_left={usage.judge_remaining()}", flush=True)
+    with ThreadPoolExecutor(max_workers=WORKERS) as ex:
+        rows = list(ex.map(work, qs))
+    ckpt.close()
 
     valid = [r for r in rows if isinstance(r["base_score"], (int, float))
              and isinstance(r["rag_score"], (int, float))]
     n = len(valid)
-    base_scores = [r["base_score"] for r in valid]
-    rag_scores = [r["rag_score"] for r in valid]
     diffs = [r["rag_score"] - r["base_score"] for r in valid]
     wins = sum(1 for d in diffs if d > 5)
     losses = sum(1 for d in diffs if d < -5)
@@ -119,32 +144,37 @@ def run(tool: str, limit: int | None = None):
 
     summary = {
         "tool": tool, "answer_model": C.ANSWER_MODEL, "judge_model": C.JUDGE_MODEL,
-        "n": n, "top_k": C.TOP_K,
-        "base_mean_score": round(sum(base_scores) / n, 1) if n else None,
-        "rag_mean_score": round(sum(rag_scores) / n, 1) if n else None,
+        "n": n, "top_k": C.TOP_K, "scoring": "joint single-call, positions randomized",
+        "base_mean_score": round(sum(r["base_score"] for r in valid) / n, 1) if n else None,
+        "rag_mean_score": round(sum(r["rag_score"] for r in valid) / n, 1) if n else None,
         "mean_lift": round(sum(diffs) / n, 1) if n else None,
         "lift_ci95": [round(lo, 1), round(hi, 1)] if n else None,
         "rag_wins": wins, "ties": ties, "rag_losses": losses,
+        "rag_preferred": sum(1 for r in valid if r["preferred"] == "rag"),
+        "base_preferred": sum(1 for r in valid if r["preferred"] == "base"),
+        "tie_preferred": sum(1 for r in valid if r["preferred"] == "tie"),
         "base_correct_rate": round(sum(1 for r in valid if r["base_correct"]) / n, 3) if n else None,
         "rag_correct_rate": round(sum(1 for r in valid if r["rag_correct"]) / n, 3) if n else None,
         "conditioned_on_retrieval": cond,
         "usage": usage.summary(),
     }
-    (C.RESULTS / f"ablation_{tool}.json").write_text(json.dumps(
-        {"summary": summary, "rows": rows}, indent=2))
+    (C.RESULTS / f"ablation_{tool}.json").write_text(json.dumps({"summary": summary, "rows": rows}, indent=2))
 
     print(f"\n==== CROWN JEWEL: RAG vs base  ({tool}, n={n}) ====")
-    print(f"  base mean score : {summary['base_mean_score']}")
-    print(f"  RAG  mean score : {summary['rag_mean_score']}")
-    print(f"  mean lift       : {summary['mean_lift']}  (95% CI {summary['lift_ci95']})")
-    print(f"  RAG win/tie/loss: {wins}/{ties}/{losses}")
-    print(f"  correct rate    : base {summary['base_correct_rate']} -> RAG {summary['rag_correct_rate']}")
-    print(f"  conditioned     : {cond}")
-    print(f"  usage           : {usage.summary()}")
+    print(f"  base mean : {summary['base_mean_score']}    RAG mean : {summary['rag_mean_score']}")
+    print(f"  mean lift : {summary['mean_lift']}  (95% CI {summary['lift_ci95']})")
+    print(f"  RAG win/tie/loss (>5pt): {wins}/{ties}/{losses}")
+    print(f"  judge preferred: rag={summary['rag_preferred']} base={summary['base_preferred']} tie={summary['tie_preferred']}")
+    print(f"  correct rate: base {summary['base_correct_rate']} -> RAG {summary['rag_correct_rate']}")
+    print(f"  conditioned on retrieval: {cond}")
+    print(f"  usage: {usage.summary()}")
     return summary
 
 
 if __name__ == "__main__":
-    tool = sys.argv[1]
-    limit = int(sys.argv[2]) if len(sys.argv) > 2 else None
-    run(tool, limit)
+    ap = argparse.ArgumentParser()
+    ap.add_argument("tool")
+    ap.add_argument("--limit", type=int, default=None)
+    ap.add_argument("--judge-cap", type=int, default=None)
+    a = ap.parse_args()
+    run(a.tool, a.limit, a.judge_cap)

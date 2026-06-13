@@ -67,3 +67,29 @@ docs/docs/) — so it can hit the 80–150 question target with a credible (tigh
 marimo is the literal lowest base score but has only 87 discussions total → too few to reach
 the eval-set target. dagster is niche-but-credible (well-known data orchestrator), fast-moving
 (version-specific config/API the base model demonstrably doesn't know: base scored 30.8/100).
+
+---
+
+## 2026-06-13 — Phase 3: eval-set validity fix (important)
+
+Built dagster docs corpus (673 files → 4708 chunks) and a first eval set via free
+answer→corpus embedding gold (τ=0.62, kept 110/120). recall@k: vector @5=0.54, bm25 @5=0.30,
+hybrid @5=0.48.
+
+**But a diagnostic on a gold-hit/RAG-loss case exposed two validity problems:**
+1. **Noisy gold** — answer→corpus embedding picks a chunk lexically similar to the (often
+   terse) accepted answer, not the chunk that truly answers the question. Example #20327:
+   gold landed on a tutorial chunk about `Definitions` loading, not cross-code-location asset
+   deps; meanwhile the RAG retriever found the *correct* `defining-assets-with-asset-dependencies`
+   page.
+2. **Weak references** — GitHub accepted answers are often conversational ("What made you say
+   that?"), link-only, or version-obsolete (point to old docs paths). Judging answer correctness
+   against them penalizes genuinely good answers.
+
+**Fix:** an LLM-curation pass (judge model) over the candidate questions. For each, it sees the
+question + accepted answer + a *fair* candidate pool (top chunks from answer-emb ∪ question-vector
+∪ question-bm25, so no retriever is privileged) and returns {keep, gold_indices, reason}.
+keep=true only for self-contained, docs-answerable, still-valid questions whose accepted answer
+is substantive AND supported by ≥1 pool chunk. **Reference stays = the real accepted answer**
+(authentic, avoids docs-circular bias toward RAG); gold = labeler-verified chunks. This yields
+trustworthy recall@k and a fair crown-jewel judge. ~110 curation judge calls budgeted.

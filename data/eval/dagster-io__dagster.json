@@ -1,0 +1,36 @@
+{
+  "tool": "dagster-io__dagster",
+  "method": "llm-curated gold + validity filter",
+  "n_candidates": 4,
+  "n_eval": 1,
+  "n_corpus_chunks": 4708,
+  "questions": [
+    {
+      "id": "dagster-io__dagster#33407",
+      "number": 33407,
+      "title": "What is the purpose of DAGSTER_HOME/history/runs/index.db?",
+      "question": "What is the purpose of DAGSTER_HOME/history/runs/index.db?\n\nI'm working on some ops to clean up DAGSTER_HOME on a sqlite backend. One of the biggest storage hogs is DAGSTER_HOME/history/runs/index.db. I can't find anything about this in the documentation- does anyone know what is the purpose of this db?",
+      "reference_answer": "`DAGSTER_HOME/history/runs/index.db` is a **SQLite index database** that Dagster maintains to make run-history queries fast without scanning individual run files.\n\n## What it stores\n\nWhen Dagster uses the default local SQLite storage backend, each run's event log is stored as a separate SQLite file under `DAGSTER_HOME/storage/{run_id}/`. The `index.db` keeps a **centralized, queryable index** of run-level metadata across all of those per-run files:\n\n- Run IDs, statuses, and run tags\n- Timestamps (start, end)\n- Job/pipeline names and snapshot hashes\n- Which runs are in which step / asset partitions\n\nWithout this index, Dagster would have to open every individual run file to answer a query like \"give me all failed runs from last week\" \u2014 which is O(n) in the number of runs. The index makes this O(1).\n\n## Why it gets large\n\nFor long-lived Dagster deployments with many runs, `index.db` accumulates entries forever unless you explicitly clean them up. It can become the biggest file in `DAGSTER_HOME` if you have thousands of historical runs, because SQLite does not automatically reclaim space even after rows are deleted (you need to run `VACUUM`).\n\n## How to clean it up safely\n\nDagster exposes a cleanup command specifically for this:\n\n```bash\n# Purge run history older than 7 days (keeps events too by default)\ndagster run delete --older-than 7 --all\n\n# Or use the Python API for finer control:\nfrom dagster import DagsterInstance\nfrom datetime import datetime, timedelta\n\nwith DagsterInstance.get() as instance:\n    cutoff = datetime.utcnow() - timedelta(days=30)\n    runs = instance.get_runs(\n        filters=RunsFilter(statuses=[DagsterRunStatus.SUCCESS],\n                           updated_before=cutoff)\n    )\n    for run in runs:\n        instance.delete_run(run.run_id)\n```\n\nAfter deleting runs, reclaim disk space by running `VACUUM` on the SQLite file:\n\n```python\nimport sqlite3\nwith sqlite3.connect(\"path/to/DAGSTER_HOME/history/runs/index.db\") as conn:\n    conn.execute(\"VACUUM\")\n```\n\n## Production note\n\nIn production deployments (PostgreSQL or MySQL backend), this file does not exist \u2014 the equivalent data lives in the database. If `index.db` is getting large, it's often a signal that it's time to switch to a proper database backend, or set up a `dagster instance` retention policy.",
+      "url": "https://github.com/dagster-io/dagster/discussions/33407",
+      "gold_chunk_ids": [
+        "docs/docs/deployment/oss/oss-instance-configuration.md#2",
+        "docs/docs/deployment/oss/oss-instance-configuration.md#3",
+        "docs/docs/deployment/oss/oss-instance-configuration.md#4"
+      ],
+      "curate_reason": "Chunks document the DAGSTER_HOME/history directory structure and the run-history SQLite files, supporting the explanation of the run index database's purpose."
+    }
+  ],
+  "curation_usage": {
+    "gen_calls": 0,
+    "judge_calls": 4,
+    "judge_budget": 500,
+    "judge_remaining": 496,
+    "total_cost_usd": 0.3055,
+    "by_model": {
+      "claude-opus-4-8": {
+        "calls": 4,
+        "cost_usd": 0.3055
+      }
+    }
+  }
+}
