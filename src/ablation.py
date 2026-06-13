@@ -68,10 +68,11 @@ def bootstrap_ci(diffs, iters=2000, seed=0):
     return means[int(0.025 * iters)], means[int(0.975 * iters)]
 
 
-def run(tool: str, limit: int | None = None, judge_cap: int | None = None):
+def run(tool: str, limit: int | None = None, judge_cap: int | None = None, variant: str = "strict"):
     idx = load_index(tool)
     ev = load_eval(tool)
     qs = ev["questions"]
+    suffix = "" if variant == "strict" else f"_{variant}"
     if judge_cap is not None and len(qs) > judge_cap:
         print(f"NOTE: capping eval from {len(qs)} to {judge_cap} questions to stay within judge budget.")
         qs = qs[:judge_cap]
@@ -80,13 +81,13 @@ def run(tool: str, limit: int | None = None, judge_cap: int | None = None):
     usage = UsageTracker()
     tool_name = tool.split("__")[1]
     lock = threading.Lock()
-    ckpt = (C.RESULTS / f"ablation_{tool}.checkpoint.jsonl").open("w")
+    ckpt = (C.RESULTS / f"ablation_{tool}{suffix}.checkpoint.jsonl").open("w")
     done = [0]
 
     def work(q):
         gold = set(q["gold_chunk_ids"])
         b = base_answer(q["question"])                                   # base: no retrieval
-        rg = rag_answer(q["question"], idx, k=C.TOP_K, method="vector")  # RAG: vector top-k
+        rg = rag_answer(q["question"], idx, k=C.TOP_K, method="vector", variant=variant)  # RAG: vector top-k
         gold_hit = bool(gold & set(rg.retrieved_ids))
         base_is_a = _seeded_swap(q["id"])
         a_text, b_text = (b.text, rg.answer) if base_is_a else (rg.answer, b.text)
@@ -143,7 +144,7 @@ def run(tool: str, limit: int | None = None, judge_cap: int | None = None):
             }
 
     summary = {
-        "tool": tool, "answer_model": C.ANSWER_MODEL, "judge_model": C.JUDGE_MODEL,
+        "tool": tool, "rag_variant": variant, "answer_model": C.ANSWER_MODEL, "judge_model": C.JUDGE_MODEL,
         "n": n, "top_k": C.TOP_K, "scoring": "joint single-call, positions randomized",
         "base_mean_score": round(sum(r["base_score"] for r in valid) / n, 1) if n else None,
         "rag_mean_score": round(sum(r["rag_score"] for r in valid) / n, 1) if n else None,
@@ -158,7 +159,7 @@ def run(tool: str, limit: int | None = None, judge_cap: int | None = None):
         "conditioned_on_retrieval": cond,
         "usage": usage.summary(),
     }
-    (C.RESULTS / f"ablation_{tool}.json").write_text(json.dumps({"summary": summary, "rows": rows}, indent=2))
+    (C.RESULTS / f"ablation_{tool}{suffix}.json").write_text(json.dumps({"summary": summary, "rows": rows}, indent=2))
 
     print(f"\n==== CROWN JEWEL: RAG vs base  ({tool}, n={n}) ====")
     print(f"  base mean : {summary['base_mean_score']}    RAG mean : {summary['rag_mean_score']}")
@@ -176,5 +177,6 @@ if __name__ == "__main__":
     ap.add_argument("tool")
     ap.add_argument("--limit", type=int, default=None)
     ap.add_argument("--judge-cap", type=int, default=None)
+    ap.add_argument("--rag-variant", default="strict", choices=["strict","fallback"])
     a = ap.parse_args()
-    run(a.tool, a.limit, a.judge_cap)
+    run(a.tool, a.limit, a.judge_cap, a.rag_variant)

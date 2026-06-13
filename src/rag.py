@@ -28,6 +28,19 @@ BASE_SYSTEM = (
     "Answer concretely and concisely (commands, config, code where relevant)."
 )
 
+# Fix motivated by the crown-jewel diagnosis: the strict "context only" prompt craters when
+# retrieval misses (recall@5≈0.67). This variant prefers the retrieved context but falls back to
+# the model's own knowledge instead of refusing, and flags when it does so.
+RAG_FALLBACK_SYSTEM = (
+    "You are a documentation assistant for a software developer tool. Prefer the provided "
+    "documentation context and cite it inline as [1], [2]. If the context does not fully cover "
+    "the question, use your own knowledge of the tool to give the best concrete answer you can, "
+    "and note which parts are not grounded in the provided docs. Be concise and concrete "
+    "(commands, config, code)."
+)
+
+SYSTEMS = {"strict": RAG_SYSTEM, "fallback": RAG_FALLBACK_SYSTEM}
+
 
 @dataclass
 class RagOutput:
@@ -51,10 +64,10 @@ def base_answer(question: str, *, model: str = C.ANSWER_MODEL) -> LLMResult:
 
 
 def rag_answer(question: str, idx: Index, *, k: int = C.TOP_K, method: str = "vector",
-               model: str = C.ANSWER_MODEL) -> RagOutput:
+               model: str = C.ANSWER_MODEL, variant: str = "strict") -> RagOutput:
     retrieved = idx.retrieve(question, k, method=method)
     context = build_context(idx, retrieved)
     prompt = f"Documentation context:\n{context}\n\nQuestion: {question}"
-    llm = call_claude(prompt, model=model, system=RAG_SYSTEM)
+    llm = call_claude(prompt, model=model, system=SYSTEMS[variant])
     return RagOutput(answer=llm.text, retrieved_ids=[c for c, _ in retrieved],
                      context=context, llm=llm)

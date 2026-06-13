@@ -1,0 +1,88 @@
+{
+  "summary": {
+    "tool": "dagster-io__dagster",
+    "rag_variant": "fallback",
+    "answer_model": "claude-haiku-4-5",
+    "judge_model": "claude-opus-4-8",
+    "n": 3,
+    "top_k": 5,
+    "scoring": "joint single-call, positions randomized",
+    "base_mean_score": 37.7,
+    "rag_mean_score": 61.7,
+    "mean_lift": 24.0,
+    "lift_ci95": [
+      12.0,
+      35.0
+    ],
+    "rag_wins": 3,
+    "ties": 0,
+    "rag_losses": 0,
+    "rag_preferred": 3,
+    "base_preferred": 0,
+    "tie_preferred": 0,
+    "base_correct_rate": 0.0,
+    "rag_correct_rate": 0.667,
+    "conditioned_on_retrieval": {
+      "gold_retrieved": {
+        "n": 3,
+        "base_mean": 37.7,
+        "rag_mean": 61.7
+      }
+    },
+    "usage": {
+      "gen_calls": 6,
+      "judge_calls": 3,
+      "judge_budget": 500,
+      "judge_remaining": 497,
+      "total_cost_usd": 0.1491,
+      "by_model": {
+        "claude-haiku-4-5": {
+          "calls": 6,
+          "cost_usd": 0.0418
+        },
+        "claude-opus-4-8": {
+          "calls": 3,
+          "cost_usd": 0.1073
+        }
+      }
+    }
+  },
+  "rows": [
+    {
+      "id": "dagster-io__dagster#20327",
+      "url": "https://github.com/dagster-io/dagster/discussions/20327",
+      "title": "Asset dependencies across code locations",
+      "gold_hit": true,
+      "base_score": 35,
+      "rag_score": 70,
+      "base_correct": false,
+      "rag_correct": true,
+      "preferred": "rag",
+      "reason": "A correctly describes the AssetSpec/external-dependency pattern matching the docs, while B fabricates a nonexistent @external_asset decorator with incorrect usage."
+    },
+    {
+      "id": "dagster-io__dagster#17729",
+      "url": "https://github.com/dagster-io/dagster/discussions/17729",
+      "title": "Code location instability - gRPC Error code: UNAVAILABLE",
+      "gold_hit": true,
+      "base_score": 38,
+      "rag_score": 50,
+      "base_correct": false,
+      "rag_correct": false,
+      "preferred": "rag",
+      "reason": "Both miss the reference's key point that executing jobs don't talk to the user code server, but B uses more accurate real Dagster settings while A invents config keys."
+    },
+    {
+      "id": "dagster-io__dagster#12985",
+      "url": "https://github.com/dagster-io/dagster/discussions/12985",
+      "title": "How to clenup table event_logs?",
+      "gold_hit": true,
+      "base_score": 40,
+      "rag_score": 65,
+      "base_correct": false,
+      "rag_correct": true,
+      "preferred": "rag",
+      "reason": "A gives a valid cleanup method and correctly notes no built-in retention, while B fabricates a nonexistent retention_days config."
+    }
+  ]
+}
