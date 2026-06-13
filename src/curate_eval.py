@@ -28,8 +28,8 @@ from evalkit import load_index
 from index import embed_texts
 from llm import call_claude, UsageTracker
 
-WORKERS = 5
-POOL_ANS, POOL_VEC, POOL_BM = 8, 8, 8   # candidates from each source
+WORKERS = 8
+POOL_ANS, POOL_VEC, POOL_BM = 5, 5, 5   # candidates from each source
 MIN_Q_LEN = 40
 MIN_ANS_LEN = 100
 
@@ -118,7 +118,7 @@ def run(tool: str, limit: int | None = None):
             question=shorten(f"{d['title']}\n\n{d['question']}", 2500),
             answer=shorten(d["answer"], 2000),
             pool=pool_str)
-        r = call_claude(prompt, model=C.JUDGE_MODEL)
+        r = call_claude(prompt, model=C.CURATE_MODEL)
         with lock:
             usage.record(r, is_judge=True)
             done[0] += 1

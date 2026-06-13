@@ -16,7 +16,11 @@ for d in (RAW, EVAL, INDEX, RESULTS):
 # model makes the "small model + RAG" product story concrete and keeps full-eval-set cost low.
 ANSWER_MODEL = "claude-haiku-4-5"
 # Judge: a stronger, different model than the answerer -> reduces self-preference bias.
+# Used for the headline crown-jewel grading (where judge quality matters most).
 JUDGE_MODEL = "claude-opus-4-8"
+# Curation/labeling model: dataset construction (docs-answerable filter + gold-chunk matching)
+# is a lighter task than nuanced grading, so use a fast model to keep build time reasonable.
+CURATE_MODEL = "claude-haiku-4-5"
 
 # Local embedding model (sentence-transformers, CPU). Free + reproducible recall@k.
 EMBED_MODEL = "BAAI/bge-small-en-v1.5"
