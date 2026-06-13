@@ -97,8 +97,51 @@ base model does no retrieval).
 
 ## 4. Crown jewel — RAG vs base model ablation
 
-<!-- CROWN_JEWEL_NUMBERS -->
-_(filled in after the n=150 run completes)_
+Same 150 questions answered by (a) the base model alone (Haiku 4.5, no retrieval) and (b) the
+RAG system (top-5 vector + the `enterprise-copilot` "answer from context only, cite [n]" prompt).
+One Opus-4.8 joint judge call per question (positions randomized) scores both 0–100 vs the
+accepted reference answer.
+
+**Headline (honest, and not the direction we hoped): naive RAG underperformed the base model.**
+
+| system | mean score (0–100) | correct-rate | judge preferred |
+|---|---|---|---|
+| base model (no retrieval) | **54.5** | 0.55 | 93 / 150 |
+| RAG (strict context-only) | **40.7** | 0.39 | 55 / 150 |
+
+Mean lift = **−13.8** (95% bootstrap CI **[−20.2, −7.6]** — significantly negative). RAG
+win/tie/loss vs base = **50 / 10 / 90**.
+
+**Why — the recall-conditioned breakdown is the real result:**
+
+| retrieval outcome | n | base mean | RAG mean | RAG − base |
+|---|---|---|---|---|
+| gold chunk **retrieved** | 101 | 52.7 | 48.9 | −3.8 (≈ tie) |
+| gold chunk **missed** | 49 | 58.0 | 23.8 | **−34.2** |
+
+When retrieval surfaces the right doc chunk (67% of the time, per §3), RAG roughly **ties** the
+base model. When retrieval **misses** (33%), RAG **craters** — because the strict "answer using
+ONLY the provided context" prompt makes it respond *"I don't have enough information in the
+provided documentation…"* (verified on the actual transcripts) while the base model simply answers
+from its training knowledge. Two compounding factors:
+1. **Retrieval is mediocre** (recall@5 = 0.67) — a third of questions never get the gold chunk.
+2. **Base Claude already knows a fair amount of dagster.** Base scored 54.5 here (vs 30.8 on the
+   noisy selection sample), so on this corpus the bar for RAG is higher than selection suggested —
+   the curated, docs-answerable questions are also answerable from the model's parametric knowledge.
+
+**This is a genuine, useful pilot finding, not a failure of the harness:** naive "context-only"
+RAG, bolted onto imperfect retrieval, can *degrade* a capable base model. The eval-first harness
+both surfaced this and localized it to a specific, fixable mechanism.
+
+### 4b. Closing the loop — the fix the eval pointed to
+
+The diagnosis prescribes the fix directly: stop forcing context-only answers when retrieval is
+weak. We added a **fallback RAG** prompt — *prefer and cite the retrieved context, but fall back
+to the model's own knowledge (and flag it) when the context doesn't cover the question* — and
+re-ran the same 150-question ablation.
+
+<!-- FALLBACK_NUMBERS -->
+_(filled in after the fallback run completes)_
 
 ---
 
