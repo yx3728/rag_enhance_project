@@ -40,3 +40,30 @@ Newest entries at the bottom. Decisions, what was tried, what worked/failed, cos
 ### Cost so far
 - 1 test `claude` call (haiku), `total_cost_usd` ≈ $0.001. (Billed to Max account; cost field is
   a useful proxy we'll sum across the pilot.)
+
+---
+
+## 2026-06-13 — Phase 2: substrate selection result
+
+Ran `src/selection.py`: base model = haiku, judge = opus, 14 sampled answered-Q&A per
+candidate, scored base correctness vs accepted answer (docs-answerable subset only).
+**70 judge calls used (430 remaining), cost $2.14.**
+
+| candidate | base mean score (0–100) | docs-answerable n |
+|---|---|---|
+| marimo    | 26.2 | 8/14  |
+| litestar  | 28.0 | 10/14 |
+| dagster   | 30.8 | 12/14 |
+| duckdb    | 48.1 | 10/14 |
+| prefect   | 53.7 | 9/14  |
+
+The base model is clearly weak (~26–31) on marimo / litestar / dagster — a near-tie
+(n≈10 → wide CIs that overlap), and clearly stronger on duckdb / prefect (48 / 54).
+
+**Chosen substrate: `dagster-io/dagster`.** Rationale: among the statistically-tied "worst"
+group, dagster best satisfies the spec's tie-break criteria — most answered Q&A (851 total;
+120 fetched), highest docs-answerable rate (12/14), clean markdown docs (~672 files under
+docs/docs/) — so it can hit the 80–150 question target with a credible (tighter-CI) headline.
+marimo is the literal lowest base score but has only 87 discussions total → too few to reach
+the eval-set target. dagster is niche-but-credible (well-known data orchestrator), fast-moving
+(version-specific config/API the base model demonstrably doesn't know: base scored 30.8/100).

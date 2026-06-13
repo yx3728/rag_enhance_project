@@ -1,0 +1,680 @@
+{
+  "answer_model": "claude-haiku-4-5",
+  "judge_model": "claude-opus-4-8",
+  "sample_per_candidate": 14,
+  "per_candidate": {
+    "dagster-io__dagster": {
+      "sampled": 14,
+      "docs_answerable": 12,
+      "base_mean_score": 30.8,
+      "base_scores": [
+        20,
+        45,
+        20,
+        25,
+        60,
+        35,
+        2,
+        35,
+        18,
+        85,
+        20,
+        5
+      ]
+    },
+    "PrefectHQ__prefect": {
+      "sampled": 14,
+      "docs_answerable": 9,
+      "base_mean_score": 53.7,
+      "base_scores": [
+        35,
+        25,
+        30,
+        25,
+        95,
+        78,
+        5,
+        95,
+        95
+      ]
+    },
+    "litestar-org__litestar": {
+      "sampled": 14,
+      "docs_answerable": 10,
+      "base_mean_score": 28.0,
+      "base_scores": [
+        5,
+        15,
+        25,
+        10,
+        25,
+        5,
+        80,
+        20,
+        5,
+        90
+      ]
+    },
+    "marimo-team__marimo": {
+      "sampled": 14,
+      "docs_answerable": 8,
+      "base_mean_score": 26.2,
+      "base_scores": [
+        5,
+        20,
+        5,
+        20,
+        80,
+        55,
+        5,
+        20
+      ]
+    },
+    "duckdb__duckdb": {
+      "sampled": 14,
+      "docs_answerable": 10,
+      "base_mean_score": 48.1,
+      "base_scores": [
+        5,
+        8,
+        18,
+        85,
+        35,
+        55,
+        80,
+        90,
+        15,
+        90
+      ]
+    }
+  },
+  "usage": {
+    "gen_calls": 70,
+    "judge_calls": 70,
+    "judge_budget": 500,
+    "judge_remaining": 430,
+    "total_cost_usd": 2.1382,
+    "by_model": {
+      "claude-haiku-4-5": {
+        "calls": 70,
+        "cost_usd": 0.4809
+      },
+      "claude-opus-4-8": {
+        "calls": 70,
+        "cost_usd": 1.6573
+      }
+    }
+  },
+  "details": {
+    "dagster-io__dagster": [
+      {
+        "number": 20327,
+        "title": "Asset dependencies across code locations",
+        "url": "https://github.com/dagster-io/dagster/discussions/20327",
+        "docs_answerable": true,
+        "base_score": 20,
+        "reason": "Candidate fabricates nonexistent APIs (external_asset_version_query, ExternalAssetVersion) and misframes SourceAsset as legacy, missing the actual documented cross-location dependency approach."
+      },
+      {
+        "number": 21581,
+        "title": "How to handle assets with over 25,000 partitions",
+        "url": "https://github.com/dagster-io/dagster/discussions/21581",
+        "docs_answerable": false,
+        "base_score": 10,
+        "reason": "The reference answer is that the limit was simply raised (100k OSS, 250k+), but the candidate never mentions this and instead proposes workarounds that miss the actual point."
+      },
+      {
+        "number": 24325,
+        "title": "Structured / json logging by default in Dagster+",
+        "url": "https://github.com/dagster-io/dagster/discussions/24325",
+        "docs_answerable": true,
+        "base_score": 45,
+        "reason": "Candidate correctly notes no custom agent container is needed and logging is configured in the user code container, but it gets the key dagster.yaml structure wrong (python_logs/dagster_handler_config), uses incorrect formatter classes, and misses the Dagster JsonFormatter approach."
+      },
+      {
+        "number": 7974,
+        "title": "Change Dagster log level on runtime",
+        "url": "https://github.com/dagster-io/dagster/discussions/7974",
+        "docs_answerable": true,
+        "base_score": 20,
+        "reason": "Candidate misses the documented run_config loggers approach and instead manipulates Python's logging which doesn't reliably control Dagster's built-in console logger level."
+      },
+      {
+        "number": 14752,
+        "title": "How do I set the repository arguments when using the LaunchRunMutation?",
+        "url": "https://github.com/dagster-io/dagster/discussions/14752",
+        "docs_answerable": true,
+        "base_score": 25,
+        "reason": "Candidate correctly identifies repositoryLocationName as the code location name but fails to give the critical answer that repositoryName must be the literal string '__repository__', instead guessing '__main__'."
+      },
+      {
+        "number": 23026,
+        "title": "Examples for k8s configuration",
+        "url": "https://github.com/dagster-io/dagster/discussions/23026",
+        "docs_answerable": true,
+        "base_score": 60,
+        "reason": "Candidate points to relevant K8s deployment/executor docs and concepts but misses the specific 'Customizing your Deployment' page and includes some inaccurate config/code details."
+      },
+      {
+        "number": 17847,
+        "title": "How can we mark partitions as \"materialized\" in dagster if the data already exists in the DWH?",
+        "url": "https://github.com/dagster-io/dagster/discussions/17847",
+        "docs_answerable": true,
+        "base_score": 35,
+        "reason": "Candidate captures the general concept of reporting materializations without running code but misses the canonical UI 'Report materialization events' feature and the proper `report_runless_asset_event` API, instead suggesting fragile internal-API hacks."
+      },
+      {
+        "number": 2951,
+        "title": "What can I access from `context`?",
+        "url": "https://github.com/dagster-io/dagster/discussions/2951",
+        "docs_answerable": true,
+        "base_score": 2,
+        "reason": "The candidate misidentifies the question as about the Claude Agent SDK rather than Dagster, fails to point to SolidExecutionContext/AbstractComputeExecutionContext or the docs link, and provides no correct information."
+      },
+      {
+        "number": 28246,
+        "title": "How can I install drivers like ODBC when deploying my code to Dagster+ Serverless?",
+        "url": "https://github.com/dagster-io/dagster/discussions/28246",
+        "docs_answerable": true,
+        "base_score": 35,
+        "reason": "Candidate correctly suggests a custom image approach but misses the documented pre-install script/PEX-disable method, uses wrong dagster_cloud.yaml config, and invents a nonexistent 'dagster:latest-odbc' image."
+      },
+      {
+        "number": 18697,
+        "title": "Problem with dependencies of dbt_assets",
+        "url": "https://github.com/dagster-io/dagster/discussions/18697",
+        "docs_answerable": true,
+        "base_score": 18,
+        "reason": "The candidate invents a non-existent `deps` parameter for `@dbt_assets` and misses the correct approach of declaring a dbt source with dagster asset_key meta plus a depends_on in the model."
+      },
+      {
+        "number": 21018,
+        "title": "How to access the context variable in a graph_multi_asset",
+        "url": "https://github.com/dagster-io/dagster/discussions/21018",
+        "docs_answerable": true,
+        "base_score": 85,
+        "reason": "The candidate correctly identifies that context must be accessed within ops (not the graph) and gives accurate working examples matching the reference's core guidance."
+      },
+      {
+        "number": 24005,
+        "title": "How to migrate from using SourceAsset to AssetSpec",
+        "url": "https://github.com/dagster-io/dagster/discussions/24005",
+        "docs_answerable": true,
+        "base_score": 20,
+        "reason": "Candidate uses incorrect API (AssetSpec io_manager_key param and @asset(spec=...)) instead of the correct metadata={'dagster/io_manager_key': ...} approach."
+      },
+      {
+        "number": 27293,
+        "title": "Dagster Essentials Data Link returns Not Found",
+        "url": "https://github.com/dagster-io/dagster/discussions/27293",
+        "docs_answerable": false,
+        "base_score": 25,
+        "reason": "Reference identifies a known bug with a specific GitHub issue and CSV workaround; candidate offers only generic troubleshooting without the actual fix."
+      },
+      {
+        "number": 18192,
+        "title": "How to get the code location of a given asset?",
+        "url": "https://github.com/dagster-io/dagster/discussions/18192",
+        "docs_answerable": true,
+        "base_score": 5,
+        "reason": "The candidate misses the actual API (context.get_step_execution_context().dagster_run...location_name) and instead suggests irrelevant inspect/module approaches that don't yield the code location name."
+      }
+    ],
+    "PrefectHQ__prefect": [
+      {
+        "number": 4010,
+        "title": "Unit testing @task decorated functions without active Flow context.",
+        "url": "https://github.com/PrefectHQ/prefect/discussions/4010",
+        "docs_answerable": true,
+        "base_score": 35,
+        "reason": "The traceback is Prefect 1.x where the correct fix is task.run(); candidate never mentions .run() and instead recommends .fn (a Prefect 2.x feature), so it misses the reference answer."
+      },
+      {
+        "number": 19746,
+        "title": "Narrowing Variable Types",
+        "url": "https://github.com/PrefectHQ/prefect/discussions/19746",
+        "docs_answerable": true,
+        "base_score": 25,
+        "reason": "The candidate correctly suggests cast and isinstance narrowing, but wrongly assumes Apache Airflow instead of Prefect, mixing in incorrect Airflow-specific imports and API signatures."
+      },
+      {
+        "number": 18922,
+        "title": "IncompleteRead Issue when trying to do a demo deploy",
+        "url": "https://github.com/PrefectHQ/prefect/discussions/18922",
+        "docs_answerable": false,
+        "base_score": 10,
+        "reason": "Reference is a workaround for an undebuggable bug (build image separately, push=False), while candidate just asks for more info and suggests unrelated network changes."
+      },
+      {
+        "number": 18205,
+        "title": "Should we always wrap code with `@task`/`@flow` \ud83d\ude4f",
+        "url": "https://github.com/PrefectHQ/prefect/discussions/18205",
+        "docs_answerable": false,
+        "base_score": 80,
+        "reason": "Candidate correctly conveys the key guidance\u2014don't wrap everything, use @task for expensive/side-effect IO, keep pure code at root\u2014and adds sound advice on avoiding globals, though it's more opinion/best-practice than strict docs."
+      },
+      {
+        "number": 8141,
+        "title": "Notification error with mattermost",
+        "url": "https://github.com/PrefectHQ/prefect/discussions/8141",
+        "docs_answerable": true,
+        "base_score": 30,
+        "reason": "Candidate correctly identifies that an Apprise-specific scheme is needed but gives the wrong scheme/format (mattermost:// keeping hooks) versus the reference's mmosts:// with hooks removed and port specified."
+      },
+      {
+        "number": 16240,
+        "title": "Allow setting of task cache_policy globally",
+        "url": "https://github.com/PrefectHQ/prefect/discussions/16240",
+        "docs_answerable": false,
+        "base_score": 20,
+        "reason": "The reference resolves it as a bug fixed in a later release; the candidate invents non-existent APIs/config like PREFECT_CACHE_POLICY and CachePolicy() and misses the actual fix."
+      },
+      {
+        "number": 16521,
+        "title": "Changed behaviour in the way `persist_result` works",
+        "url": "https://github.com/PrefectHQ/prefect/discussions/16521",
+        "docs_answerable": true,
+        "base_score": 25,
+        "reason": "Candidate fails to confirm this is expected behavior and doesn't provide the concrete solutions (persist_result still works, use create_*_artifact methods) given in the reference."
+      },
+      {
+        "number": 8843,
+        "title": "prefect support MS SQL Server as Database",
+        "url": "https://github.com/PrefectHQ/prefect/discussions/8843",
+        "docs_answerable": true,
+        "base_score": 95,
+        "reason": "Candidate correctly states MSSQL is unsupported and recommends Azure PostgreSQL, fully matching the reference."
+      },
+      {
+        "number": 12563,
+        "title": "Subflow Task Runner Inheritance",
+        "url": "https://github.com/PrefectHQ/prefect/discussions/12563",
+        "docs_answerable": true,
+        "base_score": 78,
+        "reason": "Candidate correctly states task runners aren't inherited and recommends with_options matching the reference, but its option 3 claim that a child without task_runner uses the parent's context is incorrect."
+      },
+      {
+        "number": 10277,
+        "title": "Remote storage for workers",
+        "url": "https://github.com/PrefectHQ/prefect/discussions/10277",
+        "docs_answerable": false,
+        "base_score": 20,
+        "reason": "The candidate correctly notes remote storage support is a roadmap question but fails to confirm it's coming or give the ~5-10 week estimate, instead deflecting to external channels."
+      },
+      {
+        "number": 7449,
+        "title": "Problem authentication with DockerRegistry",
+        "url": "https://github.com/PrefectHQ/prefect/discussions/7449",
+        "docs_answerable": true,
+        "base_score": 5,
+        "reason": "The real issue was a typo (registry vs image_registry attribute), which the candidate completely missed, even reinforcing the wrong attribute name."
+      },
+      {
+        "number": 5996,
+        "title": "Orion picks up sqlalchemy.py and crashes - any idea why?",
+        "url": "https://github.com/PrefectHQ/prefect/discussions/5996",
+        "docs_answerable": true,
+        "base_score": 95,
+        "reason": "Candidate correctly explains the filename-shadowing circular import and matches the reference's root cause with helpful detail."
+      },
+      {
+        "number": 5537,
+        "title": "Docker Storage equivalent for Orioin",
+        "url": "https://github.com/PrefectHQ/prefect/discussions/5537",
+        "docs_answerable": false,
+        "base_score": 30,
+        "reason": "The reference is a roadmap/awareness answer; the candidate misidentifies Orion and gives generic deflection but does correctly suggest checking release notes."
+      },
+      {
+        "number": 5183,
+        "title": "Logging under Windows 10 not working?",
+        "url": "https://github.com/PrefectHQ/prefect/discussions/5183",
+        "docs_answerable": true,
+        "base_score": 95,
+        "reason": "Candidate correctly identifies the missing `import prefect` as the cause, matching the reference answer and adding accurate explanation."
+      }
+    ],
+    "litestar-org__litestar": [
+      {
+        "number": 4140,
+        "title": "Basic Auth",
+        "url": "https://github.com/orgs/litestar-org/discussions/4140",
+        "docs_answerable": true,
+        "base_score": 5,
+        "reason": "The candidate gives only generic pseudocode and asks for framework details, failing to provide the Litestar-specific AbstractAuthenticationMiddleware and OpenAPI SecurityScheme solution."
+      },
+      {
+        "number": 4319,
+        "title": "Implementing a Payload Validation after the Response Body is generated with a token",
+        "url": "https://github.com/orgs/litestar-org/discussions/4319",
+        "docs_answerable": true,
+        "base_score": 15,
+        "reason": "The candidate recommends middleware, which the reference explicitly says won't work since the body is already serialized, missing the custom response class solution."
+      },
+      {
+        "number": 3896,
+        "title": "redirect to different route_handler from a route_handler",
+        "url": "https://github.com/orgs/litestar-org/discussions/3896",
+        "docs_answerable": true,
+        "base_score": 25,
+        "reason": "Candidate misses the key answer (route_reverse to get path for redirect) and instead suggests extracting shared logic, even doubting Litestar support."
+      },
+      {
+        "number": 3634,
+        "title": "How do I generate typescript types for a recursive data type?",
+        "url": "https://github.com/orgs/litestar-org/discussions/3634",
+        "docs_answerable": true,
+        "base_score": 10,
+        "reason": "The candidate misses the Litestar-specific solution (using a DTO with ClassicPagination) and instead suggests generic, unrelated workarounds."
+      },
+      {
+        "number": 3513,
+        "title": "Where to find more Litestar examples for the intermediate developer?",
+        "url": "https://github.com/orgs/litestar-org/discussions/3513",
+        "docs_answerable": false,
+        "base_score": 30,
+        "reason": "The reference answer indicates no such intermediate example exists yet (it's a roadmap/discussion item), while the candidate suggests search strategies that don't acknowledge this reality, though it correctly points to community channels."
+      },
+      {
+        "number": 3355,
+        "title": "Accessing request data in guards",
+        "url": "https://github.com/orgs/litestar-org/discussions/3355",
+        "docs_answerable": true,
+        "base_score": 25,
+        "reason": "Candidate misses the key answer\u2014connection.json() works in guards\u2014and wrongly claims body can't be accessed in guards, though its handler/dependency alternatives partially overlap with the reference."
+      },
+      {
+        "number": 3072,
+        "title": "Excluding None (optional fields) from json response bodies",
+        "url": "https://github.com/orgs/litestar-org/discussions/3072",
+        "docs_answerable": true,
+        "base_score": 5,
+        "reason": "Reference confirms manual dict conversion is the only way; candidate fabricates non-existent config options that contradict the correct answer."
+      },
+      {
+        "number": 2816,
+        "title": "Bug: query params doesn't work?",
+        "url": "https://github.com/orgs/litestar-org/discussions/2816",
+        "docs_answerable": false,
+        "base_score": 100,
+        "reason": "Candidate correctly identifies the zsh shell glob issue and provides the same quoting/escaping fix as the reference."
+      },
+      {
+        "number": 2421,
+        "title": "Understanding the role of advanced-alchemy",
+        "url": "https://github.com/orgs/litestar-org/discussions/2421",
+        "docs_answerable": false,
+        "base_score": 55,
+        "reason": "The candidate correctly explains advanced-alchemy's features but misses key points (it's the same code as old contrib bundled standalone, non-intrusive design, multi-framework reuse) and frames the inconsistency as a real problem the reference rebuts."
+      },
+      {
+        "number": 2227,
+        "title": "Raising HTTPException vs returning Response",
+        "url": "https://github.com/orgs/litestar-org/discussions/2227",
+        "docs_answerable": true,
+        "base_score": 80,
+        "reason": "Candidate correctly explains the control-flow distinction and confirms the deliberate serialization difference with valid workarounds, though it frames it as an 'inconsistency' rather than an intentional low-level design choice."
+      },
+      {
+        "number": 2009,
+        "title": "Can't see exception tracebacks in pytest with TestClient",
+        "url": "https://github.com/orgs/litestar-org/discussions/2009",
+        "docs_answerable": true,
+        "base_score": 20,
+        "reason": "The correct fix is debug=True; in Litestar the exception is handled internally so raise_server_exceptions=True doesn't surface the traceback, making the candidate's primary solution wrong."
+      },
+      {
+        "number": 1624,
+        "title": "How to define \"endpoint\" without using \"decorator syntax\" ?",
+        "url": "https://github.com/orgs/litestar-org/discussions/1624",
+        "docs_answerable": true,
+        "base_score": 5,
+        "reason": "The candidate answers about Starlette instead of Litestar, completely missing that the question is about Litestar's decorator-based route handlers."
+      },
+      {
+        "number": 1361,
+        "title": "Changing operation names for handlers in the schema",
+        "url": "https://github.com/orgs/litestar-org/discussions/1361",
+        "docs_answerable": true,
+        "base_score": 90,
+        "reason": "Candidate correctly identifies operation_id as the solution matching the reference, though it adds unnecessary framework-hedging and questions."
+      },
+      {
+        "number": 819,
+        "title": "MongoDB / Beanie Integration",
+        "url": "https://github.com/orgs/litestar-org/discussions/819",
+        "docs_answerable": false,
+        "base_score": 25,
+        "reason": "Reference just points to discussion #1072; candidate gives generic, partly inaccurate (AsyncIOMotorClient) advice not matching the reference."
+      }
+    ],
+    "marimo-team__marimo": [
+      {
+        "number": 9734,
+        "title": "\ud83d\udc1b Bug \u2753: Variable name collision for SQL cells using same table name in different schemas",
+        "url": "https://github.com/marimo-team/marimo/discussions/9734",
+        "docs_answerable": false,
+        "base_score": 20,
+        "reason": "The reference says it's a confirmed bug fixed in the next release, but the candidate treats it as an existing limitation and proposes workarounds without identifying it as a fixed bug."
+      },
+      {
+        "number": 8498,
+        "title": "Accordion elements visible by default",
+        "url": "https://github.com/marimo-team/marimo/discussions/8498",
+        "docs_answerable": false,
+        "base_score": 3,
+        "reason": "The candidate fabricates a non-existent `open` parameter, whereas the reference confirms no such feature exists."
+      },
+      {
+        "number": 7655,
+        "title": "Sharing notebooks on the same machine? I.e. workaround for `Access denied: File is outside the allowed directory.`",
+        "url": "https://github.com/marimo-team/marimo/discussions/7655",
+        "docs_answerable": false,
+        "base_score": 10,
+        "reason": "The reference says it's a bug fixed in an upcoming PR, while the candidate invents unverified flags, config, and workarounds that don't match the actual fix."
+      },
+      {
+        "number": 6810,
+        "title": "custom css in FastAPI deployment?",
+        "url": "https://github.com/marimo-team/marimo/discussions/6810",
+        "docs_answerable": true,
+        "base_score": 5,
+        "reason": "The reference points to the pyproject.toml configuration method, which the candidate never mentions, instead offering incorrect guesses."
+      },
+      {
+        "number": 6063,
+        "title": "nvidia-smi logs clogging output",
+        "url": "https://github.com/marimo-team/marimo/discussions/6063",
+        "docs_answerable": true,
+        "base_score": 20,
+        "reason": "The candidate misses the actual solution (setting log level via `marimo -l ERROR`) and invents non-existent env vars and config options, with only the grep fallback being a partially valid workaround."
+      },
+      {
+        "number": 5193,
+        "title": "why I cannot use underscore as variable name in marimo",
+        "url": "https://github.com/marimo-team/marimo/discussions/5193",
+        "docs_answerable": true,
+        "base_score": 5,
+        "reason": "The candidate is factually wrong\u2014underscore variables are allowed but cell-local, not reserved/forbidden as it claims."
+      },
+      {
+        "number": 4512,
+        "title": "How to keep the script running after closing the browser?",
+        "url": "https://github.com/marimo-team/marimo/discussions/4512",
+        "docs_answerable": false,
+        "base_score": 70,
+        "reason": "The candidate correctly identifies the same APScheduler/BackgroundScheduler solution plus broader workarounds, but this is more of an architecture/workaround question than a docs-derivable one."
+      },
+      {
+        "number": 3958,
+        "title": "How to enable sqlite introspection in datasource pane",
+        "url": "https://github.com/marimo-team/marimo/discussions/3958",
+        "docs_answerable": false,
+        "base_score": 20,
+        "reason": "The reference answer reveals this was a bug fixed in version 0.11.18, while the candidate gives generic troubleshooting without identifying the version-based fix."
+      },
+      {
+        "number": 3759,
+        "title": "Looking for a way to statically host several notebooks, without having an 18M directory per notebook.",
+        "url": "https://github.com/marimo-team/marimo/discussions/3759",
+        "docs_answerable": true,
+        "base_score": 20,
+        "reason": "The candidate misses the actual solution (the marimo gh-pages template with shared assets folder) and instead suggests caching and manual workarounds."
+      },
+      {
+        "number": 3178,
+        "title": "Exporting multiple notebooks to html-wasm",
+        "url": "https://github.com/marimo-team/marimo/discussions/3178",
+        "docs_answerable": true,
+        "base_score": 80,
+        "reason": "Candidate correctly confirms shared assets and the proposed file structure work, matching the reference, though it adds some unverified caveats."
+      },
+      {
+        "number": 3196,
+        "title": "Can I use marimo as Streamlit to write full-stack applications",
+        "url": "https://github.com/marimo-team/marimo/discussions/3196",
+        "docs_answerable": true,
+        "base_score": 55,
+        "reason": "Candidate correctly affirms marimo can be used like Streamlit but adds unsupported claims about limitations and misses marimo's actual full-stack/app deployment capabilities and the doc comparison link."
+      },
+      {
+        "number": 2250,
+        "title": "button clear multiselect",
+        "url": "https://github.com/marimo-team/marimo/discussions/2250",
+        "docs_answerable": true,
+        "base_score": 5,
+        "reason": "The candidate gives generic React/JS solutions, completely missing marimo's approach of constructing the multiselect and button in the same cell."
+      },
+      {
+        "number": 571,
+        "title": "can't show plots using matplotlib",
+        "url": "https://github.com/marimo-team/marimo/discussions/571",
+        "docs_answerable": false,
+        "base_score": 5,
+        "reason": "The reference says it was a bug fixed in a March update, while the candidate assumes Jupyter (not marimo) and gives irrelevant generic workarounds."
+      },
+      {
+        "number": 793,
+        "title": "How do you style the main 'body' or 'root' id?",
+        "url": "https://github.com/marimo-team/marimo/discussions/793",
+        "docs_answerable": true,
+        "base_score": 20,
+        "reason": "The candidate gives generic CSS/React advice but misses marimo's actual mechanism (mo.Html with a style block) and the caveat about non-guaranteed classnames."
+      }
+    ],
+    "duckdb__duckdb": [
+      {
+        "number": 23058,
+        "title": "Do/should macros work in the WHERE clause",
+        "url": "https://github.com/duckdb/duckdb/discussions/23058",
+        "docs_answerable": true,
+        "base_score": 5,
+        "reason": "The candidate misdiagnoses this as a macro limitation and gives wrong advice, missing the actual name-resolution/column-shadowing issue and the qualify-the-argument fix."
+      },
+      {
+        "number": 21654,
+        "title": "How to disable filter pushdown into join nodes?",
+        "url": "https://github.com/duckdb/duckdb/discussions/21654",
+        "docs_answerable": true,
+        "base_score": 8,
+        "reason": "Candidate gives wrong/irrelevant settings for other databases and never mentions DuckDB's actual workarounds (PRAGMA disable_optimizer, subquery blocking)."
+      },
+      {
+        "number": 13141,
+        "title": "querying tables in Microsoft .mdb files using python duckdb",
+        "url": "https://github.com/duckdb/duckdb/discussions/13141",
+        "docs_answerable": true,
+        "base_score": 18,
+        "reason": "Candidate fabricates a non-existent DuckDB ODBC extension/read_odbc, contradicting the reference that DuckDB cannot connect to ODBC; only the pandas-bridge option is correct."
+      },
+      {
+        "number": 19511,
+        "title": "Converting `TIMESTAMPTZ`s to `DATE`s in a specified time zone",
+        "url": "https://github.com/duckdb/duckdb/discussions/19511",
+        "docs_answerable": true,
+        "base_score": 85,
+        "reason": "The AT TIME ZONE approach is correct and equivalent to timezone(), but the answer wrongly hedges that this is PostgreSQL syntax that may differ in DuckDB."
+      },
+      {
+        "number": 18250,
+        "title": "Supporting nested aggregates",
+        "url": "https://github.com/duckdb/duckdb/discussions/18250",
+        "docs_answerable": true,
+        "base_score": 35,
+        "reason": "Candidate misses the key insight (the original works with explicit group-by/struct names), uses incorrect unnest-struct destructuring `u(state,amt)` and a nonexistent `list_agg` function, and mainly proposes the cumbersome CTE workaround the user already rejected."
+      },
+      {
+        "number": 17105,
+        "title": "Problem Querying JSON Array of Objects with UNNEST",
+        "url": "https://github.com/duckdb/duckdb/discussions/17105",
+        "docs_answerable": true,
+        "base_score": 55,
+        "reason": "The candidate correctly identifies the subquery-scoping fix (wrapping UNNEST in a FROM subquery) and json_extract_string is a valid approach, but it relies on the nonexistent `json_parse` function instead of `::JSON[]`/`from_json`, so the SQL would error as written."
+      },
+      {
+        "number": 17570,
+        "title": "Arrow Extension Type conversion and nulls",
+        "url": "https://github.com/duckdb/duckdb/discussions/17570",
+        "docs_answerable": false,
+        "base_score": 60,
+        "reason": "Reference is just a bug fix PR; candidate correctly identifies it as a DuckDB bug in extension-type null handling but can't cite the fix."
+      },
+      {
+        "number": 17230,
+        "title": "Support for Length-Specified VARCHAR in read_csv_auto Column Definitions with rejects_errors in DuckDB",
+        "url": "https://github.com/duckdb/duckdb/discussions/17230",
+        "docs_answerable": true,
+        "base_score": 80,
+        "reason": "Candidate correctly states VARCHAR(n) length is accepted but not enforced (matching the reference) and offers valid post-load workarounds."
+      },
+      {
+        "number": 16929,
+        "title": "Iceberg Glue supports only S3Tables ?",
+        "url": "https://github.com/duckdb/duckdb/discussions/16929",
+        "docs_answerable": false,
+        "base_score": 20,
+        "reason": "Reference just redirects to the duckdb-iceberg repo; candidate instead gives speculative claims not aligned with that pointer."
+      },
+      {
+        "number": 3096,
+        "title": "Querying duckdb through GUI tool?",
+        "url": "https://github.com/duckdb/duckdb/discussions/3096",
+        "docs_answerable": true,
+        "base_score": 90,
+        "reason": "Candidate correctly recommends DBeaver matching the reference and adds accurate additional GUI options."
+      },
+      {
+        "number": 16031,
+        "title": "Setting working directory when connecting from java jdbc",
+        "url": "https://github.com/duckdb/duckdb/discussions/16031",
+        "docs_answerable": true,
+        "base_score": 15,
+        "reason": "Candidate gives generic Java path workarounds and misses DuckDB's relative-path/working-directory behavior the reference documents."
+      },
+      {
+        "number": 12452,
+        "title": "DuckDB C API: Arrow functions",
+        "url": "https://github.com/duckdb/duckdb/discussions/12452",
+        "docs_answerable": false,
+        "base_score": 10,
+        "reason": "The reference clarifies deprecation does not yet have an alternative, while the candidate fabricates a migration path and nonexistent functions, contradicting the correct answer."
+      },
+      {
+        "number": 15369,
+        "title": "attach sqlite db, what engine does the work?",
+        "url": "https://github.com/duckdb/duckdb/discussions/15369",
+        "docs_answerable": true,
+        "base_score": 90,
+        "reason": "Candidate correctly states DuckDB's engine does the work and scans the SQLite file, matching the reference with accurate extra detail."
+      },
+      {
+        "number": 14915,
+        "title": "Problem with \"inconsistent sorting\"",
+        "url": "https://github.com/duckdb/duckdb/discussions/14915",
+        "docs_answerable": false,
+        "base_score": 60,
+        "reason": "Candidate correctly diagnoses non-stable/non-deterministic sorting with tied keys and offers valid deterministic-ordering fixes, but misses the reference's specific workaround (SET threads=1)."
+      }
+    ]
+  }
+}
