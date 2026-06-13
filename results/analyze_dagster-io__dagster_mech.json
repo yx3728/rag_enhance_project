@@ -1,0 +1,1078 @@
+{
+  "tool": "dagster-io__dagster_mech",
+  "n": 150,
+  "coverage_at": {
+    "1": 0.313,
+    "3": 0.393,
+    "5": 0.527,
+    "10": 0.633
+  },
+  "in_corpus_rate": 0.753,
+  "corpus_gap_rate": 0.247,
+  "present_but_ranked_below5": 0.227,
+  "usage": {
+    "gen_calls": 0,
+    "judge_calls": 150,
+    "judge_budget": 500,
+    "judge_remaining": 350,
+    "total_cost_usd": 12.2142,
+    "by_model": {
+      "claude-opus-4-8": {
+        "calls": 150,
+        "cost_usd": 12.2142
+      }
+    }
+  },
+  "rows": [
+    {
+      "id": "dagster-io__dagster#20327",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 4
+    },
+    {
+      "id": "dagster-io__dagster#17729",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "dagster-io__dagster#12985",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": true,
+      "supporting_n": 5
+    },
+    {
+      "id": "dagster-io__dagster#33372",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "dagster-io__dagster#18311",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 4
+    },
+    {
+      "id": "dagster-io__dagster#32886",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "dagster-io__dagster#20386",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "dagster-io__dagster#31890",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 5
+    },
+    {
+      "id": "dagster-io__dagster#24325",
+      "in_corpus": true,
+      "best_vrank": 3,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "dagster-io__dagster#7338",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "dagster-io__dagster#17995",
+      "in_corpus": true,
+      "best_vrank": null,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "dagster-io__dagster#23248",
+      "in_corpus": true,
+      "best_vrank": 3,
+      "sufficient": false,
+      "supporting_n": 2
+    },
+    {
+      "id": "dagster-io__dagster#18267",
+      "in_corpus": true,
+      "best_vrank": 3,
+      "sufficient": false,
+      "supporting_n": 6
+    },
+    {
+      "id": "dagster-io__dagster#7974",
+      "in_corpus": true,
+      "best_vrank": 3,
+      "sufficient": true,
+      "supporting_n": 2
+    },
+    {
+      "id": "dagster-io__dagster#15375",
+      "in_corpus": true,
+      "best_vrank": 5,
+      "sufficient": false,
+      "supporting_n": 2
+    },
+    {
+      "id": "dagster-io__dagster#21801",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "dagster-io__dagster#31324",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "dagster-io__dagster#17180",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "dagster-io__dagster#18662",
+      "in_corpus": true,
+      "best_vrank": 6,
+      "sufficient": true,
+      "supporting_n": 2
+    },
+    {
+      "id": "dagster-io__dagster#12340",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 4
+    },
+    {
+      "id": "dagster-io__dagster#16166",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 2
+    },
+    {
+      "id": "dagster-io__dagster#23026",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 7
+    },
+    {
+      "id": "dagster-io__dagster#18891",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "dagster-io__dagster#16470",
+      "in_corpus": true,
+      "best_vrank": 6,
+      "sufficient": true,
+      "supporting_n": 2
+    },
+    {
+      "id": "dagster-io__dagster#12346",
+      "in_corpus": true,
+      "best_vrank": 4,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "dagster-io__dagster#29868",
+      "in_corpus": true,
+      "best_vrank": 4,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "dagster-io__dagster#17024",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 2
+    },
+    {
+      "id": "dagster-io__dagster#13112",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "dagster-io__dagster#29630",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 5
+    },
+    {
+      "id": "dagster-io__dagster#2951",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 2
+    },
+    {
+      "id": "dagster-io__dagster#18247",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "dagster-io__dagster#14771",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "dagster-io__dagster#26011",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "dagster-io__dagster#28880",
+      "in_corpus": true,
+      "best_vrank": 10,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "dagster-io__dagster#28246",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "dagster-io__dagster#14724",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "dagster-io__dagster#17510",
+      "in_corpus": true,
+      "best_vrank": 2,
+      "sufficient": true,
+      "supporting_n": 4
+    },
+    {
+      "id": "dagster-io__dagster#19218",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "dagster-io__dagster#28343",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "dagster-io__dagster#18697",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": true,
+      "supporting_n": 4
+    },
+    {
+      "id": "dagster-io__dagster#17997",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "dagster-io__dagster#17717",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 4
+    },
+    {
+      "id": "dagster-io__dagster#27396",
+      "in_corpus": true,
+      "best_vrank": 5,
+      "sufficient": false,
+      "supporting_n": 2
+    },
+    {
+      "id": "dagster-io__dagster#18382",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 2
+    },
+    {
+      "id": "dagster-io__dagster#21018",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 3
+    },
+    {
+      "id": "dagster-io__dagster#18219",
+      "in_corpus": true,
+      "best_vrank": 9,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "dagster-io__dagster#20943",
+      "in_corpus": true,
+      "best_vrank": 2,
+      "sufficient": false,
+      "supporting_n": 2
+    },
+    {
+      "id": "dagster-io__dagster#14636",
+      "in_corpus": true,
+      "best_vrank": 3,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "dagster-io__dagster#27608",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "dagster-io__dagster#27730",
+      "in_corpus": true,
+      "best_vrank": 16,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "dagster-io__dagster#27519",
+      "in_corpus": true,
+      "best_vrank": 7,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "dagster-io__dagster#17813",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "dagster-io__dagster#16143",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "dagster-io__dagster#20508",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "dagster-io__dagster#18158",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "dagster-io__dagster#27312",
+      "in_corpus": true,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 2
+    },
+    {
+      "id": "dagster-io__dagster#17830",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 6
+    },
+    {
+      "id": "dagster-io__dagster#27031",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 2
+    },
+    {
+      "id": "dagster-io__dagster#7159",
+      "in_corpus": true,
+      "best_vrank": 3,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "dagster-io__dagster#22576",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "dagster-io__dagster#26173",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "dagster-io__dagster#26119",
+      "in_corpus": true,
+      "best_vrank": 8,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "dagster-io__dagster#19184",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "dagster-io__dagster#25762",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 3
+    },
+    {
+      "id": "dagster-io__dagster#25783",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "dagster-io__dagster#25934",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 4
+    },
+    {
+      "id": "dagster-io__dagster#25784",
+      "in_corpus": true,
+      "best_vrank": 14,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "dagster-io__dagster#14733",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "dagster-io__dagster#7160",
+      "in_corpus": true,
+      "best_vrank": 3,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "dagster-io__dagster#25741",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "dagster-io__dagster#18035",
+      "in_corpus": true,
+      "best_vrank": 2,
+      "sufficient": false,
+      "supporting_n": 2
+    },
+    {
+      "id": "dagster-io__dagster#25134",
+      "in_corpus": true,
+      "best_vrank": 7,
+      "sufficient": false,
+      "supporting_n": 4
+    },
+    {
+      "id": "dagster-io__dagster#20061",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "dagster-io__dagster#25179",
+      "in_corpus": true,
+      "best_vrank": 12,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "dagster-io__dagster#18520",
+      "in_corpus": true,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "dagster-io__dagster#19734",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "dagster-io__dagster#23933",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "dagster-io__dagster#24775",
+      "in_corpus": true,
+      "best_vrank": 8,
+      "sufficient": false,
+      "supporting_n": 3
+    },
+    {
+      "id": "dagster-io__dagster#25060",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "dagster-io__dagster#18282",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 2
+    },
+    {
+      "id": "dagster-io__dagster#24930",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "dagster-io__dagster#21428",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "dagster-io__dagster#24786",
+      "in_corpus": true,
+      "best_vrank": 13,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "dagster-io__dagster#24622",
+      "in_corpus": true,
+      "best_vrank": 11,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "dagster-io__dagster#24386",
+      "in_corpus": true,
+      "best_vrank": null,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "dagster-io__dagster#20611",
+      "in_corpus": true,
+      "best_vrank": null,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "dagster-io__dagster#24260",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 2
+    },
+    {
+      "id": "dagster-io__dagster#24623",
+      "in_corpus": true,
+      "best_vrank": 3,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "dagster-io__dagster#24351",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 5
+    },
+    {
+      "id": "dagster-io__dagster#24531",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "dagster-io__dagster#24494",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": true,
+      "supporting_n": 2
+    },
+    {
+      "id": "dagster-io__dagster#24434",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "dagster-io__dagster#24246",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "dagster-io__dagster#24316",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 6
+    },
+    {
+      "id": "dagster-io__dagster#24317",
+      "in_corpus": true,
+      "best_vrank": 3,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "dagster-io__dagster#19079",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "dagster-io__dagster#24205",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "dagster-io__dagster#24232",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 5
+    },
+    {
+      "id": "dagster-io__dagster#24094",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "dagster-io__dagster#24061",
+      "in_corpus": true,
+      "best_vrank": 5,
+      "sufficient": false,
+      "supporting_n": 2
+    },
+    {
+      "id": "dagster-io__dagster#23665",
+      "in_corpus": true,
+      "best_vrank": 2,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "dagster-io__dagster#23868",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "dagster-io__dagster#23851",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 4
+    },
+    {
+      "id": "dagster-io__dagster#20322",
+      "in_corpus": true,
+      "best_vrank": 3,
+      "sufficient": false,
+      "supporting_n": 2
+    },
+    {
+      "id": "dagster-io__dagster#23705",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 7
+    },
+    {
+      "id": "dagster-io__dagster#17843",
+      "in_corpus": true,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "dagster-io__dagster#20426",
+      "in_corpus": true,
+      "best_vrank": 3,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "dagster-io__dagster#21597",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 2
+    },
+    {
+      "id": "dagster-io__dagster#17741",
+      "in_corpus": true,
+      "best_vrank": 9,
+      "sufficient": true,
+      "supporting_n": 2
+    },
+    {
+      "id": "dagster-io__dagster#22661",
+      "in_corpus": true,
+      "best_vrank": 2,
+      "sufficient": false,
+      "supporting_n": 2
+    },
+    {
+      "id": "dagster-io__dagster#15443",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "dagster-io__dagster#18163",
+      "in_corpus": true,
+      "best_vrank": 6,
+      "sufficient": false,
+      "supporting_n": 2
+    },
+    {
+      "id": "dagster-io__dagster#20394",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "dagster-io__dagster#23006",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 4
+    },
+    {
+      "id": "dagster-io__dagster#22992",
+      "in_corpus": true,
+      "best_vrank": 4,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "dagster-io__dagster#17542",
+      "in_corpus": true,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "dagster-io__dagster#17567",
+      "in_corpus": true,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "dagster-io__dagster#15835",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "dagster-io__dagster#22499",
+      "in_corpus": true,
+      "best_vrank": 10,
+      "sufficient": false,
+      "supporting_n": 2
+    },
+    {
+      "id": "dagster-io__dagster#14311",
+      "in_corpus": true,
+      "best_vrank": 5,
+      "sufficient": false,
+      "supporting_n": 2
+    },
+    {
+      "id": "dagster-io__dagster#17370",
+      "in_corpus": true,
+      "best_vrank": 4,
+      "sufficient": true,
+      "supporting_n": 2
+    },
+    {
+      "id": "dagster-io__dagster#22568",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "dagster-io__dagster#14610",
+      "in_corpus": true,
+      "best_vrank": 4,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "dagster-io__dagster#19049",
+      "in_corpus": true,
+      "best_vrank": 7,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "dagster-io__dagster#22426",
+      "in_corpus": true,
+      "best_vrank": 2,
+      "sufficient": true,
+      "supporting_n": 2
+    },
+    {
+      "id": "dagster-io__dagster#22361",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 2
+    },
+    {
+      "id": "dagster-io__dagster#15409",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 12
+    },
+    {
+      "id": "dagster-io__dagster#17681",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 5
+    },
+    {
+      "id": "dagster-io__dagster#19938",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 2
+    },
+    {
+      "id": "dagster-io__dagster#20769",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 3
+    },
+    {
+      "id": "dagster-io__dagster#21738",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 3
+    },
+    {
+      "id": "dagster-io__dagster#21580",
+      "in_corpus": true,
+      "best_vrank": 4,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "dagster-io__dagster#18893",
+      "in_corpus": true,
+      "best_vrank": 5,
+      "sufficient": false,
+      "supporting_n": 2
+    },
+    {
+      "id": "dagster-io__dagster#21701",
+      "in_corpus": true,
+      "best_vrank": 3,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "dagster-io__dagster#21574",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "dagster-io__dagster#12463",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 4
+    },
+    {
+      "id": "dagster-io__dagster#21400",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 6
+    },
+    {
+      "id": "dagster-io__dagster#21401",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": true,
+      "supporting_n": 8
+    },
+    {
+      "id": "dagster-io__dagster#14546",
+      "in_corpus": true,
+      "best_vrank": 3,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "dagster-io__dagster#17494",
+      "in_corpus": true,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "dagster-io__dagster#21231",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "dagster-io__dagster#19944",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "dagster-io__dagster#21215",
+      "in_corpus": true,
+      "best_vrank": 13,
+      "sufficient": false,
+      "supporting_n": 2
+    },
+    {
+      "id": "dagster-io__dagster#21214",
+      "in_corpus": true,
+      "best_vrank": 3,
+      "sufficient": true,
+      "supporting_n": 8
+    },
+    {
+      "id": "dagster-io__dagster#21078",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "dagster-io__dagster#17937",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "dagster-io__dagster#18244",
+      "in_corpus": true,
+      "best_vrank": 9,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "dagster-io__dagster#20961",
+      "in_corpus": true,
+      "best_vrank": 12,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "dagster-io__dagster#16938",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "dagster-io__dagster#18799",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    }
+  ]
+}

@@ -63,9 +63,24 @@ def base_answer(question: str, *, model: str = C.ANSWER_MODEL) -> LLMResult:
     return call_claude(question, model=model, system=BASE_SYSTEM)
 
 
+_reranker = None
+
+
+def _rerank(question: str, idx: Index, k: int, pool: int = 30):
+    global _reranker
+    if _reranker is None:
+        from sentence_transformers import CrossEncoder
+        _reranker = CrossEncoder("BAAI/bge-reranker-base")
+    cand = idx.vector(question, pool)
+    cids = [c for c, _ in cand]
+    scores = _reranker.predict([[question, idx.chunk_by_id(c).content[:1200]] for c in cids])
+    order = sorted(range(len(cids)), key=lambda i: -scores[i])[:k]
+    return [(cids[i], float(scores[i])) for i in order]
+
+
 def rag_answer(question: str, idx: Index, *, k: int = C.TOP_K, method: str = "vector",
-               model: str = C.ANSWER_MODEL, variant: str = "strict") -> RagOutput:
-    retrieved = idx.retrieve(question, k, method=method)
+               model: str = C.ANSWER_MODEL, variant: str = "strict", rerank: bool = False) -> RagOutput:
+    retrieved = _rerank(question, idx, k) if rerank else idx.retrieve(question, k, method=method)
     context = build_context(idx, retrieved)
     prompt = f"Documentation context:\n{context}\n\nQuestion: {question}"
     llm = call_claude(prompt, model=model, system=SYSTEMS[variant])

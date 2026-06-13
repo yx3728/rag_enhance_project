@@ -61,11 +61,11 @@ def _seeded_swap(qid: str) -> bool:
     return int(hashlib.sha256(qid.encode()).hexdigest(), 16) % 2 == 0
 
 
-def score_question(tool_name, q, idx, variant):
+def score_question(tool_name, q, idx, variant, rerank=False):
     """Run base + RAG + joint judge for one question. Returns (row, [(LLMResult, is_judge), ...])."""
     gold = set(q["gold_chunk_ids"])
     b = base_answer(q["question"])                                   # base: no retrieval
-    rg = rag_answer(q["question"], idx, k=C.TOP_K, method="vector", variant=variant)  # RAG: vector top-k
+    rg = rag_answer(q["question"], idx, k=C.TOP_K, method="vector", variant=variant, rerank=rerank)  # RAG: vector top-k
     gold_hit = bool(gold & set(rg.retrieved_ids))
     base_is_a = _seeded_swap(q["id"])
     a_text, b_text = (b.text, rg.answer) if base_is_a else (rg.answer, b.text)
@@ -97,7 +97,7 @@ def bootstrap_ci(diffs, iters=2000, seed=0):
     return means[int(0.025 * iters)], means[int(0.975 * iters)]
 
 
-def run(tool: str, limit: int | None = None, judge_cap: int | None = None, variant: str = "strict"):
+def run(tool: str, limit: int | None = None, judge_cap: int | None = None, variant: str = "strict", rerank: bool = False):
     idx = load_index(tool)
     ev = load_eval(tool)
     qs = ev["questions"]
@@ -114,7 +114,7 @@ def run(tool: str, limit: int | None = None, judge_cap: int | None = None, varia
     done = [0]
 
     def work(q):
-        row, calls = score_question(tool_name, q, idx, variant)
+        row, calls = score_question(tool_name, q, idx, variant, rerank)
         with lock:
             for c, is_j in calls:
                 usage.record(c, is_judge=is_j)
@@ -191,5 +191,6 @@ if __name__ == "__main__":
     ap.add_argument("--limit", type=int, default=None)
     ap.add_argument("--judge-cap", type=int, default=None)
     ap.add_argument("--rag-variant", default="strict", choices=["strict","fallback"])
+    ap.add_argument("--rerank", action="store_true")
     a = ap.parse_args()
-    run(a.tool, a.limit, a.judge_cap, a.rag_variant)
+    run(a.tool, a.limit, a.judge_cap, a.rag_variant, a.rerank)
