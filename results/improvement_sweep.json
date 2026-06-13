@@ -1,0 +1,32 @@
+{
+  "_mech (docs, no API)": {
+    "coverage_at": {
+      "1": 0.313,
+      "3": 0.393,
+      "5": 0.527,
+      "10": 0.633
+    },
+    "corpus_gap": 0.247,
+    "present_but_ranked_below5": 0.227
+  },
+  "_wide (docs+API docstrings)": {
+    "coverage_at": {
+      "1": 0.34,
+      "3": 0.46,
+      "5": 0.567,
+      "10": 0.667
+    },
+    "corpus_gap": 0.213,
+    "present_but_ranked_below5": 0.22
+  },
+  "_wide + reranker": {
+    "coverage_at": {
+      "1": 0.193,
+      "3": 0.393,
+      "5": 0.48,
+      "10": 0.613
+    },
+    "corpus_gap": 0.213,
+    "present_but_ranked_below5": 0.307
+  }
+}

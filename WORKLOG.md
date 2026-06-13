@@ -203,3 +203,31 @@ corpus `dagster-io__dagster_mech`:
   architecture. Only **~17%** of questions are retrieval-fixable (c+d). A reranker / better embeddings
   can address at most that ~17% — Phase 4 will quantify it, but the ceiling is corpus coverage, not
   embeddings. Spot-checks confirmed (a)/(b) classifications. Cost this phase: ~$14 (Opus).
+
+## Phase 3 (research) + Phase 4 (advanced levers)
+
+- Research subagent → `docs/diagnosis-research.md`. Key: corpus/data is the usual RAG bottleneck
+  over the retriever; LLM judges over verbose human references have a documented length/verbosity
+  bias (~+17%) → strict whole-reference coverage under-scores (our 30% (b)); rerankers give
+  single-digit gains and only on the in-pool slice; fix measurement + corpus first.
+- **Unified lenient claim-coverage analyzer** (`src/analyze.py`, pool=vector∪bm25 top-20, Opus):
+  measures coverage@k (vector rank), in-corpus rate, corpus-gap, and reranker-addressable slice.
+- **User steer (correct):** the API reference is rST autodoc stubs; real API text = source
+  docstrings. My first API extraction covered only ~14 packages — extended to **ALL 71 libraries +
+  core (1035 modules)** via `src/apidocs.py`; built `dagster-io__dagster_wide` (7028 chunks).
+- **Sweep (lenient claim-coverage@5, n=150; `results/improvement_sweep.json`):**
+
+  | config | cov@5 | cov@10 | corpus_gap | ranked>=5 |
+  |---|---|---|---|---|
+  | _mech (docs only) | 0.527 | 0.633 | 0.247 | 0.227 |
+  | **_wide (+ all API docstrings)** | **0.567** | 0.667 | **0.213** | 0.220 |
+  | _wide + bge-reranker-base | 0.48 ↓ | 0.613 ↓ | 0.213 | 0.307 |
+
+- **Findings:** (1) strict coverage@5=0.20 was a measurement artifact — lenient claim-coverage is
+  0.527 (_mech) confirming the (b) slice. (2) Widening with API docstrings is a real but modest win
+  (+4 pts cov@5, corpus_gap 0.247→0.213). (3) **The off-the-shelf reranker HURT** (cov@5
+  0.567→0.48; demoted good dense hits on long messy discussion queries) — negative lever, reported
+  honestly; a larger reranker (v2-m3) was not pursued given the residual is dominated by corpus-gap.
+- **Best config = `_wide` (vector, no reranker), coverage@5 = 0.567.** Cost this phase ~$30 (Opus
+  analyze ×3 + research). Recall@5 (free, vs remapped gold): _wide vector 0.507 — fragile, coverage
+  is the reported metric.
