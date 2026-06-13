@@ -178,3 +178,28 @@ corpus `dagster-io__dagster_mech`:
   tiny<120 down 347→43, max 2751.
 - Remapped gold to new chunks by lexical word-overlap within the same doc (`src/remap_gold.py`),
   so exact-recall is still computable (caveat: remapped gold; coverage is the primary metric).
+
+## Phase 1 re-measure + Phase 2 forensic triage
+
+- **post_mechanical vs baseline_frozen (`results/post_mechanical.json`):**
+  - answer-coverage@5 (Opus, strict): 0.18 → **0.20** (flat). Cost $5.45.
+  - exact-recall@5 vector: 0.673 → 0.54 (vs *remapped* gold; the 0.673 was inflated by stub gold).
+  - => corpus/chunking was NOT the coverage bottleneck (it WAS poisoning gold/recall).
+- **Forensic triage on the 120 residual (covered@5=False) questions (`results/residual_triage.json`,
+  Opus, $8.31):**
+
+  | category | n | % residual | retrieval-fixable |
+  |---|---|---|---|
+  | (a) corpus gap (answer not in top-20 whole-corpus) | 59 | 49% | no |
+  | (b) gold mislabel / metric artifact (answer WAS in top-5) | 36 | 30% | no (already retrieved) |
+  | (c) chunking (present but fragmented) | 14 | 12% | partly |
+  | (d) embedding (good chunk exists, ranked > k) | 11 | 9% | yes |
+
+- **Triage-calibrated coverage@5 = 0.44** (strict 0.20 + 36 (b) false-negatives where answer was in
+  top-5). The strict Opus coverage judge has a high false-negative rate against *community* reference
+  answers (which contain specifics no single doc states verbatim). `results/diagnosis_calibrated.json`.
+- **Headline of the diagnosis:** weak numbers are dominated by **corpus gap (39% of all Qs, content
+  not in docs) + measurement artifact (the metric understated retrieval)**, NOT retrieval
+  architecture. Only **~17%** of questions are retrieval-fixable (c+d). A reranker / better embeddings
+  can address at most that ~17% — Phase 4 will quantify it, but the ceiling is corpus coverage, not
+  embeddings. Spot-checks confirmed (a)/(b) classifications. Cost this phase: ~$14 (Opus).

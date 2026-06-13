@@ -1,0 +1,13 @@
+{
+  "strict_coverage_at5": 0.2,
+  "triage_calibrated_coverage_at5": 0.44,
+  "residual_distribution_pct": {
+    "a_corpus_gap": 49.2,
+    "b_gold_mislabel": 30.0,
+    "d_embedding": 9.2,
+    "c_chunking": 11.7
+  },
+  "retrieval_fixable_pct_of_all": 16.7,
+  "corpus_gap_pct_of_all": 39.3,
+  "interpretation": "After mechanical fixes, strict coverage@5=0.20 understates retrieval (judge false-negatives); calibrated=0.44. Residual is ~49% corpus-gap + ~30% metric-artifact + ~12% chunking + ~9% embedding => only ~17% of questions are retrieval-architecture-fixable; ~39% are content absent from docs. Not an embedding ceiling \u2014 a corpus-coverage + measurement story."
+}
