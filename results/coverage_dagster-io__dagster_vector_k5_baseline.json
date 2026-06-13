@@ -1,0 +1,925 @@
+{
+  "tool": "dagster-io__dagster",
+  "method": "vector",
+  "k": 5,
+  "tag": "baseline",
+  "n": 150,
+  "n_invalid": 0,
+  "answer_coverage_at_k": 0.18,
+  "exact_recall_at_k": 0.673,
+  "usage": {
+    "gen_calls": 0,
+    "judge_calls": 150,
+    "judge_budget": 500,
+    "judge_remaining": 350,
+    "total_cost_usd": 4.8558,
+    "by_model": {
+      "claude-opus-4-8": {
+        "calls": 150,
+        "cost_usd": 4.8558
+      }
+    }
+  },
+  "rows": [
+    {
+      "id": "dagster-io__dagster#20327",
+      "covered": true,
+      "reason": "The chunks describe the canonical cross-code-location dependency approach using deps and AssetSpec, sufficient to answer the question.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#17729",
+      "covered": false,
+      "reason": "The chunks discuss timeouts, workspace config, and unrelated deployment issues, but none explain the UNAVAILABLE error's causes or that executing jobs don't communicate with the user code server.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#12985",
+      "covered": false,
+      "reason": "Chunks give a SQL-based cleanup job from the same discussion but lack the reference's DagsterInstance.get() programmatic method and the explicit note that no retention policy exists.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#33372",
+      "covered": false,
+      "reason": "Chunks mention PythonScriptComponent/Pipes and multiple Python environments but none show using a separate venv python executable via PipesSubprocessClient as the reference answer requires.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#18311",
+      "covered": false,
+      "reason": "Chunks show CeleryK8sRunLauncher requires the celery_k8s_job_executor but omit the key rationale (global/per-op concurrency limits across runs) central to the reference answer.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#32886",
+      "covered": false,
+      "reason": "The chunks cover partition_expr SQL loading for IO managers but none explain dynamic partitions, populating them from another asset/sensor, or mapping keys to ID ranges.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#20386",
+      "covered": false,
+      "reason": "Chunks never mention DAGSTER_HOME, shared instance config, or dagster.yaml needed to make CLI and webserver use the same instance.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#31890",
+      "covered": false,
+      "reason": "The chunks never mention uv workspaces\u2014the core recommended solution\u2014so they don't enable producing the reference answer.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#24325",
+      "covered": false,
+      "reason": "Chunks cover generic dagster.yaml logging config but omit the Dagster+ specifics: that dagster.yaml is read in the user code container (no custom agent needed) and the custom formatter class approach (dagster.JsonFormatter).",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#7338",
+      "covered": false,
+      "reason": "None of the chunks mention the multiprocess executor's forkserver start_method or preload_modules, which is the core of the reference answer.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#17995",
+      "covered": false,
+      "reason": "None of the chunks mention the job_ticks table, the metadata database, or data retention settings needed to answer the question.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#23248",
+      "covered": false,
+      "reason": "The chunks show RunRequest and dynamic partitioning generally but never demonstrate constructing SensorResult with run_requests and dynamic_partitions_requests using AddDynamicPartitionsRequest.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#18267",
+      "covered": false,
+      "reason": "Chunks cover OSS execution flow but lack hybrid agent-as-launcher detail, default subprocess executor, agent config references, and celery support info.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#7974",
+      "covered": false,
+      "reason": "Chunks show the loggers.console.config.log_level YAML structure but none explain passing it as a run_config dict to execute_in_process at runtime, which is the answer's key point.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#15375",
+      "covered": false,
+      "reason": "The chunks cover partition mappings between partitioned assets but never describe the unpartitioned-downstream-of-partitioned case or AllPartitionMapping.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#21801",
+      "covered": false,
+      "reason": "The chunks cover general resource testing but none explain patching the method on the class before instantiation to avoid the Pydantic frozen reassignment issue.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#31324",
+      "covered": true,
+      "reason": "Chunk [4] explicitly describes the two-step process: querying logsForRun for LogsCapturedEvent's logKey/stepKeys, then passing logKey to capturedLogsMetadata.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#17180",
+      "covered": false,
+      "reason": "None of the chunks state that materialization history is tied to asset key and unaffected by code location changes.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#18662",
+      "covered": false,
+      "reason": "No chunk explains modeling upstream Python assets as dbt sources so they run before dbt assets; chunk [5] only tangentially mentions mapping assets to sources.yml in a specific example.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#12340",
+      "covered": false,
+      "reason": "Chunks lack the critical checkout-internal-repository and build-wheel steps plus the setup.py install_requires instructions, showing only the tail end of the procedure.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#16166",
+      "covered": false,
+      "reason": "Chunks discuss fan-in and conditional branching but never mention non-required outputs combined with try/except to skip on upstream failure, nor the tracking issue.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#23026",
+      "covered": true,
+      "reason": "Chunks 1-4 are from the 'Customizing your Kubernetes deployment' doc and explain how to define Kubernetes pod/job config for a Dagster job via the dagster-k8s/config tag, directly answering the question.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#18891",
+      "covered": false,
+      "reason": "Chunk 1 mentions the empty-override mechanism but no chunk explains the auto-materialize behavior of running all checks, the tracking issues, or the workaround of disabling asset checks.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#16470",
+      "covered": false,
+      "reason": "Chunks hint that sources are parsed only as asset keys and show creating upstream assets, but none explicitly states source description/metadata isn't auto-loaded nor how to attach it via the dbt manifest.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#12346",
+      "covered": false,
+      "reason": "No chunk mentions ephemeral DagsterInstance, build_sensor_context with instance, or materializing assets to populate events\u2014key elements of the reference answer are absent.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#29868",
+      "covered": false,
+      "reason": "Chunks hint at an 'Updating older time partitions' section but never show the key solution of removing AutomationCondition.in_latest_time_window() via .without().",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#17024",
+      "covered": false,
+      "reason": "Chunks touch on ETL modeling and single-asset combining but none show the batching-within-an-asset pattern or ConfigurableResource generators that yield batches, which is the core of the answer.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#13112",
+      "covered": false,
+      "reason": "Chunks reference filtering warnings but never show the specific BetaWarning category or the actual filterwarnings code needed for the answer.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#29630",
+      "covered": true,
+      "reason": "Chunks [5] and [2] explain that on_cron executes once per cron tick after all upstreams update, which is the core of the reference answer.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#2951",
+      "covered": false,
+      "reason": "Chunks reference OpExecutionContext/AssetExecutionContext objects but don't link to or enumerate the full list of accessible context properties from the execution API docs.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#18247",
+      "covered": false,
+      "reason": "None of the chunks describe deleting/wiping materialization data for a specific asset key via the UI 'wipe' action as the reference answer requires.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#14771",
+      "covered": false,
+      "reason": "Chunk [2] covers py-spy dump/record/speedscope basics, but the Kubernetes-specific workflow (SYS_PTRACE security context, dagster_cloud.yaml/helm config, kubectl exec steps) in the reference answer is entirely missing.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#26011",
+      "covered": true,
+      "reason": "Chunk [2] is the dedicated GraphQL section for programmatically retrieving stdout/stderr logs, noting they're stored in S3 with pre-signed download URLs, which is the core of the reference answer.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#28880",
+      "covered": false,
+      "reason": "Chunk 5 mentions Python 3.9\u20133.13 support but none explain that the error stems from Python 3.8 incompatibility with fsspec or Dagster's minimum version requirement.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#28246",
+      "covered": false,
+      "reason": "None of the chunks mention pre-install lifecycle hooks, disabling PEX deploys, custom base images, or the dagster_cloud_pre_install.sh script needed to answer.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#14724",
+      "covered": false,
+      "reason": "No chunk mentions the 'dagster/priority' op tag for in-run execution priority; chunks cover Celery priority, run-queue priority, and unrelated topics.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#17510",
+      "covered": false,
+      "reason": "The chunks discuss op outputs and events generally but none mention that op-to-op streaming is unsupported or reference Dagster Pipes for streaming from external APIs.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#19218",
+      "covered": false,
+      "reason": "Chunks hint at a separate partitioned @dbt_assets with a selector, but never describe the two-definition select/exclude (tag-based) pattern needed to keep unpartitioned models unpartitioned.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#28343",
+      "covered": false,
+      "reason": "Chunks hint deps can enforce order without passing data, but none cover the deps parameter being data-agnostic explicitly or Declarative Automation as the reference answer requires.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#18697",
+      "covered": false,
+      "reason": "The crucial `-- depends_on: {{ source(...) }}` comment technique for temporal-only dependency is absent; chunk [2] is the right section but truncated before showing it.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#17997",
+      "covered": false,
+      "reason": "The chunks only reference a generic prometheus code example snippet but lack the key insight that the resource is a thin wrapper around the prometheus python client and the pointer to its pushgateway examples.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#17717",
+      "covered": false,
+      "reason": "Chunks cover sensor timeouts but lack the Kubernetes Helm chart settings (serverProcessStartupTimeout, deploymentStartupTimeout) central to the reference answer.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#27396",
+      "covered": false,
+      "reason": "The chunks lack the key pattern of passing shared config via RunRequest/RunConfig from a sensor to dependent assets, which is the core of the reference answer.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#18382",
+      "covered": false,
+      "reason": "The chunks show the reload_repository_location API exists but never confirm it works with Definitions or that the naming is legacy, which is the core of the reference answer.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#21018",
+      "covered": false,
+      "reason": "Chunks only describe general asset/op context usage, not the graph_multi_asset reserved-keyword issue or accessing partition_key within underlying ops.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#18219",
+      "covered": false,
+      "reason": "Chunks focus on Docker/K8s deployment, not local development with `dagster dev` or the config/resource systems central to the reference answer.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#20943",
+      "covered": false,
+      "reason": "Chunks describe declarative automation conditions tangentially but don't contain the specific discussion's solution for waiting on queued upstream partitioned materializations.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#14636",
+      "covered": false,
+      "reason": "Chunks mention TimeWindowPartitionMapping but never show the start_offset argument or how to use it for a rolling multi-day window, so the answer can't be produced.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#27608",
+      "covered": false,
+      "reason": "The chunks discuss single-run backfill policies and sensor cursors/tags but none mention the GraphQL launchPartitionBackfill mutation or LaunchBackfillParams needed for the reference answer.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#27730",
+      "covered": false,
+      "reason": "None of the chunks mention that dagster dev uses a SQLite database by default or provide the Postgres docker-compose example needed to answer the metadata storage question.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#27519",
+      "covered": true,
+      "reason": "Chunk [2] is the testing-run-status-sensors guide that the reference answer points to for building sensor context to debug.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#17813",
+      "covered": true,
+      "reason": "Chunk [2] is the exact per-job resource limits doc showing job tags override ECS defaults, which the reference answer relies on.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#16143",
+      "covered": false,
+      "reason": "None of the chunks mention run_status_sensors or job-to-job ordering dependencies; they cover op/asset data dependencies instead.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#20508",
+      "covered": false,
+      "reason": "Chunks mention dynamic partitions and a sensor adding them generally, but lack the specific SensorResult/dynamic_partitions_requests, build_add_request, and schedule-reading-partition-keys details needed to answer.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#18158",
+      "covered": true,
+      "reason": "Chunk [1] states single-run backfills only work when launched from the asset graph/asset page or when all assets in a job share the same backfill policy, which directly explains the job-page limitation the user hit.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#27312",
+      "covered": false,
+      "reason": "The chunks cover asset selection syntax strings for groups but never mention the AssetSelection.groups() Python API, .resolve(), .sinks(), or .roots() needed to fetch asset keys.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#17830",
+      "covered": true,
+      "reason": "Chunks describe dbt group property, meta config, and overriding get_group_name\u2014the three methods in the reference answer.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#27031",
+      "covered": true,
+      "reason": "Chunk [2] from sensor-timeouts.md directly provides the timeout and worker configurations (DAGSTER_SENSOR_GRPC_TIMEOUT_SECONDS, DAGSTER_GRPC_MAX_WORKERS, sensor num_workers) needed to address the sensor timeout issue.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#7159",
+      "covered": true,
+      "reason": "Chunks [2] and [3] reference run_status_sensors and run_failure_sensor as native job-level alerting, matching the reference answer.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#22576",
+      "covered": false,
+      "reason": "Chunks only note context is 'the first parameter' but never explain the ordering error or that moving context before the asset input resolves it.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#26173",
+      "covered": false,
+      "reason": "None of the chunks mention the pyOpenSSL version pin, the snowflake-connector-python issue, or the X509_V_FLAG_NOTIFY_POLICY error fix.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#26119",
+      "covered": false,
+      "reason": "No chunk mentions the Daemon failing to connect to the gRPC server (marked Unavailable) or recreating the Daemon service as the resolution.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#19184",
+      "covered": false,
+      "reason": "Chunks mention shared partition definitions but never state the cross-code-location 'Materialize All' limitation or that it's impossible across code locations.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#25762",
+      "covered": false,
+      "reason": "The chunks describe the general manage-state command but lack the specific GitHub issue resolution needed for the hybrid ECS deployment Slim CI setup.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#25783",
+      "covered": false,
+      "reason": "The chunks discuss kinds on AssetSpec for multi-assets generally but never mention AssetOut.from_spec or how to apply kinds to graph_multi_asset outputs.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#25934",
+      "covered": false,
+      "reason": "Chunks mention testing sensors and building run-status-sensor context but never show the evaluate_tick + cursor management pattern and the 'first tick starts tracking' behavior central to the reference answer.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#25784",
+      "covered": false,
+      "reason": "None of the chunks mention using day_of_week or other non-cron parameters in build_schedule_from_partitioned_job as a solution.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#14733",
+      "covered": false,
+      "reason": "All chunks focus on partition-based incremental updates, not the vanilla non-IO-manager asset pattern with stored metadata cursors described in the reference answer.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#7160",
+      "covered": false,
+      "reason": "No chunk shows the custom sensor pattern using context.instance.get_run_records with RunsFilter to query completed job_1 runs, which is the core of the reference answer.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#25741",
+      "covered": false,
+      "reason": "Chunks lack the sensor evaluation-interval explanation and the GraphQL API trigger method needed for the answer.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#18035",
+      "covered": false,
+      "reason": "Chunks mention code_version_changed exists but none explain setting it as automation_condition via get_automation_condition() on DagsterDbtTranslator for dbt views.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#25134",
+      "covered": false,
+      "reason": "None of the chunks explain passing dbt_assets multi-outputs as a list to an op's Nothing input or using @asset deps with my_dbt_assets.keys to create execution-order dependencies.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#20061",
+      "covered": false,
+      "reason": "Chunks cover general tag concurrency limits but not the reference's key point that tag keys are treated equivalently nor the distinct-tag-per-job workaround.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#25179",
+      "covered": false,
+      "reason": "None of the chunks explain the since() condition's semantics about the top condition becoming true more recently than the bottom condition.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#18520",
+      "covered": false,
+      "reason": "The chunks discuss including dbt projects in Docker images but lack the specific guidance on using --python-file with a Definitions object and platform build flags central to the reference answer.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#19734",
+      "covered": false,
+      "reason": "No chunk mentions querying the webserver via the GraphQL API to retrieve code location status, which is the core of the reference answer.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#23933",
+      "covered": false,
+      "reason": "The chunks discuss parallelism and worker configuration but none mention the specific fixes (PR #24635, reducing threads to ease contention, or raising log level to reduce logger contention) that the reference answer requires.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#24775",
+      "covered": true,
+      "reason": "Chunks [2] and [5] explain that tags appear in UI filters/asset catalog and that empty-string tags render as labels, which is the core resolution of the issue.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#25060",
+      "covered": false,
+      "reason": "The chunks discuss run config, jobs, and retries but none state that running configs can't be modified or describe using a run status sensor to conditionally trigger a job, which is the core of the reference answer.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#18282",
+      "covered": true,
+      "reason": "Chunk [2] explicitly describes building an AssetSelection of dbt assets via build_dbt_asset_selection, and chunk [4] shows dbt tag-based selection syntax.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#24930",
+      "covered": false,
+      "reason": "Chunks explain sensor evaluation and asset-scoping but never state there is no setting to limit/queue materializations per tick, the core point of the answer.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#21428",
+      "covered": false,
+      "reason": "Chunks discuss observing external streams and resources but never state that Dagster lacks a Kafka integration, mention the GitHub feature request, or recommend Dagster Pipes.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#24786",
+      "covered": false,
+      "reason": "None of the chunks discuss using resources in sensors or any mechanism for passing configurable arguments to a sensor.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#24622",
+      "covered": false,
+      "reason": "The chunks describe eager condition usage generally but none explain the infinite-loop edge case or why newly_missing().since_last_handled() is used over missing().",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#24386",
+      "covered": true,
+      "reason": "Chunk [3] py-spy guide provides profiling instructions for diagnosing slow imports/hanging runs in k8s, matching the reference answer's profiling-for-bottlenecks approach.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#20611",
+      "covered": false,
+      "reason": "None of the chunks discuss mocking asset values via SourceAsset with a custom IOManager or using input_values/materialize for testing.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#24260",
+      "covered": false,
+      "reason": "The chunks describe a fabricated configurable `write_mode` option that contradicts the reference answer's claim that it always replaces and is not configurable.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#24623",
+      "covered": true,
+      "reason": "Chunks [2]-[4] establish that Launcher roles can only be assigned per code location/deployment, supporting the recommendation to use multiple code locations as the workaround.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#24351",
+      "covered": false,
+      "reason": "Chunks never mention multi_asset_sensor or explain that @asset_sensor only fetches the latest event log entry, missing the core solution and explanation.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#24531",
+      "covered": true,
+      "reason": "Chunk [1] identifies build_schedule_from_partitioned_job as the method for constructing a daily schedule for time-partitioned jobs, providing the core answer even though the full inline code example isn't shown.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#24494",
+      "covered": true,
+      "reason": "Chunk [1] explicitly describes the `location_name` key as the UI-displayed unique name that can be customized, which is exactly the reference answer's solution.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#24434",
+      "covered": false,
+      "reason": "No chunk shows returning a RunRequest with the partition_key argument from a schedule, which is the core fix.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#24246",
+      "covered": false,
+      "reason": "None of the chunks describe run status sensors yielding RunRequests or using GraphQL to launch an asset job, which are the core solutions in the reference answer.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#24316",
+      "covered": false,
+      "reason": "Chunks cover dynamic outputs/fanout but lack the factory-method/DSL approaches and the file-generation overhead tradeoffs (scalability/maintainability/flexibility) central to the reference answer.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#24317",
+      "covered": true,
+      "reason": "Chunk [3] directly describes using run status sensors to trigger a downstream job after upstream completion, matching the reference answer.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#19079",
+      "covered": false,
+      "reason": "The chunks cover asset key customization and dbt components, but none explain using custom resource keys via Pythonic resource parameter names or required_resource_keys in @dbt_assets.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#24205",
+      "covered": false,
+      "reason": "The chunks discuss automation conditions but contain no reference to the PR (https://github.com/dagster-io/dagster/pull/24213) needed for the reference answer.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#24232",
+      "covered": false,
+      "reason": "Chunks explain the dagster/max_runtime tag but never mention AutomationConditionSensorDefinition or its run_tags parameter, which is the specific mechanism needed to apply timeouts to AutomationCondition-triggered runs.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#24094",
+      "covered": false,
+      "reason": "None of the chunks mention the end_offset parameter needed to extend partitions to the current month.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#24061",
+      "covered": false,
+      "reason": "The chunks only describe the DagsterGraphQLClient and general GraphQL API but contain nothing about using the gql library, the Dagster+ cloud endpoint URL, or token authentication needed for the custom query approach.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#23665",
+      "covered": false,
+      "reason": "Chunks mention build_dbt_asset_selection and scheduling but lack the run_status_sensor chaining pattern to split one @dbt_assets into sequential independent jobs.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#23868",
+      "covered": false,
+      "reason": "No chunk shows the GraphQL query filtering runs by QUEUED status or counting them, only tangential mentions of runs and queue troubleshooting.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#23851",
+      "covered": false,
+      "reason": "Chunks show user management is a Dagster+ feature but lack the GitHub OSS feature request/RBAC tracking issue central to the reference answer.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#20322",
+      "covered": true,
+      "reason": "Chunks [3] and [2] cover conditional branching and fixed fan-in, the two concepts in the reference answer.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#23705",
+      "covered": false,
+      "reason": "Chunks mention multi_asset and graph_asset existence but don't explain can_subset=True/is_required=False subsetting for independent materialization, which is the core of the answer.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#17843",
+      "covered": false,
+      "reason": "Chunks cover metadata/config concepts generally but lack the specific context.assets_def.metadata_by_key access and per-op config_schema/op_config patterns needed for the answer.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#20426",
+      "covered": false,
+      "reason": "Chunk 1 shows ignoring dependencies only for on_missing, but none cover the on_cron/all_deps_match customization with .ignore() needed for the daily-cadence solution.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#21597",
+      "covered": false,
+      "reason": "The chunks only describe the symptoms/causes but contain none of the solutions (TCP keepalive socketOptions, 1.5.9+ retry upgrade, or the reproduction script) needed for the reference answer.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#17741",
+      "covered": false,
+      "reason": "No chunk mentions run_queue with max_concurrent_runs or tag_concurrency_limits in dagster.yaml, which is the core of the reference answer.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#22661",
+      "covered": true,
+      "reason": "Chunk [4] (plus [2]) gives the build-time precompile recommendation over runtime manifest generation, which is the core of the reference answer.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#15443",
+      "covered": false,
+      "reason": "Chunks only reference code-example file paths without showing the actual AssetIn(dagster_type=Nothing) pattern needed to answer.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#18163",
+      "covered": false,
+      "reason": "Chunks cover multi-location and dbt setups generally but lack the key detail about using a custom dbt translator/metadata to assign asset groups by client and selection, which is central to the reference answer.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#20394",
+      "covered": false,
+      "reason": "Chunks state materializations consume credits but don't explain the per-op credit counting that produces 4 instead of 2.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#23006",
+      "covered": false,
+      "reason": "The chunks discuss combining assets, I/O managers, and basic deps but none show passing a DataFrame as input via AssetIn/multi_asset to produce the reference answer.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#22992",
+      "covered": false,
+      "reason": "Chunks lack the specific solutions: local-run confirmation, dbt manifest build-time guidance, sensor-timeout discussion link, and py-spy/memray profiling references.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#17542",
+      "covered": true,
+      "reason": "Chunk [2] shows the Dagster daemon table entry with replicas 'Not supported,' directly establishing that only a single daemon should run.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#17567",
+      "covered": false,
+      "reason": "None of the chunks mention the sensor decorator's asset_selection argument for triggering asset materializations without a job.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#15835",
+      "covered": false,
+      "reason": "No chunk shows SSH tunneling/port forwarding with dbt_assets or wrapping the asset decorator with SSHTunnelForwarder.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#22499",
+      "covered": false,
+      "reason": "Chunks cover dbt sources as upstream external assets and metadata customization but lack the key approach of building AssetSpecs from the manifest and passing them to a @multi_asset with custom compute.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#14311",
+      "covered": false,
+      "reason": "Only chunk [5] mentions get_latest_materialization_event by name without showing the timestamp usage or the plural variant, insufficient to produce the answer.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#17370",
+      "covered": false,
+      "reason": "Chunks show postgres as a storage config option but never connect switching to postgres as the resolution for the sqlite 'database is locked' concurrency problem.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#22568",
+      "covered": false,
+      "reason": "No chunk mentions context.assets_def.metadata_by_key or any way to retrieve definition-level metadata at runtime.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#14610",
+      "covered": false,
+      "reason": "Chunks cover building schedules from partitioned jobs but omit the key end_offset=1 trick and the custom hourly @schedule with RunRequest needed for the answer.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#19049",
+      "covered": false,
+      "reason": "The chunks discuss code server load timeouts and workspace config but never address sensors exceeding gRPC server-side timeouts causing ThreadPoolExecutor congestion, which is the root cause in the reference answer.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#22426",
+      "covered": true,
+      "reason": "Chunks [2] and [4] cover using config with @dbt_assets to pass dbt CLI flags/arguments (the --full-refresh example) at run time, which is exactly the reference answer's approach.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#22361",
+      "covered": false,
+      "reason": "Chunks confirm Pro/admin prerequisites and mention programmatic access exists but lack the actual GraphQL query and pagination details needed to answer.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#15409",
+      "covered": true,
+      "reason": "Chunks describe the metadata types (owners, table schema, row count, markdown, time series/plots) and that they're attached as definition or runtime metadata, sufficient to answer the question.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#17681",
+      "covered": false,
+      "reason": "Chunks cover sensor timeout settings but lack the gRPC UNAVAILABLE troubleshooting guide addressing connection-refused/reachability during scale-up and retries.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#19938",
+      "covered": false,
+      "reason": "Chunks mention the relevant APIs but never explain that build_schedule_from_dbt_selection requires a single dbt AssetsDefinition or that one should construct DbtManifestAssetSelection/ScheduleDefinition directly for multiple definitions.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#20769",
+      "covered": true,
+      "reason": "Chunk [1] and [2] directly address using config with @dbt_assets and passing run configuration to a job to apply --full-refresh, the core of the reference answer.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#21738",
+      "covered": false,
+      "reason": "Chunks explain linking asset_key to a source for lineage but never state that the dbt source must still define its physical BigQuery location/connection, which is the crux of the answer.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#21580",
+      "covered": false,
+      "reason": "The chunks discuss general config provisioning but never explain that a Field(default=...) makes the parameter required and errors if unset, which is the core of the answer.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#18893",
+      "covered": false,
+      "reason": "Chunks cover general partitions and backfill policies but lack the key end_offset=1 technique, idempotency, and frequent schedule targeting the current day's partition.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#21701",
+      "covered": false,
+      "reason": "Chunks cover loading dbt tests as checks and a generic @asset_check example, but none show that you can define a custom Dagster asset check on a @dbt_asset by passing its asset key.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#21574",
+      "covered": false,
+      "reason": "No chunk mentions executors or setting in_process_executor to force sequential dbt invocations.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#12463",
+      "covered": true,
+      "reason": "Chunks [1], [2], and [3] cover native run/job timeouts including the run-monitoring general timeouts referenced in the answer.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#21400",
+      "covered": false,
+      "reason": "Chunks cover general wait-for-upstream behavior but lack the AutoMaterializePolicy.eager().with_rules and materialize_on_cron specifics central to the reference answer.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#21401",
+      "covered": false,
+      "reason": "Chunks mention monthly partitions, partition_key, and end_offset, but lack the key MonthlyPartitionsDefinition usage and context.partition_time_window bounds + timedelta adjustment needed for the answer.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#14546",
+      "covered": true,
+      "reason": "Chunks 1 and 5 explain dynamic outputs for creating parallel per-item op executions, matching the reference answer's recommendation.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#17494",
+      "covered": false,
+      "reason": "Chunks discuss executors and parallelism but never mention a Redis-backed custom IO manager or op hooks for in-memory exchange.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#21231",
+      "covered": true,
+      "reason": "Chunk [1] shows run_retries is a Dagster+ deployment setting, conveying it belongs in deployment settings rather than dagster.yaml.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#19944",
+      "covered": false,
+      "reason": "The chunks cover asset sensors and run status sensors generally but none specifically address alerting on asset check failures or the GitHub discussion solution referenced in the answer.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#21215",
+      "covered": false,
+      "reason": "The chunks cover config, GraphDSL, and graphs-to-jobs tangentially but none explain that graph structure is fixed at build time, conditional branching, dynamic map, or defining multiple jobs per permutation as the reference answer requires.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#21214",
+      "covered": false,
+      "reason": "Chunks mention agent queues/routing but lack the concurrency-limiting guidance and ECS alternative central to the reference answer.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#21078",
+      "covered": false,
+      "reason": "No chunk mentions MetadataValue.url or hyperlink metadata needed to produce the reference answer.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#17937",
+      "covered": false,
+      "reason": "Chunks explain network config inheritance and mention ecs/run_task_kwargs as a per-step tag, but don't show setting run_task_kwargs on the run launcher in dagster.yaml to override networkConfiguration, which is the core solution.",
+      "gold_hit": true
+    },
+    {
+      "id": "dagster-io__dagster#18244",
+      "covered": false,
+      "reason": "No chunk shows building a sensor that polls multiple jobs' run records with RunsFilter/cursors to trigger run_dbt_job; coverage is only tangential.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#20961",
+      "covered": false,
+      "reason": "Chunks discuss upstream dependencies and dbt sources but none show scheduling a job that materializes both airbyte and dbt assets together via define_asset_job/selection.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#16938",
+      "covered": false,
+      "reason": "The chunks cover dynamic ops outputs and run config but never mention using partitions instead of separate assets, which is the core of the reference answer.",
+      "gold_hit": false
+    },
+    {
+      "id": "dagster-io__dagster#18799",
+      "covered": false,
+      "reason": "None of the chunks mention DefaultRunLauncher, customRunLauncher config, or running runs as a process on the gRPC server instead of spinning up a k8s pod.",
+      "gold_hit": false
+    }
+  ]
+}

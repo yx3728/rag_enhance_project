@@ -16,8 +16,8 @@
         "5": 0.673,
         "10": 0.733
       },
-      "mean_latency_ms": 65.7,
-      "p95_latency_ms": 44.8
+      "mean_latency_ms": 142.1,
+      "p95_latency_ms": 50.1
     },
     "bm25": {
       "recall_at": {
@@ -26,18 +26,18 @@
         "5": 0.387,
         "10": 0.447
       },
-      "mean_latency_ms": 85.8,
-      "p95_latency_ms": 241.9
+      "mean_latency_ms": 103.3,
+      "p95_latency_ms": 261.3
     },
     "hybrid": {
       "recall_at": {
-        "1": 0.32,
-        "3": 0.56,
+        "1": 0.3,
+        "3": 0.567,
         "5": 0.667,
         "10": 0.773
       },
-      "mean_latency_ms": 113.3,
-      "p95_latency_ms": 293.3
+      "mean_latency_ms": 234.3,
+      "p95_latency_ms": 525.5
     }
   }
 }

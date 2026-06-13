@@ -139,3 +139,42 @@ trustworthy recall@k and a fair crown-jewel judge. ~110 curation judge calls bud
 - Honest headline: RAG is genuinely needed and works **after** the eval-first measure→diagnose→fix
   loop; naive RAG alone regressed a capable base model. Single substrate / single seed — direction
   is likely general but not proven.
+
+---
+
+# === DIAGNOSE-THEN-FIX TASK (2026-06-13, cont.) ===
+
+## Phase 0 — reproduce & freeze baseline
+
+- Reproduced `recall.py` exactly: vector @1/3/5/10 = 0.34/0.60/0.673/0.733. Frozen to
+  `results/baseline_frozen.json`.
+- Defined **answer-coverage@k** (`src/coverage.py`): Opus judge sees question + reference +
+  top-k chunks → yes/no "do these contain the info to produce the reference answer?"
+  Gold-independent → robust to gold-mislabel (category b). Concurrent + checkpointed/resumable.
+- **KEY DIAGNOSIS (baseline):** exact-recall@5 vector = **0.673** but answer-coverage@5 = **0.18**.
+  The gap is *inverted* from the usual: the labeled "gold" chunks were largely content-empty
+  `<CodeExample path=.../>` **stubs**. Retrieval finds the stub (recall looks high) but the stub
+  has no answer content (coverage is the truth). **recall@5=0.67 was an artifact; the honest
+  baseline retrieval quality is coverage@5 = 0.18.** Cost: $4.86 (150 Opus coverage calls).
+
+## Phase 1 — mechanical pass (corpus scope + chunking)
+
+Found by reading code + corpus:
+1. **CorpusgGap**: baseline fetched `docs/docs/` only → missed the Sphinx **API reference**
+   (`docs/sphinx/**/*.rst`, 99 files) and all code referenced by CodeExample.
+2. **CodeExample stubs**: 1152/4708 baseline chunks (24%) contained unexpanded
+   `<CodeExample path=.../>` — the actual code (often the answer) lived in `examples/docs_snippets`
+   / `examples/docs_projects` `.py` files, not in the corpus.
+3. **Blind 800-char chunking** split code fences and markdown tables mid-block; 111 tiny chunks.
+
+Fix (`src/corpus.py`, one pass): shallow-cloned dagster (`_ref_dagster/`, gitignored); built a new
+corpus `dagster-io__dagster_mech`:
+- expand every `<CodeExample>` by inlining the referenced snippet region (`# start_X`/`# end_X`
+  markers) as a real code fence (0 real stubs left, 921 python fences);
+- add the Sphinx `.rst` API reference;
+- strip MDX noise (imports, `{/* */}`, `<PyObject>`→name);
+- heading-aware, code-fence-safe chunking + small-chunk merge + hard size cap (~2200 chars so
+  bge-small can actually encode each chunk). Result: 724 docs → 4165 chunks, median 872 chars,
+  tiny<120 down 347→43, max 2751.
+- Remapped gold to new chunks by lexical word-overlap within the same doc (`src/remap_gold.py`),
+  so exact-recall is still computable (caveat: remapped gold; coverage is the primary metric).
