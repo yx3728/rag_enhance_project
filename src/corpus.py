@@ -218,7 +218,7 @@ def _merge_small(doc_path: str, chunks: list[Chunk], target: int) -> list[Chunk]
     return out
 
 
-def build():
+def build(wide: bool = False):
     chunks: list[Chunk] = []
     n_docs = 0
     # 1. prose docs (md/mdx) with CodeExample expansion + MDX cleanup
@@ -232,26 +232,37 @@ def build():
             continue
         chunks += chunk_markdown(rel, text)
         n_docs += 1
-    # 2. Sphinx API reference (.rst) — light cleanup, same chunker
-    for fp in sorted(SPHINX.rglob("*.rst")):
-        rel = "docs/sphinx/" + str(fp.relative_to(SPHINX))
-        raw = fp.read_text(encoding="utf-8", errors="replace")
-        # strip rst directive noise lightly; keep text
-        text = re.sub(r"^\.\. (currentmodule|module|autoclass|autofunction|autodata)::.*$", "", raw, flags=re.MULTILINE)
-        text = re.sub(r"\n{3,}", "\n\n", text).strip()
-        if len(text) < 40:
-            continue
-        chunks += chunk_markdown(rel, text)
-        n_docs += 1
 
-    out_dir = C.INDEX / OUT_TOOL
+    if not wide:
+        # 2. Sphinx API reference (.rst) — NOTE: these are mostly autodoc directive stubs with no
+        #    real text (the API content is rendered from source docstrings at build time). Kept for
+        #    the _mech baseline; the _wide build replaces them with extracted docstrings below.
+        for fp in sorted(SPHINX.rglob("*.rst")):
+            rel = "docs/sphinx/" + str(fp.relative_to(SPHINX))
+            raw = fp.read_text(encoding="utf-8", errors="replace")
+            text = re.sub(r"^\.\. (currentmodule|module|autoclass|autofunction|autodata)::.*$", "", raw, flags=re.MULTILINE)
+            text = re.sub(r"\n{3,}", "\n\n", text).strip()
+            if len(text) < 40:
+                continue
+            chunks += chunk_markdown(rel, text)
+            n_docs += 1
+    else:
+        # 2'. WIDE: real API reference = public docstrings extracted from source (what the website
+        #     renders via autodoc). Targets the dominant residual: corpus gap on API/usage answers.
+        import apidocs
+        for rel, text in apidocs.extract(REF):
+            chunks += chunk_markdown(rel, text)
+            n_docs += 1
+
+    out_tool = "dagster-io__dagster_wide" if wide else OUT_TOOL
+    out_dir = C.INDEX / out_tool
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "chunks.json").write_text(json.dumps(
         [{"chunk_id": c.chunk_id, "doc_path": c.doc_path, "chunk_index": c.chunk_index,
           "content": c.content, "heading": c.heading} for c in chunks], indent=2))
     stub = sum(1 for c in chunks if "<CodeExample" in c.content)
     tiny = sum(1 for c in chunks if len(c.content) < 120)
-    print(f"built corpus '{OUT_TOOL}': {n_docs} docs -> {len(chunks)} chunks "
+    print(f"built corpus '{out_tool}': {n_docs} docs -> {len(chunks)} chunks "
           f"| remaining CodeExample stubs={stub} | tiny(<120)={tiny}")
     return chunks
 
