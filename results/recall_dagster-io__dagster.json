@@ -1,6 +1,6 @@
 {
   "tool": "dagster-io__dagster",
-  "n": 110,
+  "n": 150,
   "embed_model": "BAAI/bge-small-en-v1.5",
   "ks": [
     1,
@@ -11,33 +11,33 @@
   "results": {
     "vector": {
       "recall_at": {
-        "1": 0.309,
-        "3": 0.445,
-        "5": 0.536,
-        "10": 0.6
+        "1": 0.34,
+        "3": 0.6,
+        "5": 0.673,
+        "10": 0.733
       },
-      "mean_latency_ms": 111.0,
-      "p95_latency_ms": 200.7
+      "mean_latency_ms": 65.7,
+      "p95_latency_ms": 44.8
     },
     "bm25": {
       "recall_at": {
-        "1": 0.136,
-        "3": 0.227,
-        "5": 0.3,
-        "10": 0.355
+        "1": 0.26,
+        "3": 0.333,
+        "5": 0.387,
+        "10": 0.447
       },
-      "mean_latency_ms": 97.6,
-      "p95_latency_ms": 236.7
+      "mean_latency_ms": 85.8,
+      "p95_latency_ms": 241.9
     },
     "hybrid": {
       "recall_at": {
-        "1": 0.245,
-        "3": 0.409,
-        "5": 0.482,
-        "10": 0.582
+        "1": 0.32,
+        "3": 0.56,
+        "5": 0.667,
+        "10": 0.773
       },
-      "mean_latency_ms": 178.6,
-      "p95_latency_ms": 362.7
+      "mean_latency_ms": 113.3,
+      "p95_latency_ms": 293.3
     }
   }
 }
