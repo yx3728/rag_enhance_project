@@ -24,6 +24,15 @@ from llm import call_claude, UsageTracker
 
 WORKERS = 5
 INF = 10**9
+_reranker = None
+
+
+def get_reranker(name="BAAI/bge-reranker-base"):
+    global _reranker
+    if _reranker is None:
+        from sentence_transformers import CrossEncoder
+        _reranker = CrossEncoder(name)
+    return _reranker
 
 PROMPT = """You are measuring retrieval quality for the developer tool "{tool}".
 
@@ -56,15 +65,21 @@ def parse_json(t):
         return {}
 
 
-def run(tool, pool=20):
+def run(tool, pool=20, rerank=False):
     idx = load_index(tool)
     ev = load_eval(tool)
     qs = ev["questions"]
     tool_name = tool.split("__")[1].replace("_mech", "").replace("_wide", "")
     usage = UsageTracker(); lock = threading.Lock(); done = [0]
+    rr = get_reranker() if rerank else None
 
     def work(q):
-        vec = idx.vector(q["question"], pool)            # ordered
+        vec = idx.vector(q["question"], max(pool, 30) if rerank else pool)   # ordered by dense score
+        if rr is not None:
+            cids = [c for c, _ in vec]
+            scores = rr.predict([[q["question"], idx.chunk_by_id(c).content[:1200]] for c in cids])
+            order_r = sorted(range(len(cids)), key=lambda i: -scores[i])
+            vec = [(cids[i], float(scores[i])) for i in order_r][:pool]       # reranked order
         bm = idx.bm25(q["question"], pool)
         vrank = {cid: r for r, (cid, _) in enumerate(vec)}
         order = []
@@ -97,13 +112,14 @@ def run(tool, pool=20):
     def cov(k):
         return round(sum(1 for r in rows if r["best_vrank"] is not None and r["best_vrank"] < k) / n, 3)
     in_corpus = sum(1 for r in rows if r["in_corpus"])
-    out = {"tool": tool, "n": n,
+    out = {"tool": tool, "n": n, "rerank": rerank,
            "coverage_at": {str(k): cov(k) for k in (1, 3, 5, 10)},
            "in_corpus_rate": round(in_corpus / n, 3),
            "corpus_gap_rate": round(1 - in_corpus / n, 3),
            "present_but_ranked_below5": round(sum(1 for r in rows if r["in_corpus"] and (r["best_vrank"] is None or r["best_vrank"] >= 5)) / n, 3),
            "usage": usage.summary(), "rows": rows}
-    (C.RESULTS / f"analyze_{tool}.json").write_text(json.dumps(out, indent=2))
+    tag = "_rerank" if rerank else ""
+    (C.RESULTS / f"analyze_{tool}{tag}.json").write_text(json.dumps(out, indent=2))
     print(f"\n=== ANALYZE {tool} (n={n}) ===")
     print(f"  coverage@: {out['coverage_at']}")
     print(f"  in_corpus(reachable@20): {out['in_corpus_rate']}  | corpus_gap: {out['corpus_gap_rate']}")
@@ -116,5 +132,6 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("tool")
     ap.add_argument("--pool", type=int, default=20)
+    ap.add_argument("--rerank", action="store_true")
     a = ap.parse_args()
-    run(a.tool, a.pool)
+    run(a.tool, a.pool, a.rerank)
