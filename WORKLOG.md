@@ -93,3 +93,25 @@ keep=true only for self-contained, docs-answerable, still-valid questions whose 
 is substantive AND supported by ≥1 pool chunk. **Reference stays = the real accepted answer**
 (authentic, avoids docs-circular bias toward RAG); gold = labeler-verified chunks. This yields
 trustworthy recall@k and a fair crown-jewel judge. ~110 curation judge calls budgeted.
+
+---
+
+## 2026-06-13 — Phase 4/5: corpus, recall, crown jewel
+
+- Curation (Haiku, fast model — Opus was too slow at ~1.6 calls/min on big prompts) kept
+  **150/260** candidates with validated gold (spot-checked 5/5 sensible). 260 Haiku labeling
+  calls ($5.12). Switched curation off Opus to Haiku after a slow run; ate ~48 wasted Opus calls.
+- **recall@k (n=150, free):** vector @5=0.673 @10=0.733; bm25 @5=0.387; hybrid @5=0.667 @10=0.773.
+  Vector >> BM25; hybrid ≈ vector, better at k=10; retrieval is a real bottleneck (~1/3 miss@5).
+- **Crown jewel (strict context-only RAG), n=150, joint Opus judge:** base **54.5** vs RAG
+  **40.7**, lift **−13.8** (CI [−20.2,−7.6]). RAG win/tie/loss 50/10/90. **RAG underperformed
+  base.** Recall-conditioned: gold-retrieved (n=101) base 52.7 / rag 48.9 (≈tie); gold-missed
+  (n=49) base 58.0 / rag 23.8 (RAG craters — strict prompt → "not enough info" vs base answering
+  from knowledge). Verified on transcripts. 150 Opus judge calls ($4.91).
+- **Surprise vs selection:** base scored 54.5 here vs 30.8 in selection — the curated
+  docs-answerable questions are also answerable from Claude's parametric knowledge; bar for RAG
+  is higher than the selection sample implied. Honest null/negative headline.
+- **Eval-first loop closed:** diagnosis → fix = a "fallback RAG" prompt (use+cite context, fall
+  back to parametric knowledge when context is thin). Re-running the same 150-question ablation.
+- **Judge budget (answer-grading):** selection 70 + crown-jewel strict 150 = 220; + fallback 150
+  = 370. Under 500. (Curation labeling 260 Haiku tracked separately as cheaper dataset build.)
