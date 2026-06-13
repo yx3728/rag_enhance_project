@@ -1,0 +1,22 @@
+# secrets
+.env
+.env.*
+!.env.example
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+
+# data: keep eval sets + small results in git; ignore large fetched corpora, indices, caches
+data/raw/
+data/index/
+.cache/
+*.log
+.DS_Store
+
+# the reference clone of enterprise-copilot (re-fetchable)
+_ref_enterprise-copilot/
