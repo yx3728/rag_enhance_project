@@ -115,3 +115,27 @@ trustworthy recall@k and a fair crown-jewel judge. ~110 curation judge calls bud
   back to parametric knowledge when context is thin). Re-running the same 150-question ablation.
 - **Judge budget (answer-grading):** selection 70 + crown-jewel strict 150 = 220; + fallback 150
   = 370. Under 500. (Curation labeling 260 Haiku tracked separately as cheaper dataset build.)
+
+---
+
+## 2026-06-13 — Phase 6/7: eval-first fix, resume, report
+
+- **Fallback-RAG fix** (use+cite context, fall back to parametric knowledge when context is thin),
+  same 150-question ablation. A session/rate limit killed 63 of the 150 judge calls mid-run
+  (only n=87 valid). Wrote `resume_ablation.py` (re-runs only the invalid rows, merges,
+  recomputes) and bumped `call_claude` retries 2→4. Re-ran the 63 → full **n=150**.
+- **Fallback result:** base 49.5 vs RAG **56.1**, lift **+6.6** (CI [2.0, 11.1], significant).
+  win/tie/loss 67/37/46. Conditioned: gold-retrieved +12.5, gold-missed −5.4 (vs strict's −34.2).
+  **The fix flips RAG from −13.8 (loss) to +6.6 (win); ~20-pt swing from one prompt change.**
+  (base mean shifts run-to-run because base answers are regenerated → report the within-run lift.)
+- Wrote `REPORT.md` (substrate selection, eval design, recall/strategy comparison, crown jewel +
+  diagnosis + fix, solid/shaky, next-step plan ordered by ROI, resume bullets, budget appendix).
+  Updated README + `run_pilot.py` to reproduce the actual (curated) pipeline incl. both variants.
+
+### Final accounting
+- **LLM-as-judge (answer-grading) calls ≈ 370** (selection 70 + strict 150 + fallback 150) —
+  under the ≤500 budget. Curation labeling (260 Haiku) reported as a separate, cheaper category.
+- **Total pilot spend ≈ $24** (Claude via `claude` CLI / OAuth; embeddings local & free).
+- Honest headline: RAG is genuinely needed and works **after** the eval-first measure→diagnose→fix
+  loop; naive RAG alone regressed a capable base model. Single substrate / single seed — direction
+  is likely general but not proven.

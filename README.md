@@ -9,6 +9,13 @@ swaps the corpus to a real dev tool, then wraps it in a rigorous, mostly-objecti
 The headline deliverable is a **RAG-vs-base-model ablation**: the same real questions answered
 (a) by the base model alone and (b) by the RAG system, with the lift measured. See `REPORT.md`.
 
+**Substrate (chosen by data): `dagster-io/dagster`** — picked because the base model did worst on
+it among the candidates (it's fast-moving, version-specific, SWE-relevant). **Headline result:**
+on 150 real docs-answerable questions, *naive* context-only RAG **underperformed** the base model
+(lift −13.8, 95% CI [−20.2, −7.6]); the eval-first loop diagnosed the cause (retrieval misses ×
+a brittle "context-only" prompt) and a fallback-prompt fix flipped it to a **+6.6** win
+(95% CI [2.0, 11.1]). Retrieval recall@5 = 0.67 (vector) vs 0.39 (BM25). Full numbers in `REPORT.md`.
+
 ## What's here (and what's deliberately not)
 
 This is a **pilot**: a command-line RAG pipeline + eval harness. There is **no** frontend,
@@ -48,16 +55,21 @@ python -m venv .venv && .venv/bin/pip install sentence-transformers rank_bm25 sc
 
 ```bash
 # 0. (one time) fetch answered Discussions Q&A for the candidate repos
-.venv/bin/python src/fetch_discussions.py <owner> <name> 120
+.venv/bin/python src/fetch_discussions.py dagster-io dagster 320
+#    (repeat for PrefectHQ/prefect, litestar-org/litestar, marimo-team/marimo, duckdb/duckdb)
 
 # 1. substrate selection — pick the tool where the base model does worst
-.venv/bin/python src/selection.py
+.venv/bin/python src/selection.py                         # -> results/selection.json
 
-# 2. end-to-end pilot for the chosen substrate (fetch docs -> eval set -> recall -> ablation)
-.venv/bin/python src/run_pilot.py <owner__name>
+# 2. end-to-end pilot for the chosen substrate:
+#    fetch docs -> curate eval set -> recall@k -> crown-jewel ablation (strict + fallback)
+.venv/bin/python src/run_pilot.py dagster-io__dagster
 ```
 
-Results land in `results/` as JSON; the eval set in `data/eval/<tool>.json`.
+Individual steps are also runnable directly: `fetch_docs.py`, `curate_eval.py`, `recall.py`,
+`ablation.py [--rag-variant strict|fallback]`, and `resume_ablation.py` (re-runs any judge calls
+dropped by a rate/session limit and merges them). Results land in `results/` as JSON; the eval set
+in `data/eval/<tool>.json`.
 
 ## Eval design (summary)
 

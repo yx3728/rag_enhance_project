@@ -140,14 +140,69 @@ weak. We added a **fallback RAG** prompt — *prefer and cite the retrieved cont
 to the model's own knowledge (and flag it) when the context doesn't cover the question* — and
 re-ran the same 150-question ablation.
 
-<!-- FALLBACK_NUMBERS -->
-_(filled in after the fallback run completes)_
+**Result: the fix flips the sign — RAG now beats the base model.**
+
+| RAG variant | base mean | RAG mean | lift (RAG − base) | 95% CI | win/tie/loss |
+|---|---|---|---|---|---|
+| strict (context-only) | 54.5 | 40.7 | **−13.8** | [−20.2, −7.6] | 50 / 10 / 90 |
+| **fallback (use+cite context, else parametric)** | 49.5 | 56.1 | **+6.6** | **[2.0, 11.1]** | 67 / 37 / 46 |
+
+(n=150 each; base is re-generated per run, so its mean shifts a few points with LLM/judge noise
+— the joint judge compares base vs RAG *within* each run, so the **lift** is the reliable
+quantity.) Correct-rate rose from 0.48 (base) to 0.61 (fallback RAG); the judge preferred the RAG
+answer on 83/150 vs 65 for base.
+
+Recall-conditioned, the fix does exactly what the diagnosis predicted:
+
+| retrieval outcome | n | strict RAG − base | fallback RAG − base |
+|---|---|---|---|
+| gold retrieved | 101 | −3.8 | **+12.5** |
+| gold missed | 49 | −34.2 | **−5.4** |
+
+- When the gold chunk **is** retrieved, the context now clearly helps (+12.5 vs base).
+- When retrieval **misses**, the fallback no longer craters (−5.4 vs −34.2) — instead of refusing,
+  the model answers from its own knowledge and flags it.
+
+**The headline, honestly stated:** on a corpus where a capable base model already does fairly
+well, *naive* context-only RAG **hurt** (−13.8); the **eval-first loop diagnosed the cause
+(retrieval misses × a brittle prompt) and produced a fix that turned a −13.8 regression into a
+statistically-significant +6.6 win** — a ~20-point swing from one prompt change, measured on the
+same 150 real questions. RAG is genuinely needed *and* works **once you measure and fix the
+failure mode** — which is the whole point of the eval-first redesign.
 
 ---
 
 ## 5. What's solid / what's shaky
 
-<!-- ASSESSMENT -->
+**Solid.**
+- **Recall@k is fully objective and runs free on the whole set** (150 questions), with a clean
+  vector / BM25 / hybrid comparison and latency. No judge, no sampling.
+- **The crown-jewel lift is measured on all 150 questions with a randomized-position joint judge
+  and a bootstrap CI.** Both the strict (−13.8, CI excludes 0) and fallback (+6.6, CI excludes 0)
+  results are statistically separable from zero.
+- **The recall-conditioned breakdown is the same in both runs** and mechanistically consistent
+  (verified on transcripts): the failure is retrieval-miss × brittle prompt, and the fix targets
+  exactly that. The improvement is not a fluke of one metric.
+- **Reproducible & cheap.** Local embeddings + cached index; ~370 judge-grading calls and ~$24
+  total for the entire pilot, tracked per call.
+
+**Shaky / caveats (don't overclaim).**
+- **Single substrate, single seed.** All numbers are dagster only, one answer model (Haiku 4.5),
+  one judge (Opus 4.8). The direction is likely general but is not shown to be.
+- **Reference answers are real GitHub accepted answers** — authentic, but sometimes terse,
+  link-only, or tied to an older dagster version. The curation filter dropped the worst, but some
+  version drift between 2024-era Q&A and current docs remains and adds noise (it would tend to
+  *understate* RAG, since RAG retrieves current docs).
+- **Gold labels are LLM-curated (Haiku), not human-adjudicated.** Spot-checked 5/5 sensible and
+  drawn from a retriever-fair candidate pool, but not gold-standard; recall numbers should be read
+  as "good" not "exact". Gold also shares the embedding space, mildly favoring dense retrieval in
+  the §3 strategy comparison (irrelevant to the crown jewel — base does no retrieval).
+- **Base score moved between selection (30.8) and the crown jewel (54.5).** This reflects sample +
+  protocol differences (14 raw questions / single-answer judge vs 150 curated / joint judge), and
+  is why we report the within-run *lift* rather than cross-run absolute scores.
+- **LLM-judge bias.** A single judge model; we mitigated position bias (randomized A/B) and
+  self-preference (judge ≠ answerer), and cross-checked against the objective recall signal, but
+  did not run multi-judge agreement. Judge scores are directional, not absolute truth.
 
 ---
 
@@ -207,4 +262,45 @@ generalizes, at the cost of more judge calls.
 
 ## 7. Draft resume bullets
 
-<!-- RESUME -->
+Grounded only in what this pilot actually produced (no deploy, no scale claims).
+
+**SWE / full-stack framing**
+- Built a command-line RAG documentation-QA pipeline over a 4,700-chunk dagster docs corpus,
+  reusing an existing FastAPI/Next.js RAG codebase's core and replacing its Qdrant service with a
+  zero-dependency in-process vector + BM25 + hybrid index for reproducible, offline retrieval.
+- Designed and built an automated evaluation harness (objective recall@k + an LLM-judge answer
+  grader with a per-call cost/budget tracker) that runs end-to-end from one command and persists
+  reproducible JSON results — the basis for a CI regression gate on retrieval quality.
+- Engineered the full data pipeline: pulled and cached real Q&A from GitHub Discussions and docs
+  from the source repo, with rate-limit-aware retries, threaded concurrency, and crash-safe
+  checkpoint/resume for long judged runs.
+
+**AI engineer framing**
+- Ran a rigorous RAG-vs-base-model ablation on 150 real, docs-answerable developer questions:
+  found that *naive* "answer-from-context-only" RAG **underperformed** a strong base model by 13.8
+  points (95% CI [−20.2, −7.6]) — a non-obvious, honestly-reported result.
+- Diagnosed the failure with a retrieval-conditioned analysis (RAG cratered −34 pts only when
+  retrieval missed the gold chunk, ~⅓ of the time) and shipped a prompt fix (cite context, fall
+  back to parametric knowledge) that flipped the result to a statistically-significant **+6.6**
+  win (95% CI [2.0, 11.1]) — a ~20-point swing, re-measured on the same eval set.
+- Built the substrate selection, eval-set curation (LLM-verified gold with a retriever-fair
+  candidate pool), and recall@k (vector 0.67 vs BM25 0.39 @5) under a strict ≤500 LLM-judge-call
+  budget (~370 used) at ~$24 total, keeping the methodology defensible (randomized-position judge,
+  bootstrap CIs, disclosed caveats).
+
+---
+
+## Appendix — budget & cost
+
+| phase | model(s) | calls | kind | cost |
+|---|---|---|---|---|
+| substrate selection | Haiku gen + Opus judge | 70 + 70 | judge-grading (70) | $2.14 |
+| eval-set curation | Haiku | 260 | dataset labeling | $5.12 |
+| crown jewel — strict | Haiku gen (300) + Opus judge (150) | 150 | judge-grading | $7.24 |
+| crown jewel — fallback (+resume) | Haiku gen + Opus judge | 150 | judge-grading | ~$7.9 |
+| smoke tests / one abandoned slow curation | mixed | ~60 | — | ~$2 |
+
+**LLM-as-judge (answer-grading) calls ≈ 370** (selection 70 + strict 150 + fallback 150) — within
+the ≤500 budget. Dataset-construction *labeling* (Haiku curation, 260) is reported separately as a
+distinct, cheaper category. **Total pilot spend ≈ $24** (Claude via the `claude` CLI on an OAuth
+account; embeddings local/free). Raw per-call usage is in each `results/*.json`.
