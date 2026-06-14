@@ -10,11 +10,21 @@ The headline deliverable is a **RAG-vs-base-model ablation**: the same real ques
 (a) by the base model alone and (b) by the RAG system, with the lift measured. See `REPORT.md`.
 
 **Substrate (chosen by data): `dagster-io/dagster`** — picked because the base model did worst on
-it among the candidates (it's fast-moving, version-specific, SWE-relevant). **Headline result:**
-on 150 real docs-answerable questions, *naive* context-only RAG **underperformed** the base model
-(lift −13.8, 95% CI [−20.2, −7.6]); the eval-first loop diagnosed the cause (retrieval misses ×
-a brittle "context-only" prompt) and a fallback-prompt fix flipped it to a **+6.6** win
-(95% CI [2.0, 11.1]). Retrieval recall@5 = 0.67 (vector) vs 0.39 (BM25). Full numbers in `REPORT.md`.
+it among the candidates (it's fast-moving, version-specific, SWE-relevant).
+
+**Headline result (after the diagnose-then-fix pass — see `DIAGNOSIS.md`):** on 150 real
+docs-answerable questions, the deployable **fallback RAG beats the base model by +12.2** (95% CI
+[6.9, 17.6]) on the diagnosed+widened corpus. Honest retrieval quality is **claim-coverage@5 ≈
+0.57** (the originally-reported recall@5 = 0.67 was an artifact of content-empty `<CodeExample>`
+gold stubs). The dominant remaining limit is a **~21% corpus gap** (community/debugging knowledge
+not in the docs), not the retriever.
+
+<details><summary>Before diagnosis (original pilot numbers)</summary>
+
+Naive context-only RAG *underperformed* base (lift −13.8); a fallback prompt got it to +6.6;
+recall@5 reported as 0.67. The diagnosis showed recall was inflated by stub gold and the corpus
+was missing the real API reference; fixing those raised the fallback lift to +12.2.
+</details>
 
 ## What's here (and what's deliberately not)
 
@@ -35,7 +45,14 @@ src/
   ablation.py         crown-jewel RAG-vs-base ablation (judge-scored) + bootstrap CI
   selection.py        substrate selection: base-model performance across candidate tools
   run_pilot.py        end-to-end runner for one substrate
-docs/                 design notes (enterprise-copilot read-through, eval design)
+  # --- diagnose-then-fix pass (see DIAGNOSIS.md) ---
+  corpus.py           rebuild corpus: expand <CodeExample> stubs, MDX cleanup, heading-aware chunks (+wide: API docstrings)
+  apidocs.py          extract public API docstrings from all dagster packages (the real API reference)
+  coverage.py         answer-coverage@k (gold-independent Opus judge)
+  analyze.py          lenient claim-coverage analyzer + corpus-gap + optional cross-encoder reranker
+  triage.py           forensic residual triage into (a)corpus-gap/(b)mislabel/(c)chunking/(d)embedding
+  remap_gold.py       remap eval gold onto a re-chunked corpus (lexical overlap)
+docs/                 design notes (enterprise-copilot read-through, eval design, diagnosis-research)
 data/                 eval sets + (gitignored) fetched corpora, indices, caches
 results/              persisted JSON results (selection, recall, ablation)
 ```

@@ -11,6 +11,22 @@ embeddings are local (`bge-small`, offline). Costs below are the CLI's reported 
 
 ---
 
+> ## ⬆️ Post-diagnosis update (best config) — see `DIAGNOSIS.md`
+>
+> The pilot numbers below were **before** a dedicated diagnose-then-fix pass. That pass found the
+> weak numbers were mostly an **artifact + corpus-coverage** problem, not a retrieval ceiling:
+> - **recall@5 = 0.673 was an illusion** — labeled gold was largely content-empty `<CodeExample>`
+>   stubs. Honest, lenient **claim-coverage@5** is **0.53** (docs only) → **0.57** after adding the
+>   real API reference (all-package source docstrings; the Sphinx rST is just autodoc stubs).
+> - **Crown-jewel lift improved with the fixed corpus:** deployable **fallback RAG lift +6.6 →
+>   +12.2** (95% CI [6.9, 17.6]); strict RAG −13.8 → −3.4 (≈tie).
+> - Residual ceiling ≈ **21% corpus-gap** (community/debugging knowledge not in the docs) — not
+>   fixable by embeddings/rerankers (an off-the-shelf reranker actually *hurt*).
+>
+> Numbers in §3–§4 below are the **pre-diagnosis** baseline, kept so the delta is visible.
+
+---
+
 ## 1. Substrate selection (data-driven)
 
 **Method.** Picked 5 candidate open-source developer tools, each with (a) real docs and (b) a real
