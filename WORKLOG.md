@@ -231,3 +231,33 @@ corpus `dagster-io__dagster_mech`:
 - **Best config = `_wide` (vector, no reranker), coverage@5 = 0.567.** Cost this phase ~$30 (Opus
   analyze ×3 + research). Recall@5 (free, vs remapped gold): _wide vector 0.507 — fragile, coverage
   is the reported metric.
+
+## Phase 5 — crown jewel re-run on best config (`_wide`)
+
+Same 150 questions, same joint Opus judge + protocol; only the RAG corpus changed (base is the
+no-retrieval control). (These runs predate the medium-effort pin → unpinned default, consistent
+with all other runs.)
+
+| config | base | RAG | lift | 95% CI | w/t/l |
+|---|---|---|---|---|---|
+| OLD — strict | 54.5 | 40.7 | −13.8 | [−20.2,−7.6] | 50/10/90 |
+| OLD — fallback | 49.5 | 56.1 | +6.6 | [2.0,11.1] | 67/37/46 |
+| WIDE — strict | 51.2 | 47.8 | −3.4 | [−10.1,3.5] | 61/14/75 |
+| **WIDE — fallback (best)** | 50.5 | 62.7 | **+12.2** | **[6.9,17.6]** | 80/23/47 |
+
+- **Deployable (fallback) lift nearly doubled: +6.6 → +12.2.** Strict went from significant
+  regression to a tie. gold-retrieved fallback lift +12.5 → +19.0; gold-missed −5.4 → +5.1 (wider
+  corpus helps even on retrieval misses). Hypothesis confirmed: weak numbers were fixable
+  corpus/implementation+measurement defects, not a task ceiling. Residual ceiling = ~21% community-
+  knowledge corpus gap (not retrieval-fixable).
+
+## Phase 6 — write-up + cost
+
+- `DIAGNOSIS.md` (baseline → post-mechanical → post-advanced, residual a/b/c/d, recall-vs-coverage,
+  crown-jewel before/after, implications). REPORT.md/README.md headline updated to best config with
+  the pre-diagnosis numbers kept as a "before" note.
+- **Judge effort:** all runs in this task used the CLI default (unpinned); going forward the Opus
+  judge is pinned to `effort=medium` (`src/llm.py`); Haiku unaffected (effort errors on Haiku).
+- **Cost (this diagnosis task, Opus unless noted):** baseline-coverage $4.86, mech-coverage $5.45,
+  triage $8.30, analyze ×3 (mech/wide/wide+rerank) $12.2+$12.5+$12.6, wide crown jewel
+  strict+fallback $7.6+$8.1, research subagent ~$1 → **≈ $73**. (Earlier pilot build ≈ $18.)

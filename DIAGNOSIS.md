@@ -82,8 +82,35 @@ ranked below 5 or split across chunks.
 
 ## Crown jewel — RAG vs base, best config vs original
 
-<!-- CROWN -->
-_(filled in after the `_wide` strict+fallback ablation completes)_
+Same 150 questions, same joint Opus judge (positions randomized), same protocol — only the RAG
+retrieval corpus changed (base model answers with no retrieval, so it's the control).
+
+| config | base | RAG | **lift (RAG−base)** | 95% CI | RAG w/t/l |
+|---|---|---|---|---|---|
+| OLD corpus — strict (context-only) | 54.5 | 40.7 | **−13.8** | [−20.2, −7.6] | 50/10/90 |
+| OLD corpus — fallback | 49.5 | 56.1 | **+6.6** | [2.0, 11.1] | 67/37/46 |
+| **WIDE corpus — strict** | 51.2 | 47.8 | **−3.4** | [−10.1, 3.5] | 61/14/75 |
+| **WIDE corpus — fallback (best)** | 50.5 | 62.7 | **+12.2** | **[6.9, 17.6]** | 80/23/47 |
+
+**The diagnosis-driven corpus fix nearly doubled the deployable lift (+6.6 → +12.2)** and turned
+strict RAG from a significant regression (−13.8) into a statistical tie (−3.4, CI spans 0).
+
+Recall-conditioned (fallback):
+
+| retrieval outcome | OLD: base→RAG | WIDE: base→RAG |
+|---|---|---|
+| gold retrieved | 48.1 → 60.6 (+12.5, n=101) | **47.6 → 66.6 (+19.0, n=76)** |
+| gold missed | 52.2 → 46.8 (−5.4, n=49) | **53.6 → 58.7 (+5.1, n=74)** |
+
+On the wide corpus, fallback RAG beats base **even when the exact gold chunk isn't in the top-5**
+(+5.1) — the richer corpus supplies useful supporting context regardless. (The gold-retrieved n
+drops 101→76 only because exact gold was remapped onto a 7,028-chunk index where more chunks
+compete; the *lift* is the reliable quantity, and it rose across the board.)
+
+**Verdict on the hypothesis:** confirmed for the fixable portion. Weak numbers were dominated by
+implementation/measurement defects (stub-poisoned corpus+gold, missing API reference, a too-strict
+metric), not an inherent ceiling — fixing the corpus moved the headline lift from +6.6 to +12.2.
+The residual ceiling (~21% corpus-gap of community knowledge) is real and not retrieval-fixable.
 
 ## Implementation vs real ceiling
 
