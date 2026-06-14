@@ -93,6 +93,11 @@ def call_claude(
     max_retries: int = 4,
 ) -> LLMResult:
     """Single headless Claude call. Returns an LLMResult (never raises on model/CLI error)."""
+    # Effort policy (set 2026-06-13 per user): pin the Opus judge to a fixed "medium" effort for
+    # reproducibility going forward. Earlier runs used the CLI default (unpinned) and are kept as-is.
+    # NOTE: --effort errors on Haiku 4.5 (answer/curation model), so only apply it to Opus.
+    if effort is None and "opus" in model:
+        effort = "medium"
     argv = ["claude", "-p", prompt, "--model", model, "--system-prompt", system]
     if effort:
         argv += ["--effort", effort]
