@@ -1,5 +1,7 @@
 # RAG Enhancement Pilot — eval-first documentation QA
 
+> **📄 Full project write-up: [`FINAL_REPORT.md`](FINAL_REPORT.md)** — publication-style report spanning the original repo, the eval-first pilot, the diagnose-and-fix metric work, and the multi-repo scale-up.
+
 An **eval-first** redesign of a documentation-QA RAG system, built on a **developer-tool /
 library substrate** (questions about *using* the software, so ground truth lives in the docs).
 It reuses the RAG core of [`enterprise-copilot`](https://github.com/yx3728/enterprise-copilot)
