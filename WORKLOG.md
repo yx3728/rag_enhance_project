@@ -287,3 +287,11 @@ with all other runs.)
 - **Chosen 3:** cell1 duckdb (moderate, forum), cell2 litestar (low, forum), cell3 pydantic-ai
   (post-cutoff v1.0 2025-09-04, discussions disabled → synthetic-Q). marimo = cell-2 alternate.
 - `results/multirepo/multirepo_selection.json`.
+
+## Phase: per-repo eval-set build
+- **Session-limit incident:** first dual-curation ran during a session limit → duckdb 41% calls
+  errored (degraded 57 kept), litestar 98% errored (0 kept). Detected via traces (is_error rate).
+  Archived degraded traces to traces/_session_limited_*/; re-ran after recovery (0% error).
+- **duckdb** (forum): kept **136/262** docs-answerable, curate $4.96.
+- **litestar** (forum): kept **51/99** (its full available Q&A; small-n flagged), curate $1.81.
+- **pydantic-ai** (synthetic): doc-grounded set (next).
