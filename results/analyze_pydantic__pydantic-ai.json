@@ -1,0 +1,799 @@
+{
+  "tool": "pydantic__pydantic-ai",
+  "n": 110,
+  "rerank": false,
+  "coverage_at": {
+    "1": 0.664,
+    "3": 0.855,
+    "5": 0.891,
+    "10": 0.909
+  },
+  "in_corpus_rate": 0.955,
+  "corpus_gap_rate": 0.045,
+  "present_but_ranked_below5": 0.064,
+  "usage": {
+    "gen_calls": 0,
+    "judge_calls": 110,
+    "judge_budget": 500,
+    "judge_remaining": 390,
+    "total_cost_usd": 8.4958,
+    "by_model": {
+      "claude-opus-4-8": {
+        "calls": 110,
+        "cost_usd": 8.4958
+      }
+    }
+  },
+  "rows": [
+    {
+      "id": "pydantic__pydantic-ai#docs/AGENTS.md#1",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 2
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/a2a.md#3",
+      "in_corpus": true,
+      "best_vrank": 6,
+      "sufficient": true,
+      "supporting_n": 2
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/agent-spec.md#4",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 5
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/agent.md#5",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": true,
+      "supporting_n": 7
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/agent.md#17",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/agent.md#39",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 7
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/agent.md#49",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 4
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/agent.md#61",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/api/models/google.md#0",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 4
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/capabilities.md#6",
+      "in_corpus": true,
+      "best_vrank": null,
+      "sufficient": true,
+      "supporting_n": 2
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/capabilities.md#17",
+      "in_corpus": true,
+      "best_vrank": 11,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/capabilities.md#27",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 4
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/capabilities.md#40",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 5
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/capabilities.md#52",
+      "in_corpus": true,
+      "best_vrank": 2,
+      "sufficient": true,
+      "supporting_n": 4
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/capabilities.md#66",
+      "in_corpus": true,
+      "best_vrank": 2,
+      "sufficient": true,
+      "supporting_n": 2
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/capabilities.md#76",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 4
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/capabilities.md#88",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": true,
+      "supporting_n": 2
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/capabilities.md#100",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/capabilities.md#111",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/capabilities.md#124",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 5
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/cli.md#0",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/common-tools.md#0",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/common-tools.md#10",
+      "in_corpus": true,
+      "best_vrank": 2,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/contributing.md#8",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 5
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/deferred-tools.md#6",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 4
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/deferred-tools.md#16",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/dependencies.md#4",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 4
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/direct.md#3",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/durable_execution/dbos.md#9",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/durable_execution/kitaru.md#5",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 2
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/durable_execution/prefect.md#7",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 2
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/durable_execution/restate.md#1",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 5
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/durable_execution/temporal.md#7",
+      "in_corpus": true,
+      "best_vrank": 11,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/durable_execution/temporal.md#18",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 2
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/embeddings.md#5",
+      "in_corpus": true,
+      "best_vrank": 4,
+      "sufficient": false,
+      "supporting_n": 2
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/embeddings.md#17",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 3
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/embeddings.md#27",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 5
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/embeddings.md#38",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/core-concepts.md#9",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/core-concepts.md#19",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 5
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/evaluators/built-in.md#9",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 7
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/evaluators/custom.md#4",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 4
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/evaluators/custom.md#14",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/evaluators/framework-integrations.md#0",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 5
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/evaluators/llm-judge.md#4",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 2
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/evaluators/llm-judge.md#17",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/evaluators/overview.md#9",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": true,
+      "supporting_n": 4
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/evaluators/report-evaluators.md#2",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 2
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/evaluators/report-evaluators.md#12",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/evaluators/report-evaluators.md#22",
+      "in_corpus": true,
+      "best_vrank": 16,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/evaluators/span-based.md#7",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/evaluators/span-based.md#17",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/how-to/concurrency.md#1",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 4
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/how-to/dataset-management.md#4",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/how-to/dataset-management.md#15",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/how-to/dataset-serialization.md#7",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": true,
+      "supporting_n": 6
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/how-to/lifecycle.md#2",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": true,
+      "supporting_n": 6
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/how-to/logfire-integration.md#4",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/how-to/metrics-attributes.md#6",
+      "in_corpus": true,
+      "best_vrank": 10,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/how-to/metrics-attributes.md#20",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 4
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/how-to/multi-run.md#4",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/how-to/retry-strategies.md#8",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/online-evaluation.md#2",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/online-evaluation.md#13",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/online-evaluation.md#23",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/online-evaluation.md#38",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/quick-start.md#2",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 8
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals.md#5",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 4
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/examples/ag-ui.md#0",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/examples/data-analyst.md#0",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/examples/setup.md#0",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 2
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/examples/slack-lead-qualifier.md#7",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/examples/slack-lead-qualifier.md#18",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/extensibility.md#2",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/gateway.md#6",
+      "in_corpus": true,
+      "best_vrank": 8,
+      "sufficient": true,
+      "supporting_n": 2
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/gateway.md#16",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": true,
+      "supporting_n": 2
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/graph/builder/decisions.md#9",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/graph/builder/index.md#6",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 7
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/graph/builder/joins.md#7",
+      "in_corpus": true,
+      "best_vrank": 3,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/graph/builder/joins.md#23",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/graph/builder/parallel.md#10",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 6
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/graph/builder/steps.md#1",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 5
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/graph/builder/steps.md#12",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/graph.md#9",
+      "in_corpus": true,
+      "best_vrank": 3,
+      "sufficient": false,
+      "supporting_n": 2
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/graph.md#20",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 5
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/hooks.md#1",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 6
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/hooks.md#11",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/hooks.md#21",
+      "in_corpus": true,
+      "best_vrank": 2,
+      "sufficient": true,
+      "supporting_n": 6
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/input.md#1",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 2
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/input.md#11",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 4
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/input.md#21",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/logfire.md#4",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/logfire.md#18",
+      "in_corpus": true,
+      "best_vrank": 3,
+      "sufficient": false,
+      "supporting_n": 2
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/mcp/client.md#7",
+      "in_corpus": true,
+      "best_vrank": 2,
+      "sufficient": true,
+      "supporting_n": 4
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/mcp/client.md#17",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/mcp/client.md#27",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 2
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/mcp/fastmcp-client.md#3",
+      "in_corpus": true,
+      "best_vrank": 2,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/message-history.md#1",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/message-history.md#16",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 7
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/message-history.md#26",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 2
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/models/anthropic.md#1",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/models/anthropic.md#12",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/models/anthropic.md#22",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/models/anthropic.md#34",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/models/bedrock.md#10",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 2
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/models/cerebras.md#1",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/models/google.md#6",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/models/google.md#16",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 5
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/models/huggingface.md#0",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/models/ollama.md#0",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 4
+    }
+  ]
+}

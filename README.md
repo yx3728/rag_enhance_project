@@ -9,8 +9,26 @@ swaps the corpus to a real dev tool, then wraps it in a rigorous, mostly-objecti
 The headline deliverable is a **RAG-vs-base-model ablation**: the same real questions answered
 (a) by the base model alone and (b) by the RAG system, with the lift measured. See `REPORT.md`.
 
-**Substrate (chosen by data): `dagster-io/dagster`** — picked because the base model did worst on
-it among the candidates (it's fast-moving, version-specific, SWE-relevant).
+> ## 🌐 Multi-repo scale-up (latest) — see `REPORT_MULTIREPO.md`
+>
+> The fixed pipeline was scaled to **3 repos** spanning the base model's (Haiku 4.5, cutoff Feb
+> 2025) familiarity × doc-completeness. The deployable **fallback RAG beats the base model on all
+> three** (95% CI excludes 0), and the lift tracks a **measured corpus-gap** covariate:
+>
+> | repo | base familiarity | corpus-gap | claim-cov@5 | **fallback lift [95% CI]** | mode |
+> |---|---|---|---|---|---|
+> | duckdb | 43.5 (moderate) | 0.228 | 0.51 | **+11.1 [6.1,15.9]** | forum |
+> | litestar | 26.7 (low) | 0.137 | 0.61 | **+14.5 [4.1,25.0]** | forum |
+> | pydantic-ai | ~25 (post-cutoff) | 0.045 | 0.89 | **+65.4 [60.1,70.3]** | synthetic |
+>
+> pydantic-ai (v1 released after the base's training cutoff) is a knowledge-injection demo, flagged
+> as synthetic (doc-shaped Qs ⇒ easy retrieval). Confounds (entangled axes, single seed, synthetic
+> mode) are laid out in `REPORT_MULTIREPO.md`. Every judge call is traced (`traces/`, `manifest.json`).
+
+---
+
+**Original pilot substrate (chosen by data): `dagster-io/dagster`** — picked because the base model
+did worst on it among the candidates (it's fast-moving, version-specific, SWE-relevant).
 
 **Headline result (after the diagnose-then-fix pass — see `DIAGNOSIS.md`):** on 150 real
 docs-answerable questions, the deployable **fallback RAG beats the base model by +12.2** (95% CI

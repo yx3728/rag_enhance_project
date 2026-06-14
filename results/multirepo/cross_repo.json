@@ -1,0 +1,63 @@
+{
+  "subject_model": "claude-haiku-4-5",
+  "judge_model": "claude-opus-4-8 (effort=medium)",
+  "rows": [
+    {
+      "repo": "duckdb__duckdb",
+      "cell": "moderate",
+      "eval_mode": "forum",
+      "n_eval": 136,
+      "base_familiarity_probe": 43.5,
+      "claim_coverage_at5": 0.507,
+      "corpus_gap": 0.228,
+      "recall_at5_vector": 0.61,
+      "fallback_lift": 11.1,
+      "fallback_lift_ci95": [
+        6.1,
+        15.9
+      ],
+      "fallback_base_mean": 51.0,
+      "fallback_rag_mean": 62.1,
+      "fallback_wtl": "64/42/30",
+      "strict_lift": -1.0
+    },
+    {
+      "repo": "litestar-org__litestar",
+      "cell": "low",
+      "eval_mode": "forum",
+      "n_eval": 51,
+      "base_familiarity_probe": 26.7,
+      "claim_coverage_at5": 0.608,
+      "corpus_gap": 0.137,
+      "recall_at5_vector": 0.686,
+      "fallback_lift": 14.5,
+      "fallback_lift_ci95": [
+        4.1,
+        25.0
+      ],
+      "fallback_base_mean": 48.7,
+      "fallback_rag_mean": 63.2,
+      "fallback_wtl": "27/12/12",
+      "strict_lift": 1.8
+    },
+    {
+      "repo": "pydantic__pydantic-ai",
+      "cell": "zero/post-cutoff",
+      "eval_mode": "synthetic",
+      "n_eval": 110,
+      "base_familiarity_probe": 24.9,
+      "claim_coverage_at5": 0.891,
+      "corpus_gap": 0.045,
+      "recall_at5_vector": 0.809,
+      "fallback_lift": 65.4,
+      "fallback_lift_ci95": [
+        60.1,
+        70.3
+      ],
+      "fallback_base_mean": 24.9,
+      "fallback_rag_mean": 90.3,
+      "fallback_wtl": "106/3/1",
+      "strict_lift": 64.8
+    }
+  ]
+}

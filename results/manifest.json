@@ -1,0 +1,31 @@
+{
+  "duckdb__duckdb": {
+    "claim_coverage_at5 / corpus_gap": "results/analyze_duckdb__duckdb.json",
+    "recall@k": "results/recall_duckdb__duckdb.json",
+    "fallback ablation (headline lift)": "results/ablation_duckdb__duckdb_fallback.json",
+    "strict ablation (diagnostic)": "results/ablation_duckdb__duckdb.json",
+    "eval set": "data/eval/duckdb__duckdb.json",
+    "judge traces": "traces/duckdb__duckdb/"
+  },
+  "litestar-org__litestar": {
+    "claim_coverage_at5 / corpus_gap": "results/analyze_litestar-org__litestar.json",
+    "recall@k": "results/recall_litestar-org__litestar.json",
+    "fallback ablation (headline lift)": "results/ablation_litestar-org__litestar_fallback.json",
+    "strict ablation (diagnostic)": "results/ablation_litestar-org__litestar.json",
+    "eval set": "data/eval/litestar-org__litestar.json",
+    "judge traces": "traces/litestar-org__litestar/"
+  },
+  "pydantic__pydantic-ai": {
+    "claim_coverage_at5 / corpus_gap": "results/analyze_pydantic__pydantic-ai.json",
+    "recall@k": "results/recall_pydantic__pydantic-ai.json",
+    "fallback ablation (headline lift)": "results/ablation_pydantic__pydantic-ai_fallback.json",
+    "strict ablation (diagnostic)": "results/ablation_pydantic__pydantic-ai.json",
+    "eval set": "data/eval/pydantic__pydantic-ai.json",
+    "judge traces": "traces/pydantic__pydantic-ai/"
+  },
+  "_global": {
+    "selection/base-probe": "results/multirepo/multirepo_selection.json + results/multirepo/probe_forum.json",
+    "cross-repo table": "results/multirepo/cross_repo.json",
+    "dagster diagnosis (prior)": "DIAGNOSIS.md + results/*dagster*"
+  }
+}

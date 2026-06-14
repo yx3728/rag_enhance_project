@@ -302,3 +302,20 @@ with all other runs.)
 - **litestar** (low fam 26.7, forum, n=51): claim-coverage@5 **0.608**, corpus-gap **0.137**;
   **fallback lift +14.5 [4.1,25.0]** (W/T/L 27/12/12), strict +1.8. 0 trace errors. RAG>base ✓.
   (n=51 = litestar's full available answered Q&A; small-n → wider CI.)
+
+## Phase: per-repo metrics (cont.) + cross-repo synthesis
+- **pydantic-ai** (post-cutoff, synthetic, n=110): claim-coverage@5 **0.891**, corpus-gap **0.045**;
+  **fallback lift +65.4 [60.1,70.3]** (W/T/L 106/3/1), strict +64.8. base 24.9 → rag 90.3.
+  0 trace errors. Knowledge-injection demo (flagged synthetic).
+- **Cross-repo (`results/multirepo/cross_repo.json`):** fallback RAG beats base in ALL 3 (CI
+  excludes 0). Lift tracks lower-familiarity × lower-corpus-gap: +11.1 (duckdb) → +14.5 (litestar)
+  → +65.4 (pydantic-ai). Forum-vs-forum (duckdb/litestar) is the clean comparison; pydantic-ai is
+  synthetic-inflated (flagged).
+- **Deliverables:** `REPORT_MULTIREPO.md` (selection, per-repo, cross-repo table, trend+hypothesis,
+  explicit confounds, solid/shaky, resume bullets), `results/manifest.json` (number→raw-file map),
+  README headline updated, full traces in `traces/<repo>/`.
+- **Cost (multi-repo task, traced):** ~$60 (Opus-medium judge + Haiku gen/curate, all repos:
+  probe $1.3 + curate ~$7 + synth $1.2 + analyze ~$3 + ablations ~$47). Subject=Haiku 4.5, judge=Opus medium.
+- **Honest take:** clean RAG>base across the familiarity spectrum + a measured corpus-gap covariate
+  + flagged confounds. Not a causal proof (3 entangled points); the post-cutoff point is a
+  knowledge-injection illustration, not a forum-comparable lift.
