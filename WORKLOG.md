@@ -261,3 +261,29 @@ with all other runs.)
 - **Cost (this diagnosis task, Opus unless noted):** baseline-coverage $4.86, mech-coverage $5.45,
   triage $8.30, analyze ×3 (mech/wide/wide+rerank) $12.2+$12.5+$12.6, wide crown jewel
   strict+fallback $7.6+$8.1, research subagent ~$1 → **≈ $73**. (Earlier pilot build ≈ $18.)
+
+---
+
+# === MULTI-REPO SCALE-UP TASK (2026-06 / current month per web: June 2026) ===
+
+## Cutoffs (verified online, Anthropic docs)
+- **Opus 4.8 (judge):** reliable knowledge cutoff **Jan 2026**; training cutoff Jan 2026.
+- **Haiku 4.5 (SUBJECT/base model):** reliable knowledge cutoff **Feb 2025**; training cutoff **Jul 2025**.
+- => "post-cutoff" = tools/major versions prominent after ~mid-2025. Today ≈ June 2026, so a wide
+  post-cutoff window exists. Base-probe is the empirical verifier (don't trust dates alone).
+- Source: platform.claude.com models overview; simonwillison.net Opus 4.8 note.
+
+## Plan: 3 cells spanning base-familiarity × doc-completeness
+1. **moderate familiarity, rich docs (forum-Q):** DuckDB (prior probe Haiku≈48; thorough duckdb-web docs).
+2. **low familiarity, rich docs (forum-Q):** Litestar (prior probe Haiku≈28; thorough rST docs).
+3. **zero familiarity / post-cutoff (synthetic-Q):** Pydantic AI — v1.0 released **2025-09-04**,
+   after Haiku's Jul-2025 training cutoff; rich mkdocs docs. Verify Haiku ignorance via base-probe.
+- Reuse the diagnosed/fixed pipeline (corpus.py/apidocs.py/analyze.py/ablation.py) + cached
+  duckdb/litestar discussions. Judge=Opus medium everywhere; subject=Haiku 4.5 (unchanged).
+
+## Phase: multi-repo selection (base-probe, Opus-medium judge, traced)
+- Base familiarity (Haiku, n=14 sample, docs-answerable subset): duckdb **43.5**, litestar **26.7**,
+  marimo 28.3. Probe cost $1.29 (42 gen + 42 judge). Traces: traces/_probe/probe.jsonl.
+- **Chosen 3:** cell1 duckdb (moderate, forum), cell2 litestar (low, forum), cell3 pydantic-ai
+  (post-cutoff v1.0 2025-09-04, discussions disabled → synthetic-Q). marimo = cell-2 alternate.
+- `results/multirepo/multirepo_selection.json`.

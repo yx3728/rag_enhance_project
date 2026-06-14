@@ -21,3 +21,4 @@ data/index/
 # the reference clone of enterprise-copilot (re-fetchable)
 _ref_enterprise-copilot/
 _ref_dagster/
+_ref_pydantic-ai/

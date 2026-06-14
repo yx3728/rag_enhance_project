@@ -13,8 +13,11 @@ from __future__ import annotations
 import json
 import os
 import subprocess
+import threading
 import time
 from dataclasses import dataclass, field
+from datetime import datetime, timezone
+from pathlib import Path
 
 # Clean flags: make `claude -p` behave like a bare model call.
 _CLEAN_FLAGS = [
@@ -36,6 +39,48 @@ _SCRUB = [
 ]
 
 PER_CALL_TIMEOUT_S = 240
+
+# ---- mandatory auditability: persist every judge/gen call's full prompt + raw response ----
+_TRACE = None
+_TRACE_LOCK = threading.Lock()
+
+
+class TraceWriter:
+    """Thread-safe JSONL append of full call records for reconstructing any reported number."""
+    def __init__(self, path):
+        self.path = Path(path)
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        self._lock = threading.Lock()
+        self._fh = open(self.path, "a")
+
+    def write(self, rec: dict):
+        with self._lock:
+            self._fh.write(json.dumps(rec) + "\n")
+            self._fh.flush()
+
+    def close(self):
+        try:
+            self._fh.close()
+        except Exception:
+            pass
+
+
+def enable_trace(path):
+    """Set the process-global trace sink (one per run/phase)."""
+    global _TRACE
+    with _TRACE_LOCK:
+        if _TRACE is not None:
+            _TRACE.close()
+        _TRACE = TraceWriter(path)
+    return _TRACE
+
+
+def disable_trace():
+    global _TRACE
+    with _TRACE_LOCK:
+        if _TRACE is not None:
+            _TRACE.close()
+        _TRACE = None
 
 
 @dataclass
@@ -91,8 +136,10 @@ def call_claude(
     system: str = "",
     effort: str | None = None,
     max_retries: int = 4,
+    trace_meta: dict | None = None,
 ) -> LLMResult:
-    """Single headless Claude call. Returns an LLMResult (never raises on model/CLI error)."""
+    """Single headless Claude call. Returns an LLMResult (never raises on model/CLI error).
+    If a process-global trace is enabled, persists the full prompt + raw response."""
     # Effort policy (set 2026-06-13 per user): pin the Opus judge to a fixed "medium" effort for
     # reproducibility going forward. Earlier runs used the CLI default (unpinned) and are kept as-is.
     # NOTE: --effort errors on Haiku 4.5 (answer/curation model), so only apply it to Opus.
@@ -133,7 +180,7 @@ def call_claude(
             time.sleep(1.5 * (attempt + 1))
             continue
 
-        return LLMResult(
+        res = LLMResult(
             text=(obj.get("result") or "").strip(),
             model=model,
             cost_usd=float(obj.get("total_cost_usd") or 0.0),
@@ -141,8 +188,26 @@ def call_claude(
             output_tokens=int((obj.get("usage") or {}).get("output_tokens") or 0),
             duration_ms=int(obj.get("duration_ms") or dur),
         )
+        _emit_trace(trace_meta, model, effort, system, prompt, proc.stdout, res)
+        return res
 
-    return LLMResult(text="", model=model, is_error=True, error=last_err)
+    res = LLMResult(text="", model=model, is_error=True, error=last_err)
+    _emit_trace(trace_meta, model, effort, system, prompt, "", res)
+    return res
+
+
+def _emit_trace(meta, model, effort, system, prompt, raw_stdout, res: "LLMResult"):
+    if _TRACE is None:
+        return
+    _TRACE.write({
+        "ts": datetime.now(timezone.utc).isoformat(),
+        "meta": meta or {},
+        "model": model, "effort": effort,
+        "system": system, "prompt": prompt,
+        "raw_response": raw_stdout,
+        "parsed_text": res.text, "is_error": res.is_error, "error": res.error,
+        "cost_usd": res.cost_usd, "input_tokens": res.input_tokens, "output_tokens": res.output_tokens,
+    })
 
 
 if __name__ == "__main__":

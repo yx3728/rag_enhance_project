@@ -1,0 +1,302 @@
+{
+  "judge": "claude-opus-4-8 (effort=medium)",
+  "subject": "claude-haiku-4-5",
+  "cutoffs": {
+    "haiku-4-5_reliable": "Feb 2025",
+    "haiku-4-5_training": "Jul 2025",
+    "opus-4-8": "Jan 2026"
+  },
+  "base_probe": {
+    "duckdb__duckdb": {
+      "repo": "duckdb__duckdb",
+      "sampled": 14,
+      "docs_answerable": 11,
+      "base_mean_score": 43.5,
+      "base_scores": [
+        35,
+        10,
+        88,
+        95,
+        35,
+        15,
+        75,
+        90,
+        10,
+        10,
+        15
+      ],
+      "rows": [
+        {
+          "q": 23058,
+          "docs_answerable": true,
+          "base_score": 35
+        },
+        {
+          "q": 21654,
+          "docs_answerable": true,
+          "base_score": 10
+        },
+        {
+          "q": 13141,
+          "docs_answerable": true,
+          "base_score": 88
+        },
+        {
+          "q": 19511,
+          "docs_answerable": true,
+          "base_score": 95
+        },
+        {
+          "q": 18250,
+          "docs_answerable": true,
+          "base_score": 35
+        },
+        {
+          "q": 17105,
+          "docs_answerable": true,
+          "base_score": 15
+        },
+        {
+          "q": 17570,
+          "docs_answerable": false,
+          "base_score": 40
+        },
+        {
+          "q": 17230,
+          "docs_answerable": true,
+          "base_score": 75
+        },
+        {
+          "q": 16929,
+          "docs_answerable": false,
+          "base_score": 20
+        },
+        {
+          "q": 3096,
+          "docs_answerable": true,
+          "base_score": 90
+        },
+        {
+          "q": 16031,
+          "docs_answerable": true,
+          "base_score": 10
+        },
+        {
+          "q": 12452,
+          "docs_answerable": false,
+          "base_score": 20
+        },
+        {
+          "q": 15369,
+          "docs_answerable": true,
+          "base_score": 10
+        },
+        {
+          "q": 14915,
+          "docs_answerable": true,
+          "base_score": 15
+        }
+      ]
+    },
+    "litestar-org__litestar": {
+      "repo": "litestar-org__litestar",
+      "sampled": 14,
+      "docs_answerable": 9,
+      "base_mean_score": 26.7,
+      "base_scores": [
+        5,
+        25,
+        15,
+        10,
+        45,
+        20,
+        25,
+        5,
+        90
+      ],
+      "rows": [
+        {
+          "q": 4140,
+          "docs_answerable": true,
+          "base_score": 5
+        },
+        {
+          "q": 4319,
+          "docs_answerable": true,
+          "base_score": 25
+        },
+        {
+          "q": 3896,
+          "docs_answerable": true,
+          "base_score": 15
+        },
+        {
+          "q": 3634,
+          "docs_answerable": true,
+          "base_score": 10
+        },
+        {
+          "q": 3513,
+          "docs_answerable": false,
+          "base_score": 30
+        },
+        {
+          "q": 3355,
+          "docs_answerable": true,
+          "base_score": 45
+        },
+        {
+          "q": 3072,
+          "docs_answerable": true,
+          "base_score": 20
+        },
+        {
+          "q": 2816,
+          "docs_answerable": false,
+          "base_score": 100
+        },
+        {
+          "q": 2421,
+          "docs_answerable": false,
+          "base_score": 35
+        },
+        {
+          "q": 2227,
+          "docs_answerable": false,
+          "base_score": 45
+        },
+        {
+          "q": 2009,
+          "docs_answerable": true,
+          "base_score": 25
+        },
+        {
+          "q": 1624,
+          "docs_answerable": true,
+          "base_score": 5
+        },
+        {
+          "q": 1361,
+          "docs_answerable": true,
+          "base_score": 90
+        },
+        {
+          "q": 819,
+          "docs_answerable": false,
+          "base_score": 20
+        }
+      ]
+    },
+    "marimo-team__marimo": {
+      "repo": "marimo-team__marimo",
+      "sampled": 14,
+      "docs_answerable": 9,
+      "base_mean_score": 28.3,
+      "base_scores": [
+        10,
+        30,
+        10,
+        75,
+        20,
+        35,
+        60,
+        5,
+        10
+      ],
+      "rows": [
+        {
+          "q": 9734,
+          "docs_answerable": false,
+          "base_score": 20
+        },
+        {
+          "q": 8498,
+          "docs_answerable": false,
+          "base_score": 0
+        },
+        {
+          "q": 7655,
+          "docs_answerable": false,
+          "base_score": 10
+        },
+        {
+          "q": 6810,
+          "docs_answerable": true,
+          "base_score": 10
+        },
+        {
+          "q": 6063,
+          "docs_answerable": true,
+          "base_score": 30
+        },
+        {
+          "q": 5193,
+          "docs_answerable": true,
+          "base_score": 10
+        },
+        {
+          "q": 4512,
+          "docs_answerable": true,
+          "base_score": 75
+        },
+        {
+          "q": 3958,
+          "docs_answerable": false,
+          "base_score": 20
+        },
+        {
+          "q": 3759,
+          "docs_answerable": true,
+          "base_score": 20
+        },
+        {
+          "q": 3178,
+          "docs_answerable": true,
+          "base_score": 35
+        },
+        {
+          "q": 3196,
+          "docs_answerable": true,
+          "base_score": 60
+        },
+        {
+          "q": 2250,
+          "docs_answerable": true,
+          "base_score": 5
+        },
+        {
+          "q": 571,
+          "docs_answerable": false,
+          "base_score": 10
+        },
+        {
+          "q": 793,
+          "docs_answerable": true,
+          "base_score": 10
+        }
+      ]
+    }
+  },
+  "chosen": {
+    "cell1_moderate_richdocs": {
+      "repo": "duckdb__duckdb",
+      "base_mean": 43.5,
+      "eval_mode": "forum",
+      "docs": "duckdb/duckdb-web (thorough, self-contained markdown)"
+    },
+    "cell2_low_richdocs": {
+      "repo": "litestar-org__litestar",
+      "base_mean": 26.7,
+      "eval_mode": "forum",
+      "docs": "litestar rST + source docstrings (Sphinx autodoc)"
+    },
+    "cell3_zero_postcutoff": {
+      "repo": "pydantic__pydantic-ai",
+      "base_mean": "TBD (synthetic probe)",
+      "eval_mode": "synthetic",
+      "docs": "pydantic-ai mkdocs (171 md) + source docstrings",
+      "why": "v1.0 2025-09-04 > Haiku Jul-2025 training cutoff; discussions disabled -> synthetic Q"
+    }
+  },
+  "rationale": "Span base-familiarity (43.5 / 26.7 / ~floor) while holding docs rich. duckdb & litestar reuse cached Discussions (forum-Q); pydantic-ai is post-cutoff with no Q&A -> doc-grounded synthetic mode (\u22480 corpus-gap by construction, flagged distinctly). marimo (28.3) is the alternate for cell 2."
+}

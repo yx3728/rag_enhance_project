@@ -83,9 +83,12 @@ def _module_doc(rel: str, tree: ast.Module) -> str | None:
     return "\n\n".join(blocks)
 
 
-def extract(ref_root: Path) -> list[tuple[str, str]]:
+def extract(ref_root: Path, package_dirs: list[str] | None = None) -> list[tuple[str, str]]:
+    """Extract public-API docstring docs. If package_dirs is given (relative to ref_root), mine
+    those; otherwise auto-discover dagster's packages (back-compat)."""
     docs = []
-    for glob in discover_packages(ref_root):
+    globs = package_dirs if package_dirs is not None else discover_packages(ref_root)
+    for glob in globs:
         base = ref_root / glob
         if not base.exists():
             continue
