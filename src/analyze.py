@@ -20,7 +20,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 import config as C
 from evalkit import load_index, load_eval
-from llm import call_claude, UsageTracker
+from llm import call_claude, UsageTracker, enable_trace, disable_trace
 
 WORKERS = 5
 INF = 10**9
@@ -72,6 +72,8 @@ def run(tool, pool=20, rerank=False):
     tool_name = tool.split("__")[1].replace("_mech", "").replace("_wide", "")
     usage = UsageTracker(); lock = threading.Lock(); done = [0]
     rr = get_reranker() if rerank else None
+    tagp = "_rerank" if rerank else ""
+    enable_trace(C.ROOT / "traces" / tool / f"analyze{tagp}.jsonl")
 
     def work(q):
         vec = idx.vector(q["question"], max(pool, 30) if rerank else pool)   # ordered by dense score
@@ -93,7 +95,8 @@ def run(tool, pool=20, rerank=False):
             for i, c in enumerate(cand))
         r = call_claude(PROMPT.format(tool=tool_name, question=q["question"][:2500],
                         reference=q["reference_answer"][:2500], pool=pool_str[:15000]),
-                        model=C.JUDGE_MODEL)
+                        model=C.JUDGE_MODEL,
+                        trace_meta={"repo": tool, "phase": "analyze"+tagp, "kind": "claim_coverage", "q": q["id"]})
         v = parse_json(r.text)
         supp = [s for s in (v.get("supporting") or []) if isinstance(s, int) and 0 <= s < len(cand)]
         supp_vranks = [vrank.get(cand[s], INF) for s in supp]
@@ -125,6 +128,7 @@ def run(tool, pool=20, rerank=False):
     print(f"  in_corpus(reachable@20): {out['in_corpus_rate']}  | corpus_gap: {out['corpus_gap_rate']}")
     print(f"  present-but-ranked>=5 (reranker-addressable): {out['present_but_ranked_below5']}")
     print(f"  usage: {usage.summary()}")
+    disable_trace()
     return out
 
 

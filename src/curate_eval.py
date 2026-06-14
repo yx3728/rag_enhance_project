@@ -26,7 +26,7 @@ import numpy as np
 import config as C
 from evalkit import load_index
 from index import embed_texts
-from llm import call_claude, UsageTracker
+from llm import call_claude, UsageTracker, enable_trace, disable_trace
 
 WORKERS = 8
 POOL_ANS, POOL_VEC, POOL_BM = 5, 5, 5   # candidates from each source
@@ -91,6 +91,7 @@ def run(tool: str, limit: int | None = None):
     sims = ans_emb @ idx.emb.T
 
     usage = UsageTracker()
+    enable_trace(C.ROOT / "traces" / tool / "curate.jsonl")
     lock = threading.Lock()
     tool_name = tool.split("__")[1]
     kept = []
@@ -118,7 +119,8 @@ def run(tool: str, limit: int | None = None):
             question=shorten(f"{d['title']}\n\n{d['question']}", 2500),
             answer=shorten(d["answer"], 2000),
             pool=pool_str)
-        r = call_claude(prompt, model=C.CURATE_MODEL)
+        r = call_claude(prompt, model=C.CURATE_MODEL,
+                        trace_meta={"repo": tool, "phase": "curate", "kind": "curate", "q": d["number"]})
         with lock:
             usage.record(r, is_judge=True)
             done[0] += 1
@@ -151,6 +153,7 @@ def run(tool: str, limit: int | None = None):
     (C.EVAL / f"{tool}.json").write_text(json.dumps(out, indent=2))
     print(f"\ncurated eval set: kept {len(kept)}/{len(cands)} -> data/eval/{tool}.json")
     print(f"curation usage: {usage.summary()}")
+    disable_trace()
 
 
 if __name__ == "__main__":

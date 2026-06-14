@@ -19,7 +19,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 import config as C
 from evalkit import load_index, load_eval
-from llm import call_claude, UsageTracker
+from llm import call_claude, UsageTracker, enable_trace, disable_trace
 from rag import base_answer, rag_answer
 
 WORKERS = 5
@@ -71,7 +71,8 @@ def score_question(tool_name, q, idx, variant, rerank=False):
     a_text, b_text = (b.text, rg.answer) if base_is_a else (rg.answer, b.text)
     jr = call_claude(JUDGE_PROMPT.format(
         tool=tool_name, question=q["question"][:3000], reference=q["reference_answer"][:3000],
-        answer_a=a_text[:3000], answer_b=b_text[:3000]), model=C.JUDGE_MODEL)
+        answer_a=a_text[:3000], answer_b=b_text[:3000]), model=C.JUDGE_MODEL,
+        trace_meta={"repo": tool_name, "phase": "ablation_"+variant, "kind": "ablation_judge", "q": q["id"]})
     v = parse_json(jr.text)
     if base_is_a:
         base_score, rag_score = v.get("a_score"), v.get("b_score")
@@ -82,10 +83,12 @@ def score_question(tool_name, q, idx, variant, rerank=False):
         base_correct, rag_correct = v.get("b_correct"), v.get("a_correct")
         pref = {"B": "base", "A": "rag"}.get(v.get("preferred"), v.get("preferred"))
     row = {
-        "id": q["id"], "url": q["url"], "title": q["title"], "gold_hit": gold_hit,
+        "id": q["id"], "url": q.get("url"), "title": q["title"], "gold_hit": gold_hit,
         "base_score": base_score, "rag_score": rag_score,
         "base_correct": base_correct, "rag_correct": rag_correct,
         "preferred": pref, "reason": v.get("reason", ""),
+        "retrieved_ids": rg.retrieved_ids,           # audit: chunks that fed the RAG answer
+        "base_text": b.text, "rag_text": rg.answer,  # audit: actual generated answers
     }
     return row, [(b, False), (rg.llm, False), (jr, True)]
 
@@ -102,6 +105,7 @@ def run(tool: str, limit: int | None = None, judge_cap: int | None = None, varia
     ev = load_eval(tool)
     qs = ev["questions"]
     suffix = "" if variant == "strict" else f"_{variant}"
+    enable_trace(C.ROOT / "traces" / tool / f"ablation{suffix}.jsonl")
     if judge_cap is not None and len(qs) > judge_cap:
         print(f"NOTE: capping eval from {len(qs)} to {judge_cap} questions to stay within judge budget.")
         qs = qs[:judge_cap]
@@ -132,6 +136,7 @@ def run(tool: str, limit: int | None = None, judge_cap: int | None = None, varia
     (C.RESULTS / f"ablation_{tool}{suffix}.json").write_text(
         json.dumps({"summary": summary, "rows": rows}, indent=2))
     _print_summary(tool, summary)
+    disable_trace()
     return summary
 
 
