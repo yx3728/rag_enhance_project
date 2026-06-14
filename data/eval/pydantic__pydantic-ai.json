@@ -1,0 +1,1232 @@
+{
+  "tool": "pydantic__pydantic-ai",
+  "eval_mode": "synthetic",
+  "n_eval": 110,
+  "n_corpus_chunks": 2600,
+  "note": "doc-grounded synthetic Qs (gold = source chunk; corpus-gap \u22480 by construction). Confound: doc-shaped questions make retrieval easier than real user questions.",
+  "questions": [
+    {
+      "id": "pydantic__pydantic-ai#docs/AGENTS.md#1",
+      "title": "Documentation",
+      "question": "When writing the Pydantic AI documentation, how should I structure a code example and reference API elements like the Agent class so they get hover docs in mkdocs?",
+      "reference_answer": "Structure code examples as context/intro \u2192 code block \u2192 caveats/details (never put code before context), and reference API elements using reference-style links like `[Agent][module.path.Agent]` instead of plain backticks, which enables hover docs and jump-to-definition in mkdocs.",
+      "url": "docs/AGENTS.md",
+      "gold_chunk_ids": [
+        "docs/AGENTS.md#1"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/a2a.md#3",
+      "title": "Design",
+      "question": "When using FastA2A in pydantic-ai to implement an A2A server, which components do I need to provide myself and what is each responsible for?",
+      "reference_answer": "You need to provide three components: `Storage` (to save and load tasks and store conversation context), `Broker` (to schedule/queue tasks), and `Worker` (to execute tasks). FastA2A is built on Starlette and the TaskManager coordinates these by scheduling tasks to the Broker, which persists via Storage and delegates execution to the Worker.",
+      "url": "docs/a2a.md",
+      "gold_chunk_ids": [
+        "docs/a2a.md#3"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/agent-spec.md#4",
+      "title": "Template strings",
+      "question": "In pydantic-ai, how do I use a template string for an Agent's instructions so it interpolates fields from my deps, like a user's name and role?",
+      "reference_answer": "Wrap the instructions in `TemplateStr` and reference deps fields with `{{...}}` placeholders, e.g. `instructions=TemplateStr('You are assisting {{name}}, who is a {{role}}.')`, with `deps_type=UserProfile`. The fields are filled from the deps you pass to `agent.run_sync('hello', deps=UserProfile(name='Alice', role='engineer'))`.",
+      "url": "docs/agent-spec.md",
+      "gold_chunk_ids": [
+        "docs/agent-spec.md#4"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/agent.md#5",
+      "title": "Running Agents",
+      "question": "In pydantic-ai, what are the different ways to run an Agent, and which one should I use if I want a plain synchronous call versus streaming output?",
+      "reference_answer": "pydantic-ai Agents offer five run methods: `agent.run()` (async, returns a RunResult), `agent.run_sync()` (synchronous, returns a RunResult; internally calls `loop.run_until_complete(self.run())`), `agent.run_stream()` (async context manager returning a StreamedRunResult, with `agent.run_stream_sync()` as a synchronous variant returning StreamedRunResultSync), `agent.run_stream_events()` (returns an AgentEventStream async context manager yielding AgentStreamEvents and a final AgentRunResultEvent), and `agent.iter()` (context manager returning an AgentRun iterable over graph nodes). For a plain synchronous call use `run_sync()`; for streaming output use `run_stream()` (or `run_stream_sync()` for a synchronous version).",
+      "url": "docs/agent.md",
+      "gold_chunk_ids": [
+        "docs/agent.md#5"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/agent.md#17",
+      "title": "Streaming All Events",
+      "question": "What library does Pydantic AI use under the hood to manage an Agent's execution flow, and can I use it on its own?",
+      "reference_answer": "Each `Agent` in Pydantic AI uses **pydantic-graph** under the hood to manage its execution flow. pydantic-graph is a generic, type-centric library for building and running finite state machines in Python; it doesn't depend on Pydantic AI, so you can use it standalone for workflows unrelated to GenAI, while Pydantic AI uses it to orchestrate model requests and responses during an agent's run.",
+      "url": "docs/agent.md",
+      "gold_chunk_ids": [
+        "docs/agent.md#17"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/agent.md#39",
+      "title": "Additional Configuration",
+      "question": "In pydantic-ai, how can I attach metadata to a Pydantic AI Agent at both the agent level and per-run, and how do I read the combined metadata from the result?",
+      "reference_answer": "Pass a `metadata` callable to the `Agent` constructor (e.g. `metadata=lambda ctx: {'tenant': ctx.deps.tenant}`) for agent-level metadata, and pass another `metadata` callable to `agent.run_sync(...)` (e.g. `metadata=lambda ctx: {'num_requests': ctx.usage.requests}`) for per-run metadata. The two are merged and accessible via `result.metadata`, e.g. `{'tenant': 'tenant-123', 'num_requests': 1}`.",
+      "url": "docs/agent.md",
+      "gold_chunk_ids": [
+        "docs/agent.md#39"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/agent.md#49",
+      "title": "System Prompts",
+      "question": "In pydantic-ai, what's the difference between a static and a dynamic system prompt, and how do I define a dynamic one that uses runtime dependencies?",
+      "reference_answer": "A static system prompt is defined at agent creation time, while a dynamic system prompt is defined via a decorator using [`RunContext`][pydantic_ai.tools.RunContext]; the dynamic one is called just after `run_sync` (not at agent creation), so it can use runtime information like the dependencies for that run. Dynamic system prompts don't have to include the `RunContext` parameter.",
+      "url": "docs/agent.md",
+      "gold_chunk_ids": [
+        "docs/agent.md#49"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/agent.md#61",
+      "title": "Systematic Testing with Evals",
+      "question": "How do I systematically test my pydantic-ai agent using Pydantic Evals, and how can I view the results visually?",
+      "reference_answer": "Use the `pydantic_evals` package to create a `Dataset` with a list of `Case` objects (each defining `name`, `inputs`, and `expected_output`), then call `dataset.evaluate_sync(my_agent_function)` to run the cases against your agent and score results. When combined with Logfire, evaluation results appear in the web UI for visualization and comparison across runs\u2014see the Logfire integration guide for setup.",
+      "url": "docs/agent.md",
+      "gold_chunk_ids": [
+        "docs/agent.md#61"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/api/models/google.md#0",
+      "title": "`pydantic_ai.models.google`",
+      "question": "In pydantic-ai, which Python package does the `pydantic_ai.models.google` interface use to access Google's Gemini models, and which APIs does it support?",
+      "reference_answer": "The `pydantic_ai.models.google` interface uses the `google-genai` package under the hood to access Google's Gemini models via both the Gemini API and Google Cloud (formerly known as Vertex AI).",
+      "url": "docs/api/models/google.md",
+      "gold_chunk_ids": [
+        "docs/api/models/google.md#0"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/capabilities.md#6",
+      "title": "When to use it",
+      "question": "In pydantic-ai, when should I use on-demand capabilities versus tool search? I have a flat catalog of individually-discoverable tools with no shared instructions.",
+      "reference_answer": "Use on-demand capabilities when an agent serves multiple distinct workflows (e.g. refunds, returns, fraud review) where most turns need one, and the workflow needs more than instructions\u2014its own tools, raised reasoning effort, or approval hooks\u2014bundled together as a unit. For a flat catalog of individually-discoverable tools with no shared instructions, skip on-demand capabilities and use tool search instead, which discovers individual tools by name rather than loading bundles.",
+      "url": "docs/capabilities.md",
+      "gold_chunk_ids": [
+        "docs/capabilities.md#6"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/capabilities.md#17",
+      "title": "The `Capability` convenience class",
+      "question": "In pydantic-ai, I'm using the `@capability.tool` decorator with `defer_loading=True`. Does this flag behave differently depending on whether the Capability itself is deferred?",
+      "reference_answer": "Yes. On a deferred `Capability`, the per-tool `defer_loading` flag is a no-op because the capability gates all its tools as a unit. It only has an effect on a non-deferred `Capability`, where it opts an individual tool into tool search discovery.",
+      "url": "docs/capabilities.md",
+      "gold_chunk_ids": [
+        "docs/capabilities.md#17"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/capabilities.md#27",
+      "title": "Putting it together: a multi-workflow support agent",
+      "question": "In pydantic-ai, how can I make the model read a runbook before performing a destructive action by treating the runbook as a deferred capability?",
+      "reference_answer": "Make the runbook a deferred capability and then check `ctx.loaded_capability_ids` in a one-method hook to verify the runbook capability was loaded before allowing the destructive action.",
+      "url": "docs/capabilities.md",
+      "gold_chunk_ids": [
+        "docs/capabilities.md#27"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/capabilities.md#40",
+      "title": "ThreadExecutor",
+      "question": "In pydantic-ai, how can I provide a custom thread pool for running sync tool functions in a long-running FastAPI server instead of relying on the default ephemeral threads?",
+      "reference_answer": "Use the `ThreadExecutor` capability from `pydantic_ai.capabilities`, passing it a custom `concurrent.futures.Executor` (such as `ThreadPoolExecutor(max_workers=16, thread_name_prefix='agent-worker')`), and register it via the agent's `capabilities` argument, e.g. `Agent('openai:gpt-5.2', capabilities=[ThreadExecutor(executor)])`. This avoids the default ephemeral threads from `anyio.to_thread.run_sync` accumulating under sustained load.",
+      "url": "docs/capabilities.md",
+      "gold_chunk_ids": [
+        "docs/capabilities.md#40"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/capabilities.md#52",
+      "title": "PrefixTools",
+      "question": "In pydantic-ai, when I compose multiple MCP capabilities that expose tools with the same names, how can I avoid conflicts by namespacing their tool names?",
+      "reference_answer": "Wrap each capability in `PrefixTools` from `pydantic_ai.capabilities`, passing a `prefix` argument (e.g. `PrefixTools(MCP(url='https://api1.example.com', native=True), prefix='api1')`), which prefixes all of that capability's tool names. Alternatively, use the convenience method `AbstractCapability.prefix_tools`, e.g. `MCP(url='https://mcp.example.com/api', native=True).prefix_tools('mcp')`.",
+      "url": "docs/capabilities.md",
+      "gold_chunk_ids": [
+        "docs/capabilities.md#52"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/capabilities.md#66",
+      "title": "Providing tools",
+      "question": "How do I create a custom AbstractCapability in pydantic-ai that exposes a set of math tools to an Agent?",
+      "reference_answer": "Create a FunctionToolset, register functions with @toolset.tool_plain, then define a @dataclass subclassing AbstractCapability[Any] that implements get_toolset() returning that toolset (typed as AgentToolset[Any] | None). Pass an instance via Agent('openai:gpt-5.2', capabilities=[MathTools()]), and the agent can then use the tools, e.g. agent.run_sync('What is 2 + 3?').",
+      "url": "docs/capabilities.md",
+      "gold_chunk_ids": [
+        "docs/capabilities.md#66"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/capabilities.md#76",
+      "title": "Hooking into the lifecycle",
+      "question": "In pydantic-ai, which capability lifecycle hook should I implement to wrap each graph node's execution, and what is its signature?",
+      "reference_answer": "Use the `wrap_node_run` hook on `AbstractCapability`, with signature `(ctx: RunContext, *, node: AgentNode, handler: WrapNodeRunHandler) -> NodeResult`. It wraps each graph node execution.",
+      "url": "docs/capabilities.md",
+      "gold_chunk_ids": [
+        "docs/capabilities.md#76"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/capabilities.md#88",
+      "title": "Hooking into the lifecycle",
+      "question": "In pydantic-ai, where do output validators registered with @agent.output_validator run in relation to the processing hooks, and which hook lets me see the fully validated result?",
+      "reference_answer": "Output validators (@agent.output_validator) run inside the processing pipeline within wrap_output_process. Because of this, the after_output_process hook\u2014with signature (ctx, *, output_context, output: Any) -> Any\u2014sees the fully validated result and can modify the processed output.",
+      "url": "docs/capabilities.md",
+      "gold_chunk_ids": [
+        "docs/capabilities.md#88"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/capabilities.md#100",
+      "title": "Wrapping capabilities",
+      "question": "In pydantic-ai, how can I create a capability that logs every model request while reusing the behavior of an existing capability I wrap?",
+      "reference_answer": "Subclass `WrapperCapability` (from `pydantic_ai.capabilities`), which wraps another capability and delegates all methods to the wrapped one. Override only the methods you need\u2014for example, define an async `before_model_request(self, ctx, request_context)` that prints/logs (e.g. `type(self.wrapped).__name__`) and then returns `await super().before_model_request(ctx, request_context)` to delegate the rest.",
+      "url": "docs/capabilities.md",
+      "gold_chunk_ids": [
+        "docs/capabilities.md#100"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/capabilities.md#111",
+      "title": "Ordering",
+      "question": "In pydantic-ai, how can I declare ordering constraints between two Hooks instances without subclassing, so that my logging hooks end up outermost and wrap my rate-limit hooks?",
+      "reference_answer": "Use the `ordering` parameter on `Hooks` with `CapabilityOrdering`: create `logging_hooks = Hooks(ordering=CapabilityOrdering(position='outermost'))` and `rate_limit_hooks = Hooks(ordering=CapabilityOrdering(wrapped_by=[logging_hooks]))`. When combined via `CombinedCapability([rate_limit_hooks, logging_hooks])`, `combined.capabilities[0]` is `logging_hooks` (outermost) and `combined.capabilities[1]` is `rate_limit_hooks`.",
+      "url": "docs/capabilities.md",
+      "gold_chunk_ids": [
+        "docs/capabilities.md#111"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/capabilities.md#124",
+      "title": "Publishing capabilities",
+      "question": "How do I implement a custom pydantic-ai capability that hides certain tools based on a runtime condition, including support for the from_spec deserialization?",
+      "reference_answer": "Subclass `AbstractCapability[Any]` (from `pydantic_ai.capabilities`) as a dataclass, e.g. `ConditionalTools`, with a `condition: Callable[[RunContext[Any]], bool]` and `hidden_tools: list[str]`. Implement `async def prepare_tools(self, ctx, tool_defs)` that returns `[td for td in tool_defs if td.name not in self.hidden_tools]` when `self.condition(ctx)` is true, otherwise returns `tool_defs` unchanged. Since the condition callable isn't serializable, add a `@classmethod from_spec(cls, hidden_tools)` that reconstructs the capability with a default `condition=lambda ctx: True`.",
+      "url": "docs/capabilities.md",
+      "gold_chunk_ids": [
+        "docs/capabilities.md#124"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/cli.md#0",
+      "title": "Command Line Interface (CLI)",
+      "question": "How do I install and run the clai CLI from Pydantic AI? Can I run it without installing it permanently?",
+      "reference_answer": "You can run clai without permanent installation using uvx with `uvx clai`. To install it globally, use `uv tool install clai` (then run `clai`) or `pip install clai` (then run `clai`).",
+      "url": "docs/cli.md",
+      "gold_chunk_ids": [
+        "docs/cli.md#0"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/common-tools.md#0",
+      "title": "Common Tools",
+      "question": "How do I install the DuckDuckGo search tool for use with pydantic-ai?",
+      "reference_answer": "To use the `duckduckgo_search_tool` from `pydantic_ai.common_tools.duckduckgo`, install `pydantic-ai-slim` with the `duckduckgo` optional group: `pip/uv add \"pydantic-ai-slim[duckduckgo]\"`.",
+      "url": "docs/common-tools.md",
+      "gold_chunk_ids": [
+        "docs/common-tools.md#0"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/common-tools.md#10",
+      "title": "Usage",
+      "question": "How do I add Exa web search to a pydantic-ai Agent using the exa_search_tool, and how do I configure the number of results and max characters?",
+      "reference_answer": "Import `exa_search_tool` from `pydantic_ai.common_tools.exa`, get your API key (e.g. `os.getenv('EXA_API_KEY')`), and pass it to the Agent's `tools` list like `tools=[exa_search_tool(api_key, num_results=5, max_characters=1000)]`. The `num_results` and `max_characters` parameters control how many results and how much content each returns; `exa_search_tool` supports search types auto, keyword, neural, fast, and deep.",
+      "url": "docs/common-tools.md",
+      "gold_chunk_ids": [
+        "docs/common-tools.md#10"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/contributing.md#8",
+      "title": "Priority",
+      "question": "When deciding what gets prioritized in pydantic-ai development, how does the team weigh feature requests, and where should I put a feature that could be self-contained?",
+      "reference_answer": "pydantic-ai prioritizes by user demand (champion-backed, production use cases over speculative additions), provider significance (frontier providers like Anthropic, OpenAI, Google and heavily-used providers come first), and roadmap alignment (currently the capabilities/hooks API, provider-adaptive tools, and the Pydantic AI Harness). Features that could live as a capability should go to the Pydantic AI Harness or ship as your own package, then be considered for upstreaming once they gain traction.",
+      "url": "docs/contributing.md",
+      "gold_chunk_ids": [
+        "docs/contributing.md#8"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/deferred-tools.md#6",
+      "title": "Resolving deferred calls with a handler",
+      "question": "In pydantic-ai, if I'm building a custom capability (like a sandbox exposing deferred tools) that needs to resolve deferred tool calls itself, how should I handle that instead of registering a separate HandleDeferredToolCalls?",
+      "reference_answer": "Override the `handle_deferred_tool_calls` hook (from `pydantic_ai.capabilities.AbstractCapability`) directly on your custom capability rather than registering a separate `HandleDeferredToolCalls`. The same hook is also available via the `Hooks` capability (`pydantic_ai.capabilities.Hooks`).",
+      "url": "docs/deferred-tools.md",
+      "gold_chunk_ids": [
+        "docs/deferred-tools.md#6"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/deferred-tools.md#16",
+      "title": "External Tool Execution",
+      "question": "In pydantic-ai, how can I handle a tool that's always executed externally when I have its JSON schema for arguments, and what does the agent run return when the model calls it?",
+      "reference_answer": "Use an `ExternalToolset` to provide the external tool's definition along with the JSON schema for its arguments (alternatively, define a tool function with the right signature that raises the `CallDeferred` exception). When the model calls the external tool, the agent run ends with a `DeferredToolRequests` output object whose `calls` list holds `ToolCallPart`s containing the tool name, validated arguments, and a unique tool call ID.",
+      "url": "docs/deferred-tools.md",
+      "gold_chunk_ids": [
+        "docs/deferred-tools.md#16"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/dependencies.md#4",
+      "title": "Accessing Dependencies",
+      "question": "In pydantic-ai, how can I access the running agent's name or output_type from within a tool or system prompt function, and how do I get my dependencies?",
+      "reference_answer": "Within a tool or system prompt function, the `RunContext` provides access to the running agent via its `.agent` attribute, letting you read agent properties like `name` or `output_type`. Dependencies are accessed through the `RunContext.deps` attribute. `RunContext` may optionally be passed to a `system_prompt` function as its only argument and is parameterized with the dependencies type.",
+      "url": "docs/dependencies.md",
+      "gold_chunk_ids": [
+        "docs/dependencies.md#4"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/direct.md#3",
+      "title": "Advanced Example with Tool Calling",
+      "question": "How do I use pydantic-ai's direct.model_request to make a low-level request to openai:gpt-5-nano while giving the model access to a function tool defined from a Pydantic BaseModel?",
+      "reference_answer": "Call `await model_request('openai:gpt-5-nano', [ModelRequest.user_text_prompt('What is 123 / 456?')], model_request_parameters=ModelRequestParameters(function_tools=[ToolDefinition(name=Divide.__name__.lower(), description=Divide.__doc__, parameters_json_schema=Divide.model_json_schema())], allow_text_output=True))`. The `function_tools` list takes `ToolDefinition` objects (built from the model's name, docstring, and `model_json_schema()`), and `allow_text_output=True` lets the model either call a tool or respond directly; the returned `ModelResponse` contains a `ToolCallPart` with the tool name and args.",
+      "url": "docs/direct.md",
+      "gold_chunk_ids": [
+        "docs/direct.md#3"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/durable_execution/dbos.md#9",
+      "title": "Agent Run Context and Dependencies",
+      "question": "When using DBOSAgent.run() in pydantic-ai with DBOS, are there any constraints on the dependencies object and tool outputs I pass in?",
+      "reference_answer": "Yes. Because DBOS checkpoints workflow inputs/outputs and step outputs into a database using pickle, the dependencies object passed to DBOSAgent.run() (or run_sync()) and your tool outputs must be picklable. You should also keep inputs and outputs small (under ~2 MB); while PostgreSQL and SQLite support up to 1 GB per field, large objects may impact performance.",
+      "url": "docs/durable_execution/dbos.md",
+      "gold_chunk_ids": [
+        "docs/durable_execution/dbos.md#9"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/durable_execution/kitaru.md#5",
+      "title": "Production Flows",
+      "question": "When using the Kitaru adapter for pydantic-ai in a production service, why shouldn't I rely on automatic flow creation, and how do I set up a stable flow for my durable agent call?",
+      "reference_answer": "Automatic flow creation is only intended for local development; for remote stacks or production services you should wrap the durable agent call in an explicit `@kitaru.flow` so Kitaru has a stable flow entry point to submit, replay, and inspect. For example, define a function like `@kitaru.flow def research_topic(topic: str) -> str:` that calls `durable_agent.run_sync(...)` (where `durable_agent = KitaruAgent(agent)`) and returns `result.output`.",
+      "url": "docs/durable_execution/kitaru.md",
+      "gold_chunk_ids": [
+        "docs/durable_execution/kitaru.md#5"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/durable_execution/prefect.md#7",
+      "title": "Durable Agent",
+      "question": "When using PrefectAgent to add durable execution to my pydantic-ai agents, why do I need to set a unique name on each agent, and what does PrefectAgent.run() actually do at runtime?",
+      "reference_answer": "Each agent instance must have a unique `name` so Prefect can correctly identify and track its flows and tasks. `PrefectAgent.run()` works like `Agent.run()`, but runs as a Prefect flow and executes model requests, decorated tool calls, and MCP communication as Prefect tasks.",
+      "url": "docs/durable_execution/prefect.md",
+      "gold_chunk_ids": [
+        "docs/durable_execution/prefect.md#7"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/durable_execution/restate.md#1",
+      "title": "Durable Execution",
+      "question": "How does Restate make a pydantic-ai agent durable, and what are the building blocks I need to know?",
+      "reference_answer": "Restate makes your agent durable by recording every execution step in a journal; if the process crashes, it replays the journal, skips completed steps, and resumes where it left off. A durable agent has three building blocks: the handler (your agent logic exposed as an HTTP endpoint in a Restate service), LLM calls (persisted so responses are not re-fetched on recovery), and tool executions (wrapped in durable steps so side effects are not duplicated).",
+      "url": "docs/durable_execution/restate.md",
+      "gold_chunk_ids": [
+        "docs/durable_execution/restate.md#1"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/durable_execution/temporal.md#7",
+      "title": "Durable Agent",
+      "question": "How do I start a local Temporal server on macOS so I can run a pydantic-ai durable agent Temporal workflow?",
+      "reference_answer": "Install Temporal with Homebrew using `brew install temporal`, then start a local development server by running `temporal server start-dev`. A locally running Temporal server is required to execute the durable agent workflow.",
+      "url": "docs/durable_execution/temporal.md",
+      "gold_chunk_ids": [
+        "docs/durable_execution/temporal.md#7"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/durable_execution/temporal.md#18",
+      "title": "docs/durable_execution/temporal.md",
+      "question": "In a Temporal workflow using pydantic-ai, what are the different ways I can specify which model to use when calling temporal_agent.run()?",
+      "reference_answer": "You can specify the model in three ways: by its registered name (e.g. model='reasoning'), by passing the registered model instance directly (e.g. model=fast_model), or by passing a model string such as model='openai:gpt-5-mini' which uses the provider_factory if one is configured.",
+      "url": "docs/durable_execution/temporal.md",
+      "gold_chunk_ids": [
+        "docs/durable_execution/temporal.md#18"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/embeddings.md#5",
+      "title": "Choosing a model",
+      "question": "In pydantic-ai, which embedding models can I use if I need a free, private option that doesn't require an API key, and which one for a specialized code domain?",
+      "reference_answer": "For a free, private, no-API-key option, use sentence-transformers models such as `sentence-transformers:google/embeddinggemma-300m`, `sentence-transformers:lightonai/DenseOn`, `sentence-transformers:Qwen/Qwen3-Embedding-0.6B`, or any other Hugging Face sentence-transformers model. For a specialized code domain, use `voyageai:voyage-code-3` or `sentence-transformers:nomic-ai/CodeRankEmbed`.",
+      "url": "docs/embeddings.md",
+      "gold_chunk_ids": [
+        "docs/embeddings.md#5"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/embeddings.md#17",
+      "title": "Cohere",
+      "question": "In pydantic-ai, how do I configure a Cohere embedder to truncate long inputs instead of erroring and limit tokens per input while setting a custom embedding dimension?",
+      "reference_answer": "Pass a `CohereEmbeddingSettings` instance (from `pydantic_ai.embeddings.cohere`) as the `settings` argument to `Embedder('cohere:embed-v4.0', ...)`, setting `cohere_truncate='END'` to truncate long inputs, `cohere_max_tokens=256` to limit tokens per input, and `dimensions=512` for the embedding dimension.",
+      "url": "docs/embeddings.md",
+      "gold_chunk_ids": [
+        "docs/embeddings.md#17"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/embeddings.md#27",
+      "title": "Bedrock",
+      "question": "When using pydantic-ai's BedrockEmbeddingModel with amazon.titan-embed-text-v2:0, why does calling count_tokens() fail, and how do I configure explicit AWS credentials?",
+      "reference_answer": "Bedrock embedding models do not support count_tokens()\u2014calling it raises NotImplementedError\u2014because AWS Bedrock's token counting API only works with text generation models (Claude, Llama, etc.), not embedding models. To use explicit credentials, create a BedrockProvider directly with region_name, aws_access_key_id, and aws_secret_access_key, then pass it to BedrockEmbeddingModel('amazon.titan-embed-text-v2:0', provider=provider).",
+      "url": "docs/embeddings.md",
+      "gold_chunk_ids": [
+        "docs/embeddings.md#27"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/embeddings.md#38",
+      "title": "Two-stage retrieval with rerankers",
+      "question": "In pydantic-ai, if I don't want to run a reranker locally for two-stage retrieval, what hosted reranker options can I use and how do I integrate them?",
+      "reference_answer": "Pydantic-ai supports using hosted rerankers including Cohere Rerank, VoyageAI Rerank, and Jina Rerank instead of running one locally. To integrate them, call their HTTP clients or SDKs from a helper function with the same shape as the `rerank()` function.",
+      "url": "docs/embeddings.md",
+      "gold_chunk_ids": [
+        "docs/embeddings.md#38"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/core-concepts.md#9",
+      "title": "Case Components",
+      "question": "In pydantic-ai's pydantic_evals, what happens to a Case if I don't set expected_output when using the EqualsExpected evaluator?",
+      "reference_answer": "If no `expected_output` is provided on a `Case`, evaluators that require it (like `EqualsExpected`) will skip that case.",
+      "url": "docs/evals/core-concepts.md",
+      "gold_chunk_ids": [
+        "docs/evals/core-concepts.md#9"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/core-concepts.md#19",
+      "title": "Key Relationships",
+      "question": "In pydantic-ai's evals, how many reports do I get from a single call to dataset.evaluate(...), and how do datasets, experiments, and case results relate?",
+      "reference_answer": "Each call to `dataset.evaluate(...)` constitutes one experiment that produces exactly one report, and that report contains case results for every case in the dataset. A single dataset can be run against many experiments (different task implementations or repeated runs) to track changes.",
+      "url": "docs/evals/core-concepts.md",
+      "gold_chunk_ids": [
+        "docs/evals/core-concepts.md#19"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/evaluators/built-in.md#9",
+      "title": "LLMJudge",
+      "question": "In pydantic-ai's pydantic_evals, how do I use LLMJudge to evaluate against the expected output and also produce a quality score with a specific model instead of an assertion?",
+      "reference_answer": "Add LLMJudge evaluators to your Dataset: use `LLMJudge(rubric='Response matches the expected answer semantically', include_input=True, include_expected_output=True)` to compare against expected output, and `LLMJudge(rubric='Overall response quality', model='anthropic:claude-sonnet-4-6', score={'evaluation_name': 'quality', 'include_reason': False}, assertion=False)` to emit a quality score using a specific model rather than an assertion.",
+      "url": "docs/evals/evaluators/built-in.md",
+      "gold_chunk_ids": [
+        "docs/evals/evaluators/built-in.md#9"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/evaluators/custom.md#4",
+      "title": "Numeric Scores",
+      "question": "How can I write a custom pydantic-evals Evaluator that returns a numeric score (float) based on how close my output's length is to an ideal length?",
+      "reference_answer": "Subclass `Evaluator` (as a dataclass) and implement an `evaluate(self, ctx: EvaluatorContext) -> float` method that returns a float. For example, a `LengthScore` evaluator with fields `ideal_length=100` and `tolerance=20` computes `diff = abs(len(ctx.output) - ideal_length)`, returns `1.0` if `diff <= tolerance`, otherwise returns `max(0.0, 1.0 - (diff - tolerance) / ideal_length)` to decay the score as length moves away from ideal.",
+      "url": "docs/evals/evaluators/custom.md",
+      "gold_chunk_ids": [
+        "docs/evals/evaluators/custom.md#4"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/evaluators/custom.md#14",
+      "title": "Generic Type Parameters",
+      "question": "How do I make a custom pydantic_evals Evaluator type-safe so that ctx.inputs and ctx.output are properly typed?",
+      "reference_answer": "Define TypeVars (e.g. InputsT, OutputT) and subclass Evaluator with generic parameters, like `class TypedEvaluator(Evaluator[InputsT, OutputT, dict])`, then type the evaluate method's context as `EvaluatorContext[InputsT, OutputT, dict]`. This makes ctx.inputs and ctx.output properly typed.",
+      "url": "docs/evals/evaluators/custom.md",
+      "gold_chunk_ids": [
+        "docs/evals/evaluators/custom.md#14"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/evaluators/framework-integrations.md#0",
+      "title": "Third-Party Integrations",
+      "question": "In Pydantic Evals, how can I use an existing Ragas or DeepEval metric inside my dataset, and when should I prefer that over a built-in evaluator?",
+      "reference_answer": "Subclass the `Evaluator` base class (`pydantic_evals.evaluators.Evaluator`) to wrap the upstream Ragas or DeepEval metric so it runs inside any Pydantic Evals dataset, since Pydantic Evals takes no hard dependency on any particular metrics framework. Prefer a native evaluator like `LLMJudge` or a custom evaluator when it covers your use case (zero extra dependencies, cleaner reports), and reach for the external integration only when you need the exact upstream implementation for reproducibility, parity with an existing suite, or features not exposed natively\u2014you can also mix external and native evaluators in one dataset.",
+      "url": "docs/evals/evaluators/framework-integrations.md",
+      "gold_chunk_ids": [
+        "docs/evals/evaluators/framework-integrations.md#0"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/evaluators/llm-judge.md#4",
+      "title": "Assertion Only (Default)",
+      "question": "How do I configure pydantic_evals' LLMJudge to return both a numeric score and a pass/fail assertion, and what does the result look like?",
+      "reference_answer": "Pass both `score={'include_reason': True}` and `assertion={'include_reason': True}` to LLMJudge, e.g. `LLMJudge(rubric='Response quality', score={'include_reason': True}, assertion={'include_reason': True})`. This returns a dict with both `'LLMJudge_score'` (e.g. EvaluationReason(value=0.85, reason='...')) and `'LLMJudge_pass'` (e.g. EvaluationReason(value=True, reason='...')).",
+      "url": "docs/evals/evaluators/llm-judge.md",
+      "gold_chunk_ids": [
+        "docs/evals/evaluators/llm-judge.md#4"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/evaluators/llm-judge.md#17",
+      "title": "View Reasons",
+      "question": "When using pydantic_evals with an LLMJudge evaluator, how can I make the report show the reasons behind each judgment?",
+      "reference_answer": "Call `report.print(include_reasons=True)` on the report returned by `dataset.evaluate_sync(...)`. With `include_reasons=True`, the printed evaluation summary includes a `Reason:` line under each assertion (e.g., the LLMJudge result), showing the explanation for the judgment.",
+      "url": "docs/evals/evaluators/llm-judge.md",
+      "gold_chunk_ids": [
+        "docs/evals/evaluators/llm-judge.md#17"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/evaluators/overview.md#9",
+      "title": "Case-specific evaluators",
+      "question": "In pydantic-ai's pydantic_evals, how do I attach an evaluator that only runs for one specific Case while keeping another evaluator that runs for all cases?",
+      "reference_answer": "Pass an `evaluators` list to the individual `Case` (e.g. a `LLMJudge` with a case-specific `rubric`) so it runs only for that case, and pass an `evaluators` list to the `Dataset` (e.g. `IsInstance(type_name='str')`) for evaluators that run for ALL cases.",
+      "url": "docs/evals/evaluators/overview.md",
+      "gold_chunk_ids": [
+        "docs/evals/evaluators/overview.md#9"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/evaluators/report-evaluators.md#2",
+      "title": "ConfusionMatrixEvaluator",
+      "question": "In pydantic-ai's pydantic_evals, how do I use ConfusionMatrixEvaluator to compare my predicted output against the expected output, and what default sources does it use?",
+      "reference_answer": "Instantiate `ConfusionMatrixEvaluator` from `pydantic_evals.evaluators`, e.g. `ConfusionMatrixEvaluator(predicted_from='output', expected_from='expected_output', title='My Confusion Matrix')`. By default `predicted_from` is `'output'` and `expected_from` is `'expected_output'`; it builds a confusion matrix comparing predicted vs expected labels across all cases and returns a `ConfusionMatrix`.",
+      "url": "docs/evals/evaluators/report-evaluators.md",
+      "gold_chunk_ids": [
+        "docs/evals/evaluators/report-evaluators.md#2"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/evaluators/report-evaluators.md#12",
+      "title": "ReportEvaluatorContext",
+      "question": "In pydantic-ai's pydantic_evals, what does the ReportEvaluatorContext passed to evaluate() give me access to, and how do I get each case's outputs and scores?",
+      "reference_answer": "The ReportEvaluatorContext provides `ctx.name` (the experiment name), `ctx.report` (the full EvaluationReport with all case results), and `ctx.experiment_metadata` (an optional experiment-level metadata dict). To access each case's inputs, outputs, expected outputs, scores, labels, assertions, metrics, and attributes, iterate through `ctx.report.cases`.",
+      "url": "docs/evals/evaluators/report-evaluators.md",
+      "gold_chunk_ids": [
+        "docs/evals/evaluators/report-evaluators.md#12"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/evaluators/report-evaluators.md#22",
+      "title": "Viewing Analyses in Logfire",
+      "question": "In pydantic-ai, how are analyses displayed in the Logfire UI, and how do I get them to show up there?",
+      "reference_answer": "When Logfire is configured, analyses are automatically attached to the experiment span as the `logfire.experiment.analyses` attribute, and the Logfire UI renders them as interactive visualizations: confusion matrices as heatmaps, precision-recall curves as line charts with AUC in the legend, line plots (ROC curves, KS plots, etc.) as line charts with configurable axes, scalar results as labeled values, and tables as formatted data tables. When comparing multiple experiments in the Logfire Evals view, analyses of the same type are displayed side by side.",
+      "url": "docs/evals/evaluators/report-evaluators.md",
+      "gold_chunk_ids": [
+        "docs/evals/evaluators/report-evaluators.md#22"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/evaluators/span-based.md#7",
+      "title": "Ancestor/Depth Conditions",
+      "question": "In pydantic-ai's span query API, how can I find spans that have a descendant named 'expensive' but stop the search when reaching a span named 'boundary'?",
+      "reference_answer": "Use a query combining `some_descendant_has` with `stop_recursing_when`, e.g. `{'some_descendant_has': {'name_contains': 'expensive'}, 'stop_recursing_when': {'name_equals': 'boundary'}}`. This searches descendants for a span matching 'expensive' but halts recursion once it hits a span named 'boundary'.",
+      "url": "docs/evals/evaluators/span-based.md",
+      "gold_chunk_ids": [
+        "docs/evals/evaluators/span-based.md#7"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/evaluators/span-based.md#17",
+      "title": "RAG System Verification",
+      "question": "How can I use pydantic-evals HasMatchingSpan evaluators to verify a RAG workflow, including checking that generation happened with retrieved context?",
+      "reference_answer": "Create a list of HasMatchingSpan evaluators: one with query={'name_contains': 'vector_search'} (evaluation_name='retrieved_docs') for retrieval, one with query={'name_contains': 'rerank'} (evaluation_name='reranked_results') for reranking, and one combining conditions with query={'and_': [{'name_contains': 'generate'}, {'has_attribute_keys': ['context_ids']}]} (evaluation_name='used_context') to confirm generation used context. Import HasMatchingSpan from pydantic_evals.evaluators.",
+      "url": "docs/evals/evaluators/span-based.md",
+      "gold_chunk_ids": [
+        "docs/evals/evaluators/span-based.md#17"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/how-to/concurrency.md#1",
+      "title": "Rate Limiting",
+      "question": "In pydantic-evals, how do I limit the number of concurrent requests when running Dataset.evaluate_sync() to respect an API rate limit or avoid overwhelming system resources?",
+      "reference_answer": "Pass the max_concurrency parameter to Dataset.evaluate_sync(). For example, use max_concurrency=10 if your API allows 10 requests/second, max_concurrency=2 for memory-intensive operations, or max_concurrency=5 to match a database connection pool size.",
+      "url": "docs/evals/how-to/concurrency.md",
+      "gold_chunk_ids": [
+        "docs/evals/how-to/concurrency.md#1"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/how-to/dataset-management.md#4",
+      "title": "From String",
+      "question": "How do I load a pydantic-evals Dataset from a YAML string or from a Python dict?",
+      "reference_answer": "Use `Dataset[str, str, Any].from_text(yaml_content, fmt='yaml')` to load from a YAML string, or `Dataset[str, str, Any].from_dict(data)` to load from a Python dict. The data should contain a `name`, a `cases` list (each with `name`, `inputs`, `expected_output`), and `evaluators` (e.g. `EqualsExpected`).",
+      "url": "docs/evals/how-to/dataset-management.md",
+      "gold_chunk_ids": [
+        "docs/evals/how-to/dataset-management.md#4"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/how-to/dataset-management.md#15",
+      "title": "3. Start Small, Grow Gradually",
+      "question": "In pydantic-evals, how do I create a Dataset with some initial Cases and then add another case later after I find new issues?",
+      "reference_answer": "Create a Dataset by passing a name and a list of Case objects (e.g. `Dataset(name='starting_small', cases=[Case(name='happy_path', inputs='test'), ...])`), then add more cases later using `dataset.add_case(name='newly_discovered_edge_case', inputs='edge')`.",
+      "url": "docs/evals/how-to/dataset-management.md",
+      "gold_chunk_ids": [
+        "docs/evals/how-to/dataset-management.md#15"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/how-to/dataset-serialization.md#7",
+      "title": "Manual Schema Generation",
+      "question": "In pydantic-evals, what are the requirements for creating a custom Evaluator so it serializes and deserializes correctly with to_file() and from_file()?",
+      "reference_answer": "A custom evaluator in pydantic-evals must be decorated with `@dataclass`, inherit from `Evaluator`, and be passed to both `to_file()` and `from_file()` so it can be handled correctly during serialization and deserialization.",
+      "url": "docs/evals/how-to/dataset-serialization.md",
+      "gold_chunk_ids": [
+        "docs/evals/how-to/dataset-serialization.md#7"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/how-to/lifecycle.md#2",
+      "title": "Per-Case Setup and Teardown",
+      "question": "In pydantic-ai's pydantic_evals, how can I run per-case setup that reads each Case's metadata and injects a computed value into the evaluator metrics before evaluation?",
+      "reference_answer": "Subclass CaseLifecycle (e.g. CaseLifecycle[str, str, dict]) and implement async setup() to read self.case.metadata, async prepare_context(ctx) to set ctx.metrics (e.g. ctx.metrics['prefix_length'] = len(self.prefix)) and return ctx, and async teardown(result) for cleanup. Then pass it via dataset.evaluate_sync(task, lifecycle=SetupFromMetadata); the computed metrics appear in report.cases (e.g. report.cases[i].metrics['prefix_length']).",
+      "url": "docs/evals/how-to/lifecycle.md",
+      "gold_chunk_ids": [
+        "docs/evals/how-to/lifecycle.md#2"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/how-to/logfire-integration.md#4",
+      "title": "Comparing Runs",
+      "question": "In pydantic-evals, how can I run two different task implementations against the same Dataset and compare their results in Logfire?",
+      "reference_answer": "Create a Dataset with your cases, then call dataset.evaluate_sync() separately for each implementation (e.g., report1 = dataset.evaluate_sync(original_task) and report2 = dataset.evaluate_sync(improved_task)). Each run produces its own report, and you can compare them in Logfire by filtering by timestamp or attributes.",
+      "url": "docs/evals/how-to/logfire-integration.md",
+      "gold_chunk_ids": [
+        "docs/evals/how-to/logfire-integration.md#4"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/how-to/metrics-attributes.md#6",
+      "title": "Automatic Metrics",
+      "question": "In pydantic-ai, when using Pydantic AI with Logfire, how can I write a pydantic_evals Evaluator that fails if the estimated cost of an agent run exceeds a threshold?",
+      "reference_answer": "When using Pydantic AI with Logfire, metrics like cost are automatically tracked and accessible in an evaluator via `ctx.metrics`. Define a dataclass Evaluator (subclassing `Evaluator` from `pydantic_evals.evaluators`) whose `evaluate(self, ctx: EvaluatorContext)` method reads `cost = ctx.metrics.get('cost', 0.0)` and returns `cost <= self.max_cost` (e.g. with `max_cost: float = 0.01`).",
+      "url": "docs/evals/how-to/metrics-attributes.md",
+      "gold_chunk_ids": [
+        "docs/evals/how-to/metrics-attributes.md#6"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/how-to/metrics-attributes.md#20",
+      "title": "Pattern 2: Configuration Object (Recommended)",
+      "question": "In pydantic-ai's pydantic_evals, how can I make sure the experiment metadata recorded by Dataset.evaluate exactly matches the configuration my agent task actually uses?",
+      "reference_answer": "Define a single dataclass (e.g. TaskConfig) holding values like model, temperature, max_tokens, and prompt_version, then build the Agent and its model_settings from that config object. When calling `dataset.evaluate(task, metadata=asdict(config))`, pass the same config via `asdict(config)` so the recorded `report.experiment_metadata` is guaranteed to match the task's behavior.",
+      "url": "docs/evals/how-to/metrics-attributes.md",
+      "gold_chunk_ids": [
+        "docs/evals/how-to/metrics-attributes.md#20"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/how-to/multi-run.md#4",
+      "title": "Aggregation",
+      "question": "When I run a pydantic-evals Dataset with evaluate_sync(task, repeat=3), how does report.averages() compute the overall metrics across the repeated runs?",
+      "reference_answer": "With repeat > 1, EvaluationReport.averages() uses a two-level aggregation: first it averages each case's runs into a per-group summary, then it averages those group summaries to produce the final cross-group result. This ensures every original case contributes equally to the overall averages regardless of how many runs succeeded or failed.",
+      "url": "docs/evals/how-to/multi-run.md",
+      "gold_chunk_ids": [
+        "docs/evals/how-to/multi-run.md#4"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/how-to/retry-strategies.md#8",
+      "title": "Evaluator Failures",
+      "question": "How do I get pydantic_evals to include evaluator failures in the output when printing an evaluation report?",
+      "reference_answer": "Call `report.print(include_evaluator_failures=True)` on the report returned by `dataset.evaluate_sync(task)`. The `include_evaluator_failures=True` argument makes the printed evaluation summary include evaluator failures.",
+      "url": "docs/evals/how-to/retry-strategies.md",
+      "gold_chunk_ids": [
+        "docs/evals/how-to/retry-strategies.md#8"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/online-evaluation.md#2",
+      "title": "Quick Start",
+      "question": "In pydantic-ai's online evaluation, what happens to the `gen_ai.evaluation.result` OTel events if no OTel SDK is configured in my process, and how can I also process evaluator results directly in Python?",
+      "reference_answer": "If no OTel SDK is configured (via `logfire.configure()`, the OTel SDK directly, or vendor instrumentation), the per-result `gen_ai.evaluation.result` event emission is a cheap no-op; otherwise events flow to your backend. To handle results in Python code (for alerting, aggregation, in-memory test capture, or non-OTel destinations), register a sink, which runs in addition to OTel event emission.",
+      "url": "docs/evals/online-evaluation.md",
+      "gold_chunk_ids": [
+        "docs/evals/online-evaluation.md#2"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/online-evaluation.md#13",
+      "title": "Default OTel event emission",
+      "question": "In pydantic-ai's pydantic_evals OTel evaluation events, how can I tell apart two LLMJudge evaluators that use different rubrics, and what does the emitted event attribute look like?",
+      "reference_answer": "Each evaluator's constructor arguments are rendered into the `gen_ai.evaluation.evaluator.source` attribute, so `LLMJudge(rubric='Is the response helpful?')` emits `gen_ai.evaluation.evaluator.source = '{\"name\":\"LLMJudge\",\"arguments\":[\"Is the response helpful?\"]}'`. Because the rubric is included in the arguments, two LLMJudge instances with different rubrics remain distinguishable downstream.",
+      "url": "docs/evals/online-evaluation.md",
+      "gold_chunk_ids": [
+        "docs/evals/online-evaluation.md#13"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/online-evaluation.md#23",
+      "title": "Disabling Evaluation",
+      "question": "In pydantic-ai's pydantic_evals.online, how can I temporarily turn off evaluators for a function decorated with OnlineEvalConfig.evaluate, and verify no evaluations ran?",
+      "reference_answer": "Use the `disable_evaluation()` context manager from `pydantic_evals.online`; calls to the decorated function made inside the `with disable_evaluation():` block have their evaluators suppressed. After awaiting `wait_for_evaluations()`, no evaluations will have run for those suppressed calls (evaluations run: 0), while calls outside the block run normally.",
+      "url": "docs/evals/online-evaluation.md",
+      "gold_chunk_ids": [
+        "docs/evals/online-evaluation.md#23"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/online-evaluation.md#38",
+      "title": "Error Handling",
+      "question": "In pydantic-ai's online evaluation, what's the difference between the `on_sampling_error` and `on_error` callbacks, and what happens if I don't set either of them?",
+      "reference_answer": "`on_sampling_error` is called synchronously when a `sample_rate` callable raises (receiving the exception and the `Evaluator`); it must be sync, and if set the evaluator is skipped, but if not set the exception propagates to the caller. `on_error` handles exceptions in a `sink` or `on_max_concurrency` callback (receiving the exception, `EvaluatorContext`, `Evaluator`, and an `OnErrorLocation` string), can be sync or async, and if not set those exceptions are silently suppressed.",
+      "url": "docs/evals/online-evaluation.md",
+      "gold_chunk_ids": [
+        "docs/evals/online-evaluation.md#38"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals/quick-start.md#2",
+      "title": "Quick Start",
+      "question": "How do I use pydantic_evals to create a Dataset of test cases and run an evaluation against a simple function like uppercasing text?",
+      "reference_answer": "Create a `Dataset` with a list of `Case` objects (each with `name`, `inputs`, and `expected_output`) and an `evaluators` list such as `EqualsExpected()` and `Contains(value='HELLO', case_sensitive=True)`. Define your function (e.g. `def uppercase_text(text: str) -> str: return text.upper()`), then call `report = dataset.evaluate_sync(uppercase_text)` and `report.print()` to see the summary of assertions and durations per case.",
+      "url": "docs/evals/quick-start.md",
+      "gold_chunk_ids": [
+        "docs/evals/quick-start.md#2"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/evals.md#5",
+      "title": "Key Relationships",
+      "question": "In pydantic-ai's evals, how do Dataset-wide Evaluators differ from Case-specific Evaluators when running an Experiment?",
+      "reference_answer": "An Experiment uses multiple Evaluators: Dataset-wide Evaluators are run against all Cases in the Dataset, while Case-specific Evaluators are run only against their respective Cases.",
+      "url": "docs/evals.md",
+      "gold_chunk_ids": [
+        "docs/evals.md#5"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/examples/ag-ui.md#0",
+      "title": "Agent User Interaction (AG-UI)",
+      "question": "How do I start the Pydantic AI AG-UI example backend, and what environment variable do I need to set first?",
+      "reference_answer": "First set your OpenAI API key with `export OPENAI_API_KEY=<your api key>`, then start the backend by running `python/uv-run -m pydantic_ai_examples.ag_ui`.",
+      "url": "docs/examples/ag-ui.md",
+      "gold_chunk_ids": [
+        "docs/examples/ag-ui.md#0"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/examples/data-analyst.md#0",
+      "title": "Data Analyst",
+      "question": "In Pydantic AI, how can I pass the output of one tool (like a DataFrame from a query tool) to another tool without having the agent process every row?",
+      "reference_answer": "Use a dependencies object to store the result from one tool and reuse it in another tool. This lets the agent know metadata like that a query returned a DataFrame with certain named columns without needing the content of every row.",
+      "url": "docs/examples/data-analyst.md",
+      "gold_chunk_ids": [
+        "docs/examples/data-analyst.md#0"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/examples/setup.md#0",
+      "title": "Examples",
+      "question": "How do I install the extra dependencies needed to run the pydantic-ai examples, both when installing from PyPI and when cloning the repo?",
+      "reference_answer": "If you installed pydantic-ai via pip/uv, install the examples optional dependency group with `pip/uv-add \"pydantic-ai[examples]\"`. If you cloned the pydantic-ai repo instead, run `uv sync --extra examples` to install the extra dependencies.",
+      "url": "docs/examples/setup.md",
+      "gold_chunk_ids": [
+        "docs/examples/setup.md#0"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/examples/slack-lead-qualifier.md#7",
+      "title": "Usage",
+      "question": "For the pydantic-ai Slack lead qualifier example, what should I do after setting up continuous deployment with GitHub Actions on Modal so Slack events still reach my app?",
+      "reference_answer": "After deploying via Modal continuous deployment with GitHub Actions, you must update the Slack event request URL to the new persistent URL. You should also modify the agent's instructions to fit your own situation.",
+      "url": "docs/examples/slack-lead-qualifier.md",
+      "gold_chunk_ids": [
+        "docs/examples/slack-lead-qualifier.md#7"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/examples/slack-lead-qualifier.md#18",
+      "title": "Modal app",
+      "question": "In a Modal app for the pydantic-ai Slack lead qualifier, how do I schedule the send_daily_summary function to run every day at 8 am UTC?",
+      "reference_answer": "Use the `@app.function()` decorator with a `schedule` argument to define a scheduled (cron) function; this Modal function calls the imported `send_daily_summary` function every day at 8 am UTC.",
+      "url": "docs/examples/slack-lead-qualifier.md",
+      "gold_chunk_ids": [
+        "docs/examples/slack-lead-qualifier.md#18"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/extensibility.md#2",
+      "title": "Publishing capability packages",
+      "question": "In pydantic-ai, how do I make a custom capability class usable in agent specs, and how do users register it when loading an agent from a YAML file?",
+      "reference_answer": "Implement `get_serialization_name()` (defaults to the class name; return `None` to opt out of spec support) and `from_spec()` (defaults to `cls(*args, **kwargs)`, override when the constructor takes non-serializable types). Users register your custom capability by passing it via the `custom_capability_types` argument on `Agent.from_spec` or `Agent.from_file`, e.g. `Agent.from_file('agent.yaml', custom_capability_types=[MyCapability])`. Package it with the `pydantic-ai-` prefix so users can find it.",
+      "url": "docs/extensibility.md",
+      "gold_chunk_ids": [
+        "docs/extensibility.md#2"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/gateway.md#6",
+      "title": "Pydantic AI",
+      "question": "How do I configure a Pydantic AI Agent to use an OpenAIChatModel through the gateway provider with my API key?",
+      "reference_answer": "Create a provider with `gateway_provider('openai', api_key='pylf_v...')`, pass it to `OpenAIChatModel('gpt-5.2', provider=provider)`, then create the agent with `Agent(model)`. Import these from `pydantic_ai`, `pydantic_ai.models.openai`, and `pydantic_ai.providers.gateway` respectively.",
+      "url": "docs/gateway.md",
+      "gold_chunk_ids": [
+        "docs/gateway.md#6"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/gateway.md#16",
+      "title": "Creating a routing group",
+      "question": "In pydantic-ai's Logfire Gateway, how do I create a routing group and configure its members for failover and load balancing?",
+      "reference_answer": "In Logfire, go to Gateway -> Routing Groups and click Add Routing Group, giving it a slug (e.g. `anthropic-routing`) and optional description. Then on the group's Members page, add one or more providers, setting each member's Priority (higher values are tried first; use different priorities for failover), Weight (load-balancing weight between members sharing the same priority), and Active (inactive members are skipped).",
+      "url": "docs/gateway.md",
+      "gold_chunk_ids": [
+        "docs/gateway.md#16"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/graph/builder/decisions.md#9",
+      "title": "Branch Priority",
+      "question": "In pydantic-ai's pydantic_graph, when I use g.decision() with multiple branches whose match conditions both evaluate true (e.g. one matches x >= 5 and another matches x >= 0 for a value of 10), which branch gets taken?",
+      "reference_answer": "Branches are evaluated in the order they are added with .branch(), and the first matching branch wins. For a returned value of 10, the first branch using g.match(TypeExpression[int], matches=lambda x: x >= 5).to(branch_a) matches before the x >= 0 branch, so branch_a runs and the result is 'Branch A'.",
+      "url": "docs/graph/builder/decisions.md",
+      "gold_chunk_ids": [
+        "docs/graph/builder/decisions.md#9"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/graph/builder/index.md#6",
+      "title": "A More Complex Example",
+      "question": "In pydantic-ai's pydantic_graph builder API, how can I fan out a list of integers so each item runs through a `square` step in parallel and then collect the results back into a single list?",
+      "reference_answer": "Use the `.map()` operation to fan out each item to a separate parallel execution of the `square` step, then collect all results back together using `reduce_list_append` (from `pydantic_graph.join.reduce_list_append`), with the joined results flowing to the end node.",
+      "url": "docs/graph/builder/index.md",
+      "gold_chunk_ids": [
+        "docs/graph/builder/index.md#6"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/graph/builder/joins.md#7",
+      "title": "`reduce_dict_update`",
+      "question": "In pydantic-graph, how can I use a join step to merge multiple `dict[str, int]` outputs from a mapped step into a single combined dictionary?",
+      "reference_answer": "Use `g.join(reduce_dict_update, initial_factory=dict[str, int])` to create a merge node that combines the dicts. The `reduce_dict_update` reducer updates an accumulating dict (starting from the empty `initial_factory`) with each incoming dict, so mapped `create_entry` outputs like `{'apple': 5}` merge into `{'apple': 5, 'banana': 6, 'cherry': 6}`.",
+      "url": "docs/graph/builder/joins.md",
+      "gold_chunk_ids": [
+        "docs/graph/builder/joins.md#7"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/graph/builder/joins.md#23",
+      "title": "Multiple Joins",
+      "question": "In pydantic-ai's pydantic_graph, how can I give a custom ID to a join node when using g.join with reduce_list_append?",
+      "reference_answer": "Pass the `node_id` parameter to `g.join()`, for example: `g.join(reduce_list_append, initial_factory=list[int], node_id='my_custom_join_id')`. Like steps, joins support custom IDs this way.",
+      "url": "docs/graph/builder/joins.md",
+      "gold_chunk_ids": [
+        "docs/graph/builder/joins.md#23"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/graph/builder/parallel.md#10",
+      "title": "Spread then Broadcast",
+      "question": "In pydantic-graph's GraphBuilder, how do I spread a list output across items and then broadcast each item to multiple downstream steps, collecting the results back into a list?",
+      "reference_answer": "Use `.map()` on the edge from the list-producing step to spread the list into individual items, and pass multiple target steps to `.to(add_one, add_two)` to broadcast each item to both. For example: `g.edge_from(generate_list).map().to(add_one, add_two)`, then collect with a join like `collect = g.join(reduce_list_append, initial_factory=list[int])` and `g.edge_from(add_one, add_two).to(collect)`. With input `[10, 20]`, adding one and two to each yields `[11, 12, 21, 22]`.",
+      "url": "docs/graph/builder/parallel.md",
+      "gold_chunk_ids": [
+        "docs/graph/builder/parallel.md#10"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/graph/builder/steps.md#1",
+      "title": "Step Context",
+      "question": "In pydantic-ai's pydantic_graph, what does the StepContext passed to a step function give me access to, and how do I read the graph state, dependencies, and step input?",
+      "reference_answer": "Every step function receives a StepContext as its first parameter, exposing three attributes: ctx.state (the mutable graph state, type StateT), ctx.deps (injected dependencies, type DepsT), and ctx.inputs (input data for this step, type InputT).",
+      "url": "docs/graph/builder/steps.md",
+      "gold_chunk_ids": [
+        "docs/graph/builder/steps.md#1"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/graph/builder/steps.md#12",
+      "title": "Type Safety",
+      "question": "In pydantic-ai's pydantic_graph GraphBuilder, how does StepContext provide type safety, and what are its type parameters?",
+      "reference_answer": "The GraphBuilder API uses generics on StepContext to enforce type checking: its type parameters are state type, dependencies type, and input type (e.g. StepContext[MyState, None, int]), ensuring state access is typed, dependencies are correctly typed, and input/output types match across edges. For example, connecting a step that outputs str (returns_str) to one expecting int input (expects_int) via g.add(g.edge_from(returns_str).to(expects_int)) would be flagged as a type error.",
+      "url": "docs/graph/builder/steps.md",
+      "gold_chunk_ids": [
+        "docs/graph/builder/steps.md#12"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/graph.md#9",
+      "title": "Graph",
+      "question": "When building a graph in pydantic-ai with GraphBuilder, how do I register my BaseNode subclasses and how does the builder know the edges between them, and what does build() and graph.run() return?",
+      "reference_answer": "Register each `BaseNode` subclass with `g.node()` so the builder knows about it; outgoing edges are inferred automatically from each node's `run` return type. `g.build()` returns a `Graph` ready to execute, and `graph.run()` is async and returns the raw output value (e.g., the `int` returned by the `End` node).",
+      "url": "docs/graph.md",
+      "gold_chunk_ids": [
+        "docs/graph.md#9"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/graph.md#20",
+      "title": "Dependency Injection",
+      "question": "How do I use dependency injection in pydantic-graph, and how do I access the deps inside a node's run() method?",
+      "reference_answer": "Pass a `deps_type` to `GraphBuilder`, parameterize each `BaseNode` subclass with the deps type, and read the dependencies via `GraphRunContext.deps` inside `run()` (or via `StepContext.deps` inside step functions).",
+      "url": "docs/graph.md",
+      "gold_chunk_ids": [
+        "docs/graph.md#20"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/hooks.md#1",
+      "title": "Quick start",
+      "question": "How do I register a before_model_request hook in pydantic-ai and attach it to an Agent?",
+      "reference_answer": "Create a `Hooks` instance from `pydantic_ai.capabilities`, register a function with the `@hooks.on.before_model_request` decorator (it receives `ctx: RunContext[None]` and `request_context: ModelRequestContext`, and must return the `ModelRequestContext`), then pass the hooks to the agent via `Agent('test', capabilities=[hooks])`.",
+      "url": "docs/hooks.md",
+      "gold_chunk_ids": [
+        "docs/hooks.md#1"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/hooks.md#11",
+      "title": "Output validation hooks",
+      "question": "In pydantic-ai, when I'm streaming structured output, my `output_validate` hook runs many times and does expensive work on incomplete data. How do output validation vs processing hooks behave during streaming, and how can I skip the partial attempts?",
+      "reference_answer": "During streaming, output validation hooks (like `output_validate`) fire on every partial validation attempt as well as the final result, while output processing hooks fire only when partial validation succeeds and on the final result. To avoid expensive work on partials, check `ctx.partial_output` in your hook to distinguish partial from final results.",
+      "url": "docs/hooks.md",
+      "gold_chunk_ids": [
+        "docs/hooks.md#11"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/hooks.md#21",
+      "title": "Hook ordering",
+      "question": "In pydantic-ai, what do the `*_error` hooks (like `on_*_error` on AbstractCapability) do when I raise versus return inside them?",
+      "reference_answer": "Error hooks use raise-to-propagate, return-to-recover semantics: raising the original error propagates it unchanged (the default), raising a different exception transforms the error, and returning a result suppresses the error.",
+      "url": "docs/hooks.md",
+      "gold_chunk_ids": [
+        "docs/hooks.md#21"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/input.md#1",
+      "title": "Image Input",
+      "question": "How do I pass a local PNG image to a pydantic-ai Agent and ask a question about it using BinaryContent?",
+      "reference_answer": "Pass a list to `agent.run_sync()` containing your text prompt and a `BinaryContent` object, e.g. `BinaryContent(data=image_response.content, media_type='image/png')`. You can obtain the image bytes from the web via `httpx.get(url).content` or read a local file with `Path().read_bytes()`.",
+      "url": "docs/input.md",
+      "gold_chunk_ids": [
+        "docs/input.md#1"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/input.md#11",
+      "title": "User-side download vs. direct file URL",
+      "question": "In pydantic-ai, how should I reference files that I've uploaded to a model provider's file storage API, and why use that over passing the URL directly?",
+      "reference_answer": "Use `UploadedFile` (pydantic_ai.messages.UploadedFile) to reference files uploaded to a provider's file storage API by ID or URL. While you can also pass `DocumentUrl`, `ImageUrl`, or `VideoUrl` directly for providers that return a file URL (like Google Files API or S3 URLs for Bedrock), `UploadedFile` is recommended for a unified API across providers and consistent provider name validation.",
+      "url": "docs/input.md",
+      "gold_chunk_ids": [
+        "docs/input.md#11"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/input.md#21",
+      "title": "xAI",
+      "question": "In pydantic-ai with the xAI provider, how do I upload a PDF and reference it in an Agent.run call using grok-4.3?",
+      "reference_answer": "Create an XaiProvider and XaiModel('grok-4.3', provider=provider), then upload the file via the underlying xAI client with `await provider.client.files.upload(f, filename='document.pdf')`. Reference it in the run by passing `UploadedFile(file_id=uploaded_file.id, provider_name=model.system)` alongside your prompt to `agent.run(...)`.",
+      "url": "docs/input.md",
+      "gold_chunk_ids": [
+        "docs/input.md#21"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/logfire.md#4",
+      "title": "Using Logfire",
+      "question": "In Pydantic AI, how can I monitor the performance of my agent runs using Logfire?",
+      "reference_answer": "Since Logfire stores Pydantic AI run data, you can query it with SQL in Logfire to monitor your application's performance\u2014this is how Pydantic AI runs are monitored inside Logfire itself.",
+      "url": "docs/logfire.md",
+      "gold_chunk_ids": [
+        "docs/logfire.md#4"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/logfire.md#18",
+      "title": "Configuring data format",
+      "question": "In pydantic-ai's OpenTelemetry instrumentation, when I switch to version 4 of the data format, how does the JSON representation of an ImageUrl change compared to earlier versions?",
+      "reference_answer": "In versions 1-3, URL-based media like ImageUrl was serialized as `{\"type\": \"image-url\", \"url\": \"...\"}`. In version 4 it becomes `{\"type\": \"uri\", \"modality\": \"image\", \"uri\": \"...\", \"mime_type\": \"...\"}` to align with the GenAI semantic conventions for multimodal inputs.",
+      "url": "docs/logfire.md",
+      "gold_chunk_ids": [
+        "docs/logfire.md#18"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/mcp/client.md#7",
+      "title": "SSE Client",
+      "question": "How do I connect pydantic-ai to an MCP server that runs as a subprocess over stdin/stdout, like a local Python weather server?",
+      "reference_answer": "Use the `MCPServerStdio` class from `pydantic_ai.mcp` for stdio transport, where the server runs as a subprocess. For example: `server = MCPServerStdio('python', args=['mcp_server.py'], timeout=10)`, then attach it to an agent via `Agent('openai:gpt-5.2', toolsets=[server])` and call `await agent.run(...)`.",
+      "url": "docs/mcp/client.md",
+      "gold_chunk_ids": [
+        "docs/mcp/client.md#7"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/mcp/client.md#17",
+      "title": "Background tasks",
+      "question": "In pydantic-ai's MCPToolset, how does the value of a tool's `execution.taskSupport` affect whether calls are made with task-augmented execution?",
+      "reference_answer": "MCPToolset routes calls based on `execution.taskSupport`: `\"required\"` always calls with `task=True` (the server creates a task and the client awaits the final result via `tasks/result`), `\"optional\"` also always calls with `task=True` to opt in to durability, cancellation, and progress notifications, while `\"forbidden\"` or absent results in normal calls. For FastMCP servers, you declare task support per tool with `task=TaskConfig(mode=...)`.",
+      "url": "docs/mcp/client.md",
+      "gold_chunk_ids": [
+        "docs/mcp/client.md#17"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/mcp/client.md#27",
+      "title": "MCP Sampling",
+      "question": "In pydantic-ai, how do I set a sampling_model so an MCP server can use sampling?",
+      "reference_answer": "An MCP server needs a sampling_model set, which can be done directly on the server via the constructor keyword argument or the sampling_model property, or by calling agent.set_mcp_sampling_model() to set the agent's model (or one passed as an argument) as the sampling model on all MCP servers registered with that agent.",
+      "url": "docs/mcp/client.md",
+      "gold_chunk_ids": [
+        "docs/mcp/client.md#27"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/mcp/fastmcp-client.md#3",
+      "title": "Usage",
+      "question": "How do I connect a pydantic-ai Agent to a Streamable HTTP MCP server using FastMCPToolset?",
+      "reference_answer": "Create the toolset by passing the server URL to FastMCPToolset, e.g. `toolset = FastMCPToolset('http://localhost:8000/mcp')`, then pass it to the Agent via `Agent('openai:gpt-5.2', toolsets=[toolset])`. Import both from `pydantic_ai` and `pydantic_ai.toolsets.fastmcp`.",
+      "url": "docs/mcp/fastmcp-client.md",
+      "gold_chunk_ids": [
+        "docs/mcp/fastmcp-client.md#3"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/message-history.md#1",
+      "title": "Accessing Messages from Results",
+      "question": "In pydantic-ai, after calling Agent.run_sync, how can I get only the messages produced during that specific run rather than all messages including prior runs, and how do I get them as JSON?",
+      "reference_answer": "Call `new_messages()` on the returned `RunResult` to get only the messages from the current run, as opposed to `all_messages()` which includes messages from prior runs. For JSON bytes, use the `new_messages_json()` variant (with `all_messages_json()` as the equivalent for all messages).",
+      "url": "docs/message-history.md",
+      "gold_chunk_ids": [
+        "docs/message-history.md#1"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/message-history.md#16",
+      "title": "Injecting messages mid-run",
+      "question": "In pydantic-ai, how can a tool or external code driving agent.iter() inject extra content into the conversation while a run is in progress?",
+      "reference_answer": "Use RunContext.enqueue when a RunContext is in scope (e.g. inside a tool or capability hook), or use AgentRun.enqueue from external code driving agent.iter(). A priority argument controls when the enqueued content is delivered.",
+      "url": "docs/message-history.md",
+      "gold_chunk_ids": [
+        "docs/message-history.md#16"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/message-history.md#26",
+      "title": "Processing Message History",
+      "question": "In pydantic-ai, if I use a history processor on my Agent and want to preserve the original message history, what do I need to do, and how does the processor affect what `new_messages()` returns?",
+      "reference_answer": "Because history processors replace the message history in the state with the processed messages (including the new user prompt part), you must make a copy of the original message history if you want to keep it. Additionally, since processors mutate or add messages, this can affect `new_messages()`, which returns only messages produced during the current run and excludes messages provided via `message_history`.",
+      "url": "docs/message-history.md",
+      "gold_chunk_ids": [
+        "docs/message-history.md#26"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/models/anthropic.md#1",
+      "title": "Environment variable",
+      "question": "When I use Claude Opus 4.7 or 4.8 with pydantic-ai's AnthropicModel, do I need to manually remove temperature, top_p, and top_k from my requests?",
+      "reference_answer": "No. Pydantic AI automatically drops the `temperature`, `top_p`, and `top_k` keys for `claude-opus-4-7` and `claude-opus-4-8` requests (including `extra_body` overrides), in line with Anthropic's Claude Opus migration guide which recommends removing them.",
+      "url": "docs/models/anthropic.md",
+      "gold_chunk_ids": [
+        "docs/models/anthropic.md#1"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/models/anthropic.md#12",
+      "title": "Carrying budgets across compaction",
+      "question": "In pydantic-ai, when should I set the `remaining` field on `task_budget` versus leaving it unset, and how do I keep the countdown going across requests?",
+      "reference_answer": "Set `remaining` only for client-side compaction where you summarize earlier turns yourself between requests; since Pydantic AI doesn't track it for you, accumulate token usage across requests (e.g. from `RunUsage` on each run) and pass the updated `remaining` on the next request so the countdown continues instead of resetting to `total`. If you use `AnthropicCompaction` for server-side compaction, leave `remaining` unset and let `total` self-regulate. Note that setting `remaining` invalidates any prompt-cache prefix containing the budget, so to preserve caching set `total` once and let the server self-regulate.",
+      "url": "docs/models/anthropic.md",
+      "gold_chunk_ids": [
+        "docs/models/anthropic.md#12"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/models/anthropic.md#22",
+      "title": "Accessing Cache Usage Statistics",
+      "question": "In pydantic-ai with the Anthropic model, how can I see how many tokens were written to and read from the cache after running my agent?",
+      "reference_answer": "Access cache statistics via `result.usage` after calling `agent.run_sync(...)`. The usage object exposes `usage.cache_write_tokens` and `usage.cache_read_tokens`, which you can print to see cache write and read token counts (requires `anthropic_cache=True` in `AnthropicModelSettings`).",
+      "url": "docs/models/anthropic.md",
+      "gold_chunk_ids": [
+        "docs/models/anthropic.md#22"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/models/anthropic.md#34",
+      "title": "Code Execution Tool Version",
+      "question": "In Pydantic AI, how can I force a specific Anthropic code execution tool version instead of the default, and what happens if the model doesn't support it?",
+      "reference_answer": "Set `AnthropicModelSettings(anthropic_code_execution_tool_version='20260120')` and pass it as the `model_settings` when creating the Agent to override the default version Pydantic AI picks. If you explicitly select a tool version the model does not support, Pydantic AI raises a `UserError`.",
+      "url": "docs/models/anthropic.md",
+      "gold_chunk_ids": [
+        "docs/models/anthropic.md#34"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/models/bedrock.md#10",
+      "title": "Example 3: Fine-Grained Control with CachePoint",
+      "question": "How do I manually control where prompt caching happens in pydantic-ai when using a Bedrock Claude model?",
+      "reference_answer": "Import `CachePoint` from `pydantic_ai` and insert it into the list passed to `agent.run_sync()`; everything before the `CachePoint()` marker is cached. For example: `agent.run_sync(['Long context...', CachePoint(), 'First question'])`.",
+      "url": "docs/models/bedrock.md",
+      "gold_chunk_ids": [
+        "docs/models/bedrock.md#10"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/models/cerebras.md#1",
+      "title": "Environment variable",
+      "question": "How do I configure the Cerebras API key and use the llama-3.3-70b model with a pydantic-ai Agent?",
+      "reference_answer": "Set your API key as an environment variable with `export CEREBRAS_API_KEY='your-api-key'`. Then either reference the model by name with `Agent('cerebras:llama-3.3-70b')`, or initialise it directly: `from pydantic_ai.models.cerebras import CerebrasModel; model = CerebrasModel('llama-3.3-70b'); agent = Agent(model)`.",
+      "url": "docs/models/cerebras.md",
+      "gold_chunk_ids": [
+        "docs/models/cerebras.md#1"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/models/google.md#6",
+      "title": "Google Cloud (Enterprise)",
+      "question": "In pydantic-ai, how do I configure the GoogleCloudProvider to use a specific location and project when creating a GoogleModel with gemini-3-pro-preview?",
+      "reference_answer": "Pass the `location` and/or `project` arguments to `GoogleCloudProvider`, e.g. `provider = GoogleCloudProvider(location='asia-east1', project='your-google-cloud-project-id')`, then create the model with `model = GoogleModel('gemini-3-pro-preview', provider=provider)`.",
+      "url": "docs/models/google.md",
+      "gold_chunk_ids": [
+        "docs/models/google.md#6"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/models/google.md#16",
+      "title": "Configure thinking",
+      "question": "In pydantic-ai, how do I enable thinking for a Google Gemini model using the provider-agnostic API, and how can I instead pass Google's native thinking config?",
+      "reference_answer": "Use the provider-agnostic `Thinking` capability from `pydantic_ai.capabilities`, e.g. `Agent('google:gemini-3.5-flash', capabilities=[Thinking(effort='medium')])`. For native config, pass `GoogleModelSettings(google_thinking_config={'include_thoughts': True, 'thinking_level': 'MEDIUM'})` as `model_settings` when creating the Agent.",
+      "url": "docs/models/google.md",
+      "gold_chunk_ids": [
+        "docs/models/google.md#16"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/models/huggingface.md#0",
+      "title": "Hugging Face",
+      "question": "How do I install pydantic-ai to use HuggingFaceModel for chat completions via Hugging Face Inference Providers?",
+      "reference_answer": "To use `HuggingFaceModel`, either install the full `pydantic-ai` package, or install `pydantic-ai-slim` with the `huggingface` optional group: `pip/uv-add \"pydantic-ai-slim[huggingface]\"`.",
+      "url": "docs/models/huggingface.md",
+      "gold_chunk_ids": [
+        "docs/models/huggingface.md#0"
+      ],
+      "eval_mode": "synthetic"
+    },
+    {
+      "id": "pydantic__pydantic-ai#docs/models/ollama.md#0",
+      "title": "Ollama",
+      "question": "How do I configure pydantic-ai's OllamaModel to connect to a local Ollama server versus Ollama Cloud, and what do I need to install?",
+      "reference_answer": "Install either `pydantic-ai` or `pydantic-ai-slim` with the `openai` optional group (`pip/uv add \"pydantic-ai-slim[openai]\"`). For a local server, use the base URL `http://localhost:11434/v1`; for Ollama Cloud, use `https://ollama.com/v1` and set an API key. OllamaModel uses Ollama's OpenAI-compatible Chat Completions API (`/v1/chat/completions`).",
+      "url": "docs/models/ollama.md",
+      "gold_chunk_ids": [
+        "docs/models/ollama.md#0"
+      ],
+      "eval_mode": "synthetic"
+    }
+  ],
+  "gen_usage": {
+    "gen_calls": 0,
+    "judge_calls": 118,
+    "judge_budget": 500,
+    "judge_remaining": 382,
+    "total_cost_usd": 1.2024,
+    "by_model": {
+      "claude-opus-4-8": {
+        "calls": 118,
+        "cost_usd": 1.2024
+      }
+    }
+  }
+}
