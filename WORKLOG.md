@@ -299,3 +299,6 @@ with all other runs.)
 ## Phase: per-repo metrics
 - **duckdb** (moderate fam 43.5, forum, n=136): claim-coverage@5 **0.507**, corpus-gap **0.228**;
   **fallback lift +11.1 [6.1,15.9]** (W/T/L 64/42/30), strict −1.0. 0 trace errors. RAG>base ✓.
+- **litestar** (low fam 26.7, forum, n=51): claim-coverage@5 **0.608**, corpus-gap **0.137**;
+  **fallback lift +14.5 [4.1,25.0]** (W/T/L 27/12/12), strict +1.8. 0 trace errors. RAG>base ✓.
+  (n=51 = litestar's full available answered Q&A; small-n → wider CI.)

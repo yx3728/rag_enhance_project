@@ -1,0 +1,386 @@
+{
+  "tool": "litestar-org__litestar",
+  "n": 51,
+  "rerank": false,
+  "coverage_at": {
+    "1": 0.275,
+    "3": 0.569,
+    "5": 0.608,
+    "10": 0.706
+  },
+  "in_corpus_rate": 0.863,
+  "corpus_gap_rate": 0.137,
+  "present_but_ranked_below5": 0.255,
+  "usage": {
+    "gen_calls": 0,
+    "judge_calls": 51,
+    "judge_budget": 500,
+    "judge_remaining": 449,
+    "total_cost_usd": 4.0743,
+    "by_model": {
+      "claude-opus-4-8": {
+        "calls": 51,
+        "cost_usd": 4.0743
+      }
+    }
+  },
+  "rows": [
+    {
+      "id": "litestar-org__litestar#4140",
+      "in_corpus": true,
+      "best_vrank": 2,
+      "sufficient": true,
+      "supporting_n": 9
+    },
+    {
+      "id": "litestar-org__litestar#4656",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "litestar-org__litestar#4511",
+      "in_corpus": true,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "litestar-org__litestar#1893",
+      "in_corpus": true,
+      "best_vrank": 6,
+      "sufficient": false,
+      "supporting_n": 3
+    },
+    {
+      "id": "litestar-org__litestar#4319",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "litestar-org__litestar#4113",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "litestar-org__litestar#4107",
+      "in_corpus": true,
+      "best_vrank": 2,
+      "sufficient": false,
+      "supporting_n": 4
+    },
+    {
+      "id": "litestar-org__litestar#1789",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "litestar-org__litestar#3896",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": true,
+      "supporting_n": 4
+    },
+    {
+      "id": "litestar-org__litestar#3657",
+      "in_corpus": true,
+      "best_vrank": null,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "litestar-org__litestar#3724",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "litestar-org__litestar#3717",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "litestar-org__litestar#3645",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "litestar-org__litestar#3634",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "litestar-org__litestar#3586",
+      "in_corpus": true,
+      "best_vrank": 5,
+      "sufficient": true,
+      "supporting_n": 2
+    },
+    {
+      "id": "litestar-org__litestar#3584",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "litestar-org__litestar#3581",
+      "in_corpus": true,
+      "best_vrank": 9,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "litestar-org__litestar#3448",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 5
+    },
+    {
+      "id": "litestar-org__litestar#1987",
+      "in_corpus": true,
+      "best_vrank": 11,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "litestar-org__litestar#3426",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "litestar-org__litestar#3384",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 3
+    },
+    {
+      "id": "litestar-org__litestar#3250",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "litestar-org__litestar#3097",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 2
+    },
+    {
+      "id": "litestar-org__litestar#3038",
+      "in_corpus": true,
+      "best_vrank": null,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "litestar-org__litestar#2989",
+      "in_corpus": true,
+      "best_vrank": 14,
+      "sufficient": false,
+      "supporting_n": 2
+    },
+    {
+      "id": "litestar-org__litestar#2880",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "litestar-org__litestar#2762",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "litestar-org__litestar#2683",
+      "in_corpus": true,
+      "best_vrank": 4,
+      "sufficient": true,
+      "supporting_n": 4
+    },
+    {
+      "id": "litestar-org__litestar#2407",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": true,
+      "supporting_n": 2
+    },
+    {
+      "id": "litestar-org__litestar#2323",
+      "in_corpus": true,
+      "best_vrank": 2,
+      "sufficient": true,
+      "supporting_n": 2
+    },
+    {
+      "id": "litestar-org__litestar#2286",
+      "in_corpus": true,
+      "best_vrank": null,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "litestar-org__litestar#2285",
+      "in_corpus": true,
+      "best_vrank": 5,
+      "sufficient": false,
+      "supporting_n": 2
+    },
+    {
+      "id": "litestar-org__litestar#2227",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "litestar-org__litestar#584",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 5
+    },
+    {
+      "id": "litestar-org__litestar#2173",
+      "in_corpus": true,
+      "best_vrank": 7,
+      "sufficient": false,
+      "supporting_n": 3
+    },
+    {
+      "id": "litestar-org__litestar#2009",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 4
+    },
+    {
+      "id": "litestar-org__litestar#1549",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "litestar-org__litestar#1813",
+      "in_corpus": true,
+      "best_vrank": 2,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "litestar-org__litestar#1624",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": true,
+      "supporting_n": 6
+    },
+    {
+      "id": "litestar-org__litestar#1548",
+      "in_corpus": true,
+      "best_vrank": 16,
+      "sufficient": false,
+      "supporting_n": 2
+    },
+    {
+      "id": "litestar-org__litestar#1361",
+      "in_corpus": true,
+      "best_vrank": 11,
+      "sufficient": true,
+      "supporting_n": 4
+    },
+    {
+      "id": "litestar-org__litestar#1337",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "litestar-org__litestar#1319",
+      "in_corpus": true,
+      "best_vrank": 4,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "litestar-org__litestar#1124",
+      "in_corpus": true,
+      "best_vrank": 2,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "litestar-org__litestar#1010",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "litestar-org__litestar#1001",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": false,
+      "supporting_n": 4
+    },
+    {
+      "id": "litestar-org__litestar#910",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "litestar-org__litestar#894",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "litestar-org__litestar#780",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": false,
+      "supporting_n": 3
+    },
+    {
+      "id": "litestar-org__litestar#765",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": true,
+      "supporting_n": 2
+    },
+    {
+      "id": "litestar-org__litestar#666",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": true,
+      "supporting_n": 6
+    }
+  ]
+}
