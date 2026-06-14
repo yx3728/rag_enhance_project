@@ -295,3 +295,7 @@ with all other runs.)
 - **duckdb** (forum): kept **136/262** docs-answerable, curate $4.96.
 - **litestar** (forum): kept **51/99** (its full available Q&A; small-n flagged), curate $1.81.
 - **pydantic-ai** (synthetic): doc-grounded set (next).
+
+## Phase: per-repo metrics
+- **duckdb** (moderate fam 43.5, forum, n=136): claim-coverage@5 **0.507**, corpus-gap **0.228**;
+  **fallback lift +11.1 [6.1,15.9]** (W/T/L 64/42/30), strict −1.0. 0 trace errors. RAG>base ✓.

@@ -1,0 +1,981 @@
+{
+  "tool": "duckdb__duckdb",
+  "n": 136,
+  "rerank": false,
+  "coverage_at": {
+    "1": 0.279,
+    "3": 0.449,
+    "5": 0.507,
+    "10": 0.603
+  },
+  "in_corpus_rate": 0.772,
+  "corpus_gap_rate": 0.228,
+  "present_but_ranked_below5": 0.265,
+  "usage": {
+    "gen_calls": 0,
+    "judge_calls": 136,
+    "judge_budget": 500,
+    "judge_remaining": 364,
+    "total_cost_usd": 11.2723,
+    "by_model": {
+      "claude-opus-4-8": {
+        "calls": 136,
+        "cost_usd": 11.2723
+      }
+    }
+  },
+  "rows": [
+    {
+      "id": "duckdb__duckdb#23058",
+      "in_corpus": true,
+      "best_vrank": 7,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "duckdb__duckdb#22980",
+      "in_corpus": true,
+      "best_vrank": 11,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "duckdb__duckdb#22511",
+      "in_corpus": true,
+      "best_vrank": 17,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "duckdb__duckdb#22300",
+      "in_corpus": true,
+      "best_vrank": 2,
+      "sufficient": false,
+      "supporting_n": 5
+    },
+    {
+      "id": "duckdb__duckdb#21654",
+      "in_corpus": true,
+      "best_vrank": 2,
+      "sufficient": true,
+      "supporting_n": 2
+    },
+    {
+      "id": "duckdb__duckdb#21299",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 2
+    },
+    {
+      "id": "duckdb__duckdb#13944",
+      "in_corpus": true,
+      "best_vrank": 7,
+      "sufficient": false,
+      "supporting_n": 4
+    },
+    {
+      "id": "duckdb__duckdb#13141",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": false,
+      "supporting_n": 4
+    },
+    {
+      "id": "duckdb__duckdb#19847",
+      "in_corpus": true,
+      "best_vrank": 5,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "duckdb__duckdb#19846",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "duckdb__duckdb#19727",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 2
+    },
+    {
+      "id": "duckdb__duckdb#19698",
+      "in_corpus": true,
+      "best_vrank": 3,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "duckdb__duckdb#19511",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "duckdb__duckdb#19256",
+      "in_corpus": true,
+      "best_vrank": 11,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "duckdb__duckdb#19074",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 4
+    },
+    {
+      "id": "duckdb__duckdb#18325",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "duckdb__duckdb#18200",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "duckdb__duckdb#18178",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 4
+    },
+    {
+      "id": "duckdb__duckdb#18164",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "duckdb__duckdb#18025",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "duckdb__duckdb#17981",
+      "in_corpus": true,
+      "best_vrank": 8,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "duckdb__duckdb#9019",
+      "in_corpus": true,
+      "best_vrank": 8,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "duckdb__duckdb#17798",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 2
+    },
+    {
+      "id": "duckdb__duckdb#17813",
+      "in_corpus": true,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 2
+    },
+    {
+      "id": "duckdb__duckdb#17550",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "duckdb__duckdb#17442",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 4
+    },
+    {
+      "id": "duckdb__duckdb#17287",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "duckdb__duckdb#17356",
+      "in_corpus": true,
+      "best_vrank": 10,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "duckdb__duckdb#17240",
+      "in_corpus": true,
+      "best_vrank": 19,
+      "sufficient": false,
+      "supporting_n": 2
+    },
+    {
+      "id": "duckdb__duckdb#14274",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "duckdb__duckdb#17082",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "duckdb__duckdb#17051",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "duckdb__duckdb#8508",
+      "in_corpus": true,
+      "best_vrank": 9,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "duckdb__duckdb#8020",
+      "in_corpus": true,
+      "best_vrank": 11,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "duckdb__duckdb#16667",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "duckdb__duckdb#16591",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "duckdb__duckdb#16583",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": true,
+      "supporting_n": 4
+    },
+    {
+      "id": "duckdb__duckdb#16558",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 2
+    },
+    {
+      "id": "duckdb__duckdb#15343",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": true,
+      "supporting_n": 5
+    },
+    {
+      "id": "duckdb__duckdb#16031",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "duckdb__duckdb#5272",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": true,
+      "supporting_n": 6
+    },
+    {
+      "id": "duckdb__duckdb#16110",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "duckdb__duckdb#15756",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "duckdb__duckdb#12452",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "duckdb__duckdb#15499",
+      "in_corpus": true,
+      "best_vrank": 4,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "duckdb__duckdb#15185",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 4
+    },
+    {
+      "id": "duckdb__duckdb#15369",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "duckdb__duckdb#14968",
+      "in_corpus": true,
+      "best_vrank": 4,
+      "sufficient": true,
+      "supporting_n": 2
+    },
+    {
+      "id": "duckdb__duckdb#15184",
+      "in_corpus": true,
+      "best_vrank": 15,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "duckdb__duckdb#14924",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "duckdb__duckdb#14933",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "duckdb__duckdb#14915",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": true,
+      "supporting_n": 2
+    },
+    {
+      "id": "duckdb__duckdb#14719",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "duckdb__duckdb#6208",
+      "in_corpus": true,
+      "best_vrank": 14,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "duckdb__duckdb#14517",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 2
+    },
+    {
+      "id": "duckdb__duckdb#14169",
+      "in_corpus": true,
+      "best_vrank": 5,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "duckdb__duckdb#13809",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "duckdb__duckdb#12665",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "duckdb__duckdb#13579",
+      "in_corpus": true,
+      "best_vrank": 16,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "duckdb__duckdb#13510",
+      "in_corpus": true,
+      "best_vrank": 18,
+      "sufficient": true,
+      "supporting_n": 4
+    },
+    {
+      "id": "duckdb__duckdb#10701",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 3
+    },
+    {
+      "id": "duckdb__duckdb#13246",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "duckdb__duckdb#13263",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": true,
+      "supporting_n": 2
+    },
+    {
+      "id": "duckdb__duckdb#12881",
+      "in_corpus": true,
+      "best_vrank": 5,
+      "sufficient": false,
+      "supporting_n": 4
+    },
+    {
+      "id": "duckdb__duckdb#12893",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "duckdb__duckdb#2400",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "duckdb__duckdb#12842",
+      "in_corpus": true,
+      "best_vrank": 3,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "duckdb__duckdb#12672",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "duckdb__duckdb#12605",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 7
+    },
+    {
+      "id": "duckdb__duckdb#12322",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "duckdb__duckdb#12188",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 3
+    },
+    {
+      "id": "duckdb__duckdb#11768",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "duckdb__duckdb#11749",
+      "in_corpus": true,
+      "best_vrank": 8,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "duckdb__duckdb#11569",
+      "in_corpus": true,
+      "best_vrank": 10,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "duckdb__duckdb#11507",
+      "in_corpus": true,
+      "best_vrank": 15,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "duckdb__duckdb#10951",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "duckdb__duckdb#10696",
+      "in_corpus": true,
+      "best_vrank": null,
+      "sufficient": true,
+      "supporting_n": 2
+    },
+    {
+      "id": "duckdb__duckdb#10734",
+      "in_corpus": true,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "duckdb__duckdb#10583",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "duckdb__duckdb#10676",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "duckdb__duckdb#10595",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "duckdb__duckdb#9710",
+      "in_corpus": true,
+      "best_vrank": 10,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "duckdb__duckdb#10466",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "duckdb__duckdb#10292",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "duckdb__duckdb#10331",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "duckdb__duckdb#10285",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "duckdb__duckdb#10121",
+      "in_corpus": true,
+      "best_vrank": 4,
+      "sufficient": true,
+      "supporting_n": 4
+    },
+    {
+      "id": "duckdb__duckdb#9986",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 4
+    },
+    {
+      "id": "duckdb__duckdb#8726",
+      "in_corpus": true,
+      "best_vrank": 2,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "duckdb__duckdb#8206",
+      "in_corpus": true,
+      "best_vrank": 2,
+      "sufficient": false,
+      "supporting_n": 2
+    },
+    {
+      "id": "duckdb__duckdb#9722",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "duckdb__duckdb#9683",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "duckdb__duckdb#9685",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "duckdb__duckdb#4636",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "duckdb__duckdb#9588",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "duckdb__duckdb#9526",
+      "in_corpus": true,
+      "best_vrank": 7,
+      "sufficient": true,
+      "supporting_n": 5
+    },
+    {
+      "id": "duckdb__duckdb#9534",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "duckdb__duckdb#9397",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 4
+    },
+    {
+      "id": "duckdb__duckdb#9363",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "duckdb__duckdb#9324",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "duckdb__duckdb#9215",
+      "in_corpus": true,
+      "best_vrank": 7,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "duckdb__duckdb#9175",
+      "in_corpus": true,
+      "best_vrank": 5,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "duckdb__duckdb#9153",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "duckdb__duckdb#9098",
+      "in_corpus": true,
+      "best_vrank": 2,
+      "sufficient": true,
+      "supporting_n": 4
+    },
+    {
+      "id": "duckdb__duckdb#8968",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "duckdb__duckdb#8958",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 6
+    },
+    {
+      "id": "duckdb__duckdb#2366",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 8
+    },
+    {
+      "id": "duckdb__duckdb#8343",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "duckdb__duckdb#6945",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 4
+    },
+    {
+      "id": "duckdb__duckdb#8162",
+      "in_corpus": true,
+      "best_vrank": 2,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "duckdb__duckdb#7865",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "duckdb__duckdb#8125",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": true,
+      "supporting_n": 5
+    },
+    {
+      "id": "duckdb__duckdb#7687",
+      "in_corpus": true,
+      "best_vrank": null,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "duckdb__duckdb#7657",
+      "in_corpus": true,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "duckdb__duckdb#7583",
+      "in_corpus": true,
+      "best_vrank": 2,
+      "sufficient": true,
+      "supporting_n": 2
+    },
+    {
+      "id": "duckdb__duckdb#7293",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "duckdb__duckdb#7170",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 6
+    },
+    {
+      "id": "duckdb__duckdb#6999",
+      "in_corpus": true,
+      "best_vrank": 4,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "duckdb__duckdb#6865",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 4
+    },
+    {
+      "id": "duckdb__duckdb#6749",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "duckdb__duckdb#6747",
+      "in_corpus": true,
+      "best_vrank": 8,
+      "sufficient": false,
+      "supporting_n": 1
+    },
+    {
+      "id": "duckdb__duckdb#6711",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "duckdb__duckdb#6307",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 3
+    },
+    {
+      "id": "duckdb__duckdb#6626",
+      "in_corpus": true,
+      "best_vrank": 16,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "duckdb__duckdb#6454",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    },
+    {
+      "id": "duckdb__duckdb#6313",
+      "in_corpus": true,
+      "best_vrank": 2,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "duckdb__duckdb#6213",
+      "in_corpus": true,
+      "best_vrank": 15,
+      "sufficient": true,
+      "supporting_n": 4
+    },
+    {
+      "id": "duckdb__duckdb#4871",
+      "in_corpus": true,
+      "best_vrank": 10,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "duckdb__duckdb#5985",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": false,
+      "supporting_n": 9
+    },
+    {
+      "id": "duckdb__duckdb#5946",
+      "in_corpus": true,
+      "best_vrank": 1,
+      "sufficient": true,
+      "supporting_n": 4
+    },
+    {
+      "id": "duckdb__duckdb#5654",
+      "in_corpus": true,
+      "best_vrank": 4,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "duckdb__duckdb#5363",
+      "in_corpus": true,
+      "best_vrank": 19,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "duckdb__duckdb#5251",
+      "in_corpus": true,
+      "best_vrank": 4,
+      "sufficient": true,
+      "supporting_n": 2
+    },
+    {
+      "id": "duckdb__duckdb#4883",
+      "in_corpus": true,
+      "best_vrank": null,
+      "sufficient": true,
+      "supporting_n": 1
+    },
+    {
+      "id": "duckdb__duckdb#4864",
+      "in_corpus": true,
+      "best_vrank": 0,
+      "sufficient": true,
+      "supporting_n": 3
+    },
+    {
+      "id": "duckdb__duckdb#4659",
+      "in_corpus": false,
+      "best_vrank": null,
+      "sufficient": false,
+      "supporting_n": 0
+    }
+  ]
+}
