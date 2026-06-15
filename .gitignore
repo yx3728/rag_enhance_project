@@ -24,3 +24,6 @@ _ref_dagster/
 _ref_pydantic-ai/
 _ref_duckdb-web/
 _ref_litestar/
+
+# claude code internals
+.claude/
