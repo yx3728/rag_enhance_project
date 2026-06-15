@@ -27,3 +27,4 @@ _ref_litestar/
 
 # claude code internals
 .claude/
+.readme_render/
